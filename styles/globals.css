@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  main,
+  nav,
+  footer {
+    @apply bg-background dark:bg-onBackground selection:bg-primary selection:text-onPrimary dark:selection:bg-primaryDark dark:selection:text-onPrimaryDark;
+  }
+}
+
+/* SanFransisco Font */
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Black.otf')
+    format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-BlackItalic.otf')
+    format('opentype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Bold.otf')
+    format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-BoldItalic.otf')
+    format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Semibold.otf')
+    format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-SemiboldItalic.otf')
+    format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Medium.otf')
+    format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-MediumItalic.otf')
+    format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Regular.otf')
+    format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-RegularItalic.otf')
+    format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Light.otf')
+    format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-LightItalic.otf')
+    format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Thin.otf')
+    format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-ThinItalic.otf')
+    format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-Ultralight.otf')
+    format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro-Text';
+  src: url('../public/fonts/SanFransisco/SF-Pro-Text-UltralightItalic.otf')
+    format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+/* TTInterfaces Font */
+
+@font-face {
+  font-family: 'TTInterfaces';
+  src: url('../public/fonts/TTInterfaces/TTInterfaces-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTInterfaces';
+  src: url('../public/fonts/TTInterfaces/TTInterfaces-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTInterfaces';
+  src: url('../public/fonts/TTInterfaces/TTInterfaces-Light.ttf');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTInterfaces';
+  src: url('../public/fonts/TTInterfaces/TTInterfaces-ExtraLight.ttf');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTInterfaces';
+  src: url('../public/fonts/TTInterfaces/TTInterfaces-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTInterfaces';
+  src: url('../public/fonts/TTInterfaces/TTInterfaces-Black.ttf');
+  font-weight: 900;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  background-color: #e1e1e1;
+  scroll-behavior: smooth;
+  font-family: 'SF-Pro-Text', 'TTInterfaces', 'UniversalSans', 'system-ui',
+    '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+    'Helvetica Neue', Arial, 'Noto Sans', 'sans-serif', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "$lib/*": ["lib/*"],
+      "$public/*": ["public/*"],
       "$context/*": ["context/*"],
       "$styles/*": ["styles/*"]
     },

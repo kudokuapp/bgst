@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./app/**/*.{js,ts,jsx,tsx,css}', './lib/**/*.{js,ts,jsx,tsx,css}'],
-  imporant: true,
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,css}',
+    './lib/**/*.{js,ts,jsx,tsx,css}',
+    './styles/**/*.{js,ts,jsx,tsx,css}',
+  ],
   darkMode: 'class',
   theme: {
     // ensure that this match with Storybook

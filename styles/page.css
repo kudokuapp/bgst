@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .react-calendar-heatmap .color-kudoku-0 {
+    @apply fill-white;
+  }
+  .react-calendar-heatmap .color-kudoku-1 {
+    @apply fill-green-100;
+  }
+  .react-calendar-heatmap .color-kudoku-2 {
+    @apply fill-green-200;
+  }
+  .react-calendar-heatmap .color-kudoku-3 {
+    @apply fill-green-300;
+  }
+  .react-calendar-heatmap .color-kudoku-4 {
+    @apply fill-green-400;
+  }
+  .react-calendar-heatmap .color-kudoku-5 {
+    @apply fill-green-500;
+  }
+  .react-calendar-heatmap .color-kudoku-6 {
+    @apply fill-green-600;
+  }
+  .react-calendar-heatmap .color-kudoku-7 {
+    @apply fill-green-700;
+  }
+  .react-calendar-heatmap .color-kudoku-8 {
+    @apply fill-green-800;
+  }
+  .react-calendar-heatmap .color-kudoku-9 {
+    @apply fill-green-900;
+  }
+}
+
+.gradient-text {
+  background-image: linear-gradient(90deg, #2c5ea8, #348a95);
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#2c5ea8),
+    to(#348a95)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text::selection {
+  --tw-text-opacity: 1;
+  color: rgb(255, 255, 255);
+  --tw-bg-opacity: 1;
+  background-color: rgb(44, 94, 168);
+}
+
+.gradient-text-dark {
+  background-image: linear-gradient(90deg, #abc7ff, #4ed8e9);
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#abc7ff),
+    to(#4ed8e9)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-dark::selection {
+  --tw-text-opacity: 1;
+  color: rgb(255, 255, 255);
+  --tw-bg-opacity: 1;
+  background-color: rgb(44, 94, 168);
+}
+
+.h_ios {
+  /* equivalent to 100dvh in major browsers */
+  height: calc(
+    100vh - env(safe-area-inset-bottom, 0) - env(safe-area-inset-top, 0)
+  );
+}
+
+@supports (-webkit-touch-callout: none) {
+  .h_ios {
+    /* for ios safari 15, safe-area-inset-bottom is 0, so a special fix apply here */
+    height: -webkit-fill-available;
+  }
+}
