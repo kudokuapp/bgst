@@ -89,6 +89,7 @@ export function Footer() {
           className="flex flex-col gap-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
         >
           <h6 className="text-4xl font-bold w-fit h-fit select-none text-onPrimaryContainer dark:text-surfaceVariant">
             Bagikan ke temen-temen lo yang{' '}

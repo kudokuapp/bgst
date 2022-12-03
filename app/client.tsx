@@ -229,7 +229,7 @@ export default function Client() {
       >
         <motion.div
           className="w-full h-full flex flex-col justify-center items-center gap-20"
-          animate={{ x: ['0%', '0%'], y: ['100%', '-120%'] }}
+          animate={{ x: ['0%', '0%'], y: ['120%', '-100%'] }}
           transition={{
             duration: 20,
             repeat: Infinity,
@@ -410,7 +410,11 @@ function IncomevsExpense() {
                   width="100%"
                   height="100%"
                 >
-                  <rect width="100%" height="100%" fill="url(#bg)"></rect>
+                  <rect
+                    width="100%"
+                    height="100%"
+                    fill="rgb(34, 197, 94)"
+                  ></rect>
                 </svg>
               </div>
             </HtmlTooltip>
@@ -424,7 +428,11 @@ function IncomevsExpense() {
                   width="100%"
                   height="100%"
                 >
-                  <rect width="80%" height="100%" fill="url(#bg)"></rect>
+                  <rect
+                    width="80%"
+                    height="100%"
+                    fill="rgb(239, 68, 68)"
+                  ></rect>
                 </svg>
               </div>
             </HtmlTooltip>
@@ -516,51 +524,49 @@ function Heatmap() {
   }, []);
 
   return (
-    <div>
-      <div className="w-fit h-fit flex flex-col items-center gap-8">
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-sm font-bold text-primary dark:text-primaryDark text-center">
-            TOTAL TRANSAKSI
-          </p>
-          <h6 className="text-4xl font-bold text-onPrimaryContainer dark:text-surfaceVariant text-center">
-            Berapa kali lo abisin duit lo dan gimana
-          </h6>
-        </div>
-        <motion.div className="bg-gradient-to-br from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark w-fit h-fit px-4 py-8 rounded-3xl shadow-md select-none max-w-[545px] flex flex-col gap-8">
-          <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
-            Di bulan November 2022, lo abisin {`${total}`}x transaksi
-          </h3>
-          <div className="flex items-center justify-center w-full h-full bg-yellow-200 pl-[50px] rounded-2xl pb-6">
-            <CalendarHeatmap
-              startDate={startMonth}
-              endDate={endMonth}
-              values={randomValues}
-              classForValue={(value) => {
-                if (!value) {
-                  return 'color-empty';
-                }
-                return `color-kudoku-${value.count}`;
-              }}
-              tooltipDataAttrs={(value: any) => {
-                const date = new Date(value.date.toISOString());
-                return {
-                  'data-tip': `Jumlah transaksi hari ${
-                    nameDate[date.getDay()]
-                  }, ${date.getDate()} ${nameMonth[date.getMonth()]}: ${
-                    value.count
-                  }`,
-                };
-              }}
-              showWeekdayLabels={true}
-              showMonthLabels={false}
-              horizontal={false}
-              gutterSize={8}
-              showOutOfRangeDays={false}
-            />
-            <ReactTooltip />
-          </div>
-        </motion.div>
+    <div className="w-fit h-fit flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-2">
+        <p className="text-sm font-bold text-primary dark:text-primaryDark text-center">
+          TOTAL TRANSAKSI
+        </p>
+        <h6 className="text-4xl font-bold text-onPrimaryContainer dark:text-surfaceVariant text-center">
+          Berapa kali lo abisin duit lo dan gimana
+        </h6>
       </div>
+      <motion.div className="bg-gradient-to-br from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark w-fit h-fit px-4 py-8 rounded-3xl shadow-md select-none max-w-[545px] flex flex-col gap-8">
+        <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
+          Di bulan November 2022, lo abisin {`${total}`}x transaksi
+        </h3>
+        <div className="flex items-center justify-center w-full h-full bg-yellow-200 pl-[50px] rounded-2xl pb-6">
+          <CalendarHeatmap
+            startDate={startMonth}
+            endDate={endMonth}
+            values={randomValues}
+            classForValue={(value) => {
+              if (!value) {
+                return 'color-empty';
+              }
+              return `color-kudoku-${value.count}`;
+            }}
+            tooltipDataAttrs={(value: any) => {
+              const date = new Date(value.date.toISOString());
+              return {
+                'data-tip': `Jumlah transaksi hari ${
+                  nameDate[date.getDay()]
+                }, ${date.getDate()} ${nameMonth[date.getMonth()]}: ${
+                  value.count
+                }`,
+              };
+            }}
+            showWeekdayLabels={true}
+            showMonthLabels={false}
+            horizontal={false}
+            gutterSize={8}
+            showOutOfRangeDays={false}
+          />
+          <ReactTooltip />
+        </div>
+      </motion.div>
     </div>
   );
 }
