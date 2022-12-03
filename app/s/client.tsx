@@ -156,10 +156,10 @@ function Card({ left, onClick }: { left: boolean; onClick: () => void }) {
   const endObj = left ? { rotate: '-10deg' } : { rotate: '10deg' };
   return (
     <motion.div
-      className={`w-fit h-fit bg-gradient-to-r from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark flex flex-col gap-8 shadow-xl rounded-xl p-4 select-none ${xtraClassName}`}
+      className={`min-w-[150px] h-fit bg-gradient-to-r from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark flex flex-col gap-8 shadow-xl rounded-xl p-4 select-none ${xtraClassName}`}
       initial={{ opacity: 0, ...initialObj }}
       whileInView={{ opacity: 1, y: 0, x: 0, ...endObj }}
-      transition={{ type: 'spring', duration: 2.5 }}
+      transition={{ type: 'spring', duration: 2.5, repeat: 1 }}
     >
       <p className="text-onPrimary dark:text-onPrimaryDark text-lg font-light">
         Khilaf gua
@@ -179,7 +179,7 @@ function Card({ left, onClick }: { left: boolean; onClick: () => void }) {
         Bagikan ke temen lo yang <span className="font-bold">BGST</span>
       </p>
       <button
-        className="bg-onPrimary dark:bg-onPrimaryDark text-primary dark:text-primaryDark font-bold py-2 rounded-md shadow-xl flex gap-2 items-center justify-center"
+        className="bg-onPrimary dark:bg-onPrimaryDark text-primary dark:text-primaryDark font-bold py-2 px-2 rounded-md shadow-xl flex gap-2 items-center justify-center"
         onClick={onClick}
       >
         <FontAwesomeIcon icon={faShareNodes} />

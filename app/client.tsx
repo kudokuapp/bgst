@@ -26,7 +26,7 @@ export default function Client() {
     <main className="flex gap-8 relative w-[100vw] h-[100vh] h_ios overflow-hidden">
       {/* Left section */}
       <div className="md:p-8 w-fit h-full">
-        <section className="bg-onPrimary dark:bg-onSurfaceVariant md:h-full h-fit md:w-full w-fit max-w-[700px] px-8 py-12 rounded-2xl shadow-md flex flex-col justify-between gap-12 z-20 md:static absolute md:m-0 m-4">
+        <section className="bg-onPrimary dark:bg-onSurfaceVariant md:h-full h-fit md:w-full w-fit max-w-[700px] px-8 py-12 rounded-2xl shadow-md flex flex-col justify-between gap-12 z-20 md:static absolute md:m-0 m-4 sm:max-h-full max-h-[70vh] overflow-auto">
           <motion.nav
             className="flex justify-between select-none bg-onPrimary dark:bg-onSurfaceVariant"
             initial={{ opacity: 0 }}
