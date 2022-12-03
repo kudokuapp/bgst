@@ -159,7 +159,8 @@ function Card({ left, onClick }: { left: boolean; onClick: () => void }) {
       className={`min-w-[150px] h-fit bg-gradient-to-r from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark flex flex-col gap-8 shadow-xl rounded-xl p-4 select-none ${xtraClassName}`}
       initial={{ opacity: 0, ...initialObj }}
       whileInView={{ opacity: 1, y: 0, x: 0, ...endObj }}
-      transition={{ type: 'spring', duration: 2.5, repeat: 1 }}
+      transition={{ type: 'spring', duration: 2.5 }}
+      viewport={{ once: true }}
     >
       <p className="text-onPrimary dark:text-onPrimaryDark text-lg font-light">
         Khilaf gua
