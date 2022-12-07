@@ -774,6 +774,18 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.3.tgz#472eaab5f15c1ffdd7f8628bd4c4f753995ec79e"
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
 
+"@types/cal-heatmap@^3.5.36":
+  version "3.5.36"
+  resolved "https://registry.yarnpkg.com/@types/cal-heatmap/-/cal-heatmap-3.5.36.tgz#c838422a65055803f84b00aea3f472badc1ab871"
+  integrity sha512-T+VrqjdiGqg3Xq8YJJjHXeBZ+6LCCRo3JzKfv/WFw+OYTS/vm4kRji4ORyhq1D4PXrBKuLVNX0Il0AKyXB7CoQ==
+  dependencies:
+    "@types/d3" "^3"
+
+"@types/d3@^3":
+  version "3.5.47"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-3.5.47.tgz#b81042fcb0195c583fc037bc857d161469a7d175"
+  integrity sha512-VkWIQoZXLFdcBGe5pdBKJmTU3fmpXvo/KV6ixvTzOMl1yJ2hbTXpfvsziag0kcaerPDwas2T0vxojwQG3YwivQ==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.4.tgz#37fc1223f0786c39627068a12e94d6e6fc61de16"

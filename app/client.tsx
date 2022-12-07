@@ -14,19 +14,326 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import LoginButton from '$lib/LoginButton';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import ReactTooltip from 'react-tooltip';
-import LoginButton from '$lib/LoginButton';
+import { Dialog, Transition } from '@headlessui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 export default function Client() {
+  const [mobile, setMobile] = useState(false);
   const { isDarkTheme } = useContext(ThemeContext);
 
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setMobile(true);
+    } else {
+      setMobile(false);
+    }
+  }, []);
+
+  return (
+    <>
+      {mobile ? (
+        <Mobile isDarkTheme={isDarkTheme} />
+      ) : (
+        <NotMobile isDarkTheme={isDarkTheme} />
+      )}
+    </>
+  );
+}
+
+function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <main className="flex w-[100vw] h-fit min-h-[100vh] bg-background dark:bg-onBackground flex-col p-8 justify-between gap-4">
+      <motion.nav
+        className="flex justify-between select-none bg-background dark:bg-onBackground"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <>
+          {isDarkTheme ? (
+            <Link href="/" className="w-fit h-fit">
+              <Image
+                height={30}
+                src={LogoSecondaryDark}
+                quality={100}
+                alt="Kudoku Logo"
+                draggable={false}
+                className="sm:flex hidden"
+              />
+              <Image
+                height={30}
+                src={LogoPrimaryDark}
+                quality={100}
+                alt="Kudoku Logo"
+                draggable={false}
+                className="sm:hidden flex"
+              />
+            </Link>
+          ) : (
+            <Link href="/" className="w-fit h-fit">
+              <Image
+                height={30}
+                src={LogoSecondaryLight}
+                quality={100}
+                alt="Kudoku Logo"
+                draggable={false}
+                className="sm:flex hidden"
+              />
+              <Image
+                height={30}
+                src={LogoPrimaryLight}
+                quality={100}
+                alt="Kudoku Logo"
+                draggable={false}
+                className="sm:hidden flex"
+              />
+            </Link>
+          )}
+        </>
+        <DarkModeToggle />
+      </motion.nav>
+
+      <div className="flex flex-col gap-8">
+        <section className="flex flex-col gap-1">
+          <motion.h1
+            className={`${
+              isDarkTheme ? 'gradient-text-dark' : 'gradient-text'
+            } sm:text-8xl text-6xl font-bold tracking-[-0.15em] w-fit h-fit  sm:ml-[-5px] pr-4 select-none`}
+            initial={{ y: -1000 }}
+            animate={{ y: 0 }}
+            transition={{ type: 'spring', stiffness: 100, duration: 1 }}
+          >
+            BGST
+          </motion.h1>
+          <motion.p
+            className="text-onPrimaryContainer dark:text-surfaceVariant sm:text-2xl text-xl"
+            initial={{ x: -1000 }}
+            animate={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 100, delay: 0.8 }}
+          >
+            <span className="font-bold text-primary dark:text-primaryDark">
+              B
+            </span>
+            ayar{' '}
+            <span className="font-bold text-primary dark:text-primaryDark">
+              G
+            </span>
+            ajelas{' '}
+            <span className="font-bold text-primary dark:text-primaryDark">
+              S
+            </span>
+            etiap{' '}
+            <span className="font-bold text-primary dark:text-primaryDark">
+              T
+            </span>
+            ahun
+          </motion.p>
+        </section>
+
+        <motion.p
+          className="sm:text-xl text-lg text-onPrimaryContainer dark:text-surfaceVariant text-left"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          Penasaran kan duit yang lo abisin selama ini gimana? BGST&#8482; bakal
+          ngerangkum pengeluaran dan pemasukan lo di akun{' '}
+          <HtmlTooltip
+            title={
+              <Fragment>
+                <p className="text-onPrimaryContainer text-justify text-xs">
+                  <b>PT Bank Central Asia Tbk</b>, commonly known as Bank
+                  Central Asia (BCA) is an Indonesian bank founded on 21
+                  February 1957. It is considered as the largest privately owned
+                  bank in Indonesia. (Wikipedia)
+                </p>
+              </Fragment>
+            }
+          >
+            <Link href="https://www.bca.co.id/id/individu" target="_blank">
+              <motion.button
+                initial={false}
+                whileHover={{
+                  backgroundColor: '#FAFA06',
+                  scale: 1.05,
+                }}
+                transition={{
+                  duration: 0.15,
+                }}
+                className="px-1.5 rounded-md text-[#0060AF] inline-flex items-center justify-center"
+              >
+                <Image
+                  src={BCA}
+                  height={20}
+                  width={21}
+                  quality={100}
+                  alt="BCA Logo"
+                  draggable={false}
+                  className="inline mr-1 select-none"
+                />
+                BCA
+              </motion.button>
+            </Link>
+          </HtmlTooltip>{' '}
+          atau{' '}
+          <HtmlTooltip
+            title={
+              <Fragment>
+                <p className="text-onPrimaryContainer text-justify text-xs">
+                  <b>PT Gojek Indonesia</b> is an Indonesian on-demand
+                  multi-service platform and digital payment technology group
+                  based in Jakarta. Gojek was first established in Indonesia in
+                  2009 as a call center to connect consumers to courier delivery
+                  and two-wheeled ride-hailing services. Gojek launched its
+                  application in 2015 with only four services: GoRide, GoSend,
+                  GoShop, and GoFood. Valued at US$10 billion today, Gojek has
+                  transformed into a super app, providing more than 20 services.
+                  (Wikipedia)
+                </p>
+              </Fragment>
+            }
+          >
+            <Link href="https://www.gojek.com/en-id/" target="_blank">
+              <motion.button
+                initial={false}
+                whileHover={{
+                  backgroundColor: '#FAFA06',
+                  scale: 1.05,
+                }}
+                transition={{
+                  duration: 0.15,
+                }}
+                className="px-1.5 rounded-md text-[#1BAC4B] inline-flex items-center justify-center"
+              >
+                <Image
+                  src={Gopay}
+                  height={20}
+                  width={20.65}
+                  quality={100}
+                  alt="Gojek Logo"
+                  draggable={false}
+                  className="inline mr-1 select-none"
+                />
+                Gopay
+              </motion.button>
+            </Link>
+          </HtmlTooltip>{' '}
+          lo secara interaktif.
+        </motion.p>
+      </div>
+
+      <motion.div
+        className="flex flex-col gap-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <div className="flex flex-col items-center justify-center gap-2">
+          <LoginButton />
+          <button
+            className="font-bold text-primary dark:text-primaryDark text-lg"
+            onClick={openModal}
+          >
+            Lihat metrics
+          </button>
+        </div>
+        <p className="text-xs text-onPrimaryContainer dark:text-surfaceVariant text-justify">
+          Logo BCA dan Gopay adalah hak merek milik PT. Bank Central Asia Tbk
+          dan PT. Gojek Indonesia. Data kamu disediakan oleh PT. Brick Teknologi
+          Indonesia dan dijamin keharasiaannya oleh PT. Kudoku Finansial
+          Indonesia.
+        </p>
+      </motion.div>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-90" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-[100vw] h-[100vh] transform overflow-hidden bg-white align-middle">
+                  <Dialog.Title className="text-2xl z-[9999999999] absolute w-full flex items-end justify-end pr-4 mt-4 text-red-500 font-bold">
+                    <button
+                      onClick={closeModal}
+                      className="w-fit h-fit rounded-xl flex gap-2 items-center justify-center bg-white shadow-xl px-2 py-1"
+                    >
+                      Close
+                      <FontAwesomeIcon icon={faClose} />
+                    </button>
+                  </Dialog.Title>
+                  <motion.section
+                    className="w-full h-full bg-background dark:bg-onBackground z-0 px-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <motion.div
+                      className="w-full h-fit flex flex-col justify-center items-center gap-20"
+                      animate={{ x: ['0%', '0%'], y: ['10%', '-90%'] }}
+                      transition={{
+                        duration: 15,
+                        repeat: Infinity,
+                        repeatType: 'reverse',
+                        type: 'easeOut',
+                      }}
+                    >
+                      <TotalPengeluaran />
+                      <TotalPemasukan />
+                      <IncomevsExpense />
+                      <Heatmap />
+                      <BarangPalingMahal />
+                      <h6 className="text-4xl font-bold text-onPrimaryContainer dark:text-surfaceVariant text-center">
+                        Other metrics coming soon
+                      </h6>
+                    </motion.div>
+                  </motion.section>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </main>
+  );
+}
+
+function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
   return (
     <main className="flex gap-8 relative w-[100vw] h-[100vh] h_ios overflow-hidden">
       {/* Left section */}
-      <div className="md:p-8 w-fit h-full">
-        <section className="bg-onPrimary dark:bg-onSurfaceVariant h-full md:w-full w-fit max-w-[700px] px-8 py-12 rounded-2xl shadow-md flex flex-col justify-between gap-12 z-20 md:static absolute md:m-0 m-4 sm:max-h-full max-h-[70vh] overflow-auto">
+      <div className="md:p-8 w-fit min-h-full">
+        <section className="bg-onPrimary dark:bg-onSurfaceVariant h-full md:w-full w-fit max-w-[700px] px-8 py-12 rounded-2xl shadow-md flex flex-col justify-between gap-12 z-20 md:static absolute md:m-0 m-4 md:max-h-full max-h-[90vh] overflow-auto">
           <motion.nav
             className="flex justify-between select-none bg-onPrimary dark:bg-onSurfaceVariant"
             initial={{ opacity: 0 }}
@@ -228,10 +535,10 @@ export default function Client() {
         animate={{ opacity: 1 }}
       >
         <motion.div
-          className="w-full h-full flex flex-col justify-center items-center gap-20"
-          animate={{ x: ['0%', '0%'], y: ['120%', '-100%'] }}
+          className="w-full h-fit flex flex-col justify-center items-center gap-20"
+          animate={{ x: ['0%', '0%'], y: ['10%', '-90%'] }}
           transition={{
-            duration: 20,
+            duration: 15,
             repeat: Infinity,
             repeatType: 'reverse',
             type: 'easeOut',
@@ -394,7 +701,7 @@ function IncomevsExpense() {
           Gali lubang tutup lubang terooos
         </h6>
       </div>
-      <motion.div className="bg-gradient-to-br from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark w-fit h-fit px-4 py-8 rounded-3xl shadow-md flex flex-col items-center gap-8 select-none max-w-[545px] sm:mx-0 mx-4">
+      <motion.div className="bg-gradient-to-br from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark w-full h-fit px-4 py-8 rounded-3xl shadow-md flex flex-col items-center gap-8 select-none max-w-[545px] sm:mx-0 mx-4">
         <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
           Lo abisin 80% income lo
         </h3>
@@ -524,7 +831,7 @@ function Heatmap() {
   }, []);
 
   return (
-    <div className="w-fit h-fit flex flex-col items-center gap-8">
+    <span className="w-fit h-fit flex flex-col items-center gap-8">
       <div className="flex flex-col items-center gap-2">
         <p className="text-sm font-bold text-primary dark:text-primaryDark text-center">
           TOTAL TRANSAKSI
@@ -538,36 +845,38 @@ function Heatmap() {
           Di bulan November 2022, lo abisin {`${total}`}x transaksi
         </h3>
         <div className="flex items-center justify-center w-full h-full bg-yellow-200 pl-[50px] rounded-2xl pb-6">
-          <CalendarHeatmap
-            startDate={startMonth}
-            endDate={endMonth}
-            values={randomValues}
-            classForValue={(value) => {
-              if (!value) {
-                return 'color-empty';
-              }
-              return `color-kudoku-${value.count}`;
-            }}
-            tooltipDataAttrs={(value: any) => {
-              const date = new Date(value.date.toISOString());
-              return {
-                'data-tip': `Jumlah transaksi hari ${
-                  nameDate[date.getDay()]
-                }, ${date.getDate()} ${nameMonth[date.getMonth()]}: ${
-                  value.count
-                }`,
-              };
-            }}
-            showWeekdayLabels={true}
-            showMonthLabels={false}
-            horizontal={false}
-            gutterSize={8}
-            showOutOfRangeDays={false}
-          />
+          <div className="w-full h-full">
+            <CalendarHeatmap
+              startDate={startMonth}
+              endDate={endMonth}
+              values={randomValues}
+              classForValue={(value) => {
+                if (!value) {
+                  return 'color-empty';
+                }
+                return `color-kudoku-${value.count}`;
+              }}
+              tooltipDataAttrs={(value: any) => {
+                const date = new Date(value.date.toISOString());
+                return {
+                  'data-tip': `Jumlah transaksi hari ${
+                    nameDate[date.getDay()]
+                  }, ${date.getDate()} ${nameMonth[date.getMonth()]}: ${
+                    value.count
+                  }`,
+                };
+              }}
+              showWeekdayLabels={true}
+              showMonthLabels={false}
+              horizontal={false}
+              gutterSize={8}
+              showOutOfRangeDays={false}
+            />
+          </div>
           <ReactTooltip />
         </div>
       </motion.div>
-    </div>
+    </span>
   );
 }
 

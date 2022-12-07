@@ -4,34 +4,34 @@
 
 @layer components {
   .react-calendar-heatmap .color-kudoku-0 {
-    @apply fill-white;
+    @apply fill-white min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-1 {
-    @apply fill-green-100;
+    @apply fill-green-100 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-2 {
-    @apply fill-green-200;
+    @apply fill-green-200 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-3 {
-    @apply fill-green-300;
+    @apply fill-green-300 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-4 {
-    @apply fill-green-400;
+    @apply fill-green-400 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-5 {
-    @apply fill-green-500;
+    @apply fill-green-500 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-6 {
-    @apply fill-green-600;
+    @apply fill-green-600 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-7 {
-    @apply fill-green-700;
+    @apply fill-green-700 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-8 {
-    @apply fill-green-800;
+    @apply fill-green-800 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-9 {
-    @apply fill-green-900;
+    @apply fill-green-900 min-w-[5px] min-h-[5px];
   }
 }
 

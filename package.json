@@ -36,6 +36,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "^17.3.0",
 		"@commitlint/config-conventional": "^17.3.0",
+		"@types/cal-heatmap": "^3.5.36",
 		"@types/node": "18.11.9",
 		"@types/react": "18.0.25",
 		"@types/react-calendar-heatmap": "^1.6.3",
