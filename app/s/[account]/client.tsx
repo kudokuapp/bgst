@@ -12,6 +12,8 @@ import LogoSecondaryLight from '$public/logo/secondary.svg';
 import LogoSecondaryDark from '$public/logo/secondaryDark.svg';
 import DarkModeToggle from '$lib/DarkModeToggle';
 import Image from 'next/image';
+import BCA from '$public/logo/bca.png';
+import Gopay from '$public/logo/gojek.png';
 
 export function Navbar() {
   const { isDarkTheme } = useContext(ThemeContext);
@@ -137,7 +139,7 @@ export function Footer() {
         </div>
       </section>
       <section className="bg-primary dark:bg-primaryDark flex items-center justify-center w-full h-fit">
-        <Link href="https://kudoku.id" target="_self">
+        <Link href="https://kudoku.id" target="_blank">
           <motion.button
             className="text-onPrimary dark:text-onPrimaryDark py-2"
             initial={{ opacity: 0 }}
@@ -148,6 +150,57 @@ export function Footer() {
         </Link>
       </section>
     </footer>
+  );
+}
+
+export function NavCard({ params }: { params: string }) {
+  const data = [
+    { name: 'BCA', param: 'bca', image: BCA },
+    { name: 'Gopay', param: 'gopay', image: Gopay },
+  ];
+
+  return (
+    <motion.nav
+      className="w-full h-fit flex flex-col items-center justify-center my-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <ul className="flex bg-gray-300 border-2 border-primary gap-4 rounded-xl shadow-xl p-2">
+        {data.map((value, index) => {
+          const isActive = params === value.param;
+          return (
+            <motion.li
+              key={index}
+              className={`${
+                isActive
+                  ? 'bg-yellow-500 shadow-2xl'
+                  : 'bg-transparent shadow-none hover:bg-gray-400'
+              } p-2 rounded-lg font-medium`}
+              initial={{ y: 0, scale: 1 }}
+              animate={{ y: isActive ? -10 : 0, scale: isActive ? 1.1 : 1 }}
+              transition={{ delay: 0.5, type: 'spring' }}
+            >
+              <Link
+                href={`/s/${value.param}`}
+                target="_self"
+                className="flex gap-2 items-center justify-center"
+              >
+                <Image src={value.image} alt={`${value.name} Logo`} />
+                {value.name}
+              </Link>
+            </motion.li>
+          );
+        })}
+      </ul>
+      <motion.div
+        className="w-[188.5px] h-fit bg-gray-300"
+        initial={{ opacity: 0, y: -55, x: 0 }}
+        animate={{ opacity: 1, y: 0, x: 0 }}
+        transition={{ duration: 1.1 }}
+      >
+        <p>Account number: 4971037321</p>
+      </motion.div>
+    </motion.nav>
   );
 }
 
