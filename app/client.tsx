@@ -273,7 +273,7 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center text-center">
+            <div className="flex min-h-full items-center justify-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -299,10 +299,10 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                     animate={{ opacity: 1 }}
                   >
                     <motion.div
-                      className="w-full h-fit flex flex-col justify-center items-center gap-20"
+                      className="w-full h-fit flex flex-col justify-center gap-20"
                       animate={{ x: ['0%', '0%'], y: ['10%', '-90%'] }}
                       transition={{
-                        duration: 15,
+                        duration: 20,
                         repeat: Infinity,
                         repeatType: 'reverse',
                         type: 'easeOut',
@@ -538,7 +538,7 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           className="w-full h-fit flex flex-col justify-center items-center gap-20"
           animate={{ x: ['0%', '0%'], y: ['10%', '-90%'] }}
           transition={{
-            duration: 15,
+            duration: 20,
             repeat: Infinity,
             repeatType: 'reverse',
             type: 'easeOut',

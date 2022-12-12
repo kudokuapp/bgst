@@ -1,4 +1,20 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "sqltools.connections": [
+    {
+      "pgOptions": {
+        "ssl": {
+          "ca": "/Users/fdwilogo/Downloads/Repositories/kudoku/Webhook/ca-certificate.crt"
+        }
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "bgst",
+      "connectString": "postgresql://doadmin:AVNS_shiNfBj92xKgyRw@kudoku-early-user-do-user-9612437-0.b.db.ondigitalocean.com:25061/bgst?sslmode=require"
+    }
+  ]
 }
