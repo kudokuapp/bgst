@@ -1,4 +1,4 @@
-import { Navbar, Footer, NavCard } from './client';
+import { Navbar, Footer, NavCard } from './[account]/client';
 import '$styles/globals.css';
 
 export default function Layout({

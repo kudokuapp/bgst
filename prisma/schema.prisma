@@ -8,13 +8,15 @@ datasource db {
 }
 
 model Account {
-  id            Int           @id @default(autoincrement())
-  createdAt     DateTime      @default(now()) @db.Timestamp(6)
-  institutionId Int
-  accessToken   String        @unique @db.VarChar(255)
-  kudosId       Int
-  User          User          @relation(fields: [kudosId], references: [id], onDelete: Cascade)
-  Transaction   Transaction[]
+  id               Int           @id @default(autoincrement())
+  createdAt        DateTime      @default(now()) @db.Timestamp(6)
+  institutionId    Int
+  accessToken      String        @unique @db.VarChar(255)
+  accountNumber    String        @unique @db.VarChar(255)
+  brick_account_id String        @unique @db.VarChar(255)
+  kudosId          Int
+  User             User          @relation(fields: [kudosId], references: [id], onDelete: Cascade)
+  Transaction      Transaction[]
 }
 
 model Transaction {

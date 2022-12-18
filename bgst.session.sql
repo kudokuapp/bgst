@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS "Transaction";
+DROP TABLE IF EXISTS "Account";
+DROP TABLE IF EXISTS "User";
+
 CREATE TABLE "Transaction" (
   "id" SERIAL,
   "dateTimestamp" TIMESTAMP,
@@ -32,6 +36,8 @@ CREATE TABLE "Account" (
   "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "institutionId" INTEGER NOT NULL,
   "accessToken" VARCHAR(255) NOT NULL UNIQUE,
+  "accountNumber" VARCHAR(255) NOT NULL UNIQUE,
+  "brick_account_id" VARCHAR(255) NOT NULL UNIQUE,
   "kudosId" INTEGER NOT NULL,
   PRIMARY KEY ("id")
 );

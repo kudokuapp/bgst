@@ -4,7 +4,7 @@ export async function checkUserBgst(whatsapp: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
-        const response = await axios.get('/api/check/bgstuser', {
+        const response = await axios.get('/api/db/bgstuser', {
           params: { whatsapp },
         });
         resolve(response);
@@ -19,7 +19,7 @@ export async function checkKudos(whatsapp: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
-        const response = await axios.get('/api/check/kudos', {
+        const response = await axios.get('/api/db/kudos', {
           params: { whatsapp },
         });
         resolve(response);
@@ -60,10 +60,6 @@ export async function verifyOtp(otp: string, whatsapp: string) {
       //     code: otp,
       //   });
 
-      //   if (!data.valid || Object.keys(data).length === 0) {
-      //     reject('OTP Not valid');
-      //   }
-
       //   resolve(data);
       // } catch (e) {
       //   reject(e);
@@ -76,6 +72,27 @@ export async function verifyOtp(otp: string, whatsapp: string) {
           reject();
         }
       }, 2000);
+    })();
+  });
+}
+
+export async function createUser(whatsapp: string) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.get('/api/db/kudos', {
+          params: { whatsapp },
+        });
+
+        const response = await axios.post('/api/db/create', {
+          whatsapp: data.whatsapp,
+          id: data.id,
+          email: data.email,
+        });
+        resolve(response);
+      } catch (e) {
+        reject(e);
+      }
     })();
   });
 }

@@ -4,10 +4,16 @@ import { Fragment, useState, useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import ProgressButton from '$lib/ProgressButton';
-import WaInput from '../WaInput';
+import WaInput from '$lib/WaInput';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
-import { checkUserBgst, checkKudos, kirimOtp, verifyOtp } from '../promise';
+import {
+  checkUserBgst,
+  checkKudos,
+  kirimOtp,
+  verifyOtp,
+  createUser,
+} from '../promise';
 import cleanNum from '$utils/helper/cleanNum';
 import OtpInput from 'react-otp-input';
 import type { Percentage } from '$lib/ProgressButton';
@@ -15,6 +21,8 @@ import ThemeContext from '$context/ThemeContext';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import TypeformRegistration from '$lib/TypeformRegistration';
+import { setCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 
 export default function LoginModal({
   isOpen,
@@ -23,6 +31,7 @@ export default function LoginModal({
   isOpen: boolean;
   closeModal: () => void;
 }) {
+  const router = useRouter();
   const [input, setInput] = useState('');
   const [otpWa, setOtpWa] = useState('');
   const [progress, setProgress] = useState('initial');
@@ -145,6 +154,8 @@ export default function LoginModal({
                 onChange={(e) => {
                   setInput(e.target.value);
                 }}
+                id="whatsapp"
+                placeholder="WhatsApp"
                 value={input}
               />
               <p className="text-justify text-xs text-onPrimaryContainer dark:text-surfaceVariant">
@@ -279,7 +290,7 @@ export default function LoginModal({
                         handleCheckBox(index);
                       }}
                       checked={checkedState[index]}
-                      className="text-blue-600 bg-gray-100 rounded border-gray-300 dark:focus:ring-0 focus:ring-0 dark:bg-gray-700 dark:border-gray-600 mt-0.5"
+                      className="text-blue-600 bg-gray-100 rounded border-gray-300 dark:focus:ring-0 focus:ring-0 dark:bg-gray-700 dark:border-gray-600 mt-0.5 min-w-[1rem] min-h-[1rem]"
                     />
                     <label
                       htmlFor={value.htmlId}
@@ -360,6 +371,7 @@ export default function LoginModal({
               disabled={false}
               onClick={() => {
                 // Redirect to Account Page
+                router.push('/account/connect');
               }}
               from="60%"
               to="90%"
@@ -497,33 +509,48 @@ export default function LoginModal({
               text="Cek"
               disabled={!otpWa || !(otpWa.length > 5)}
               onClick={() => {
-                console.table({
-                  'kudos?': kudos,
-                  'bgst con?': bgstConnected,
-                  bgst,
-                });
                 toast
                   .promise(verifyOtp(otpWa, cleanNum(input)), {
                     loading: 'Cek OTP kamu...',
                     success: 'OTP benar!',
                     error: 'OTP salah!',
                   })
-                  .then(() => {
+                  .then((data: any) => {
                     //ON FULFILLED
+
+                    setCookie('token', data, {
+                      path: '/',
+                      sameSite: 'strict',
+                      secure: process.env.NODE_ENV === 'production',
+                      // httpOnly: true, // Cannot use since this is client-side
+                      maxAge: 60 * 60 * 24 * 30,
+                    });
+
                     if (bgst) {
                       if (bgstConnected) {
                         // SEND JWT
                         // REDIRECT TO /s/account
+                        router.push('/s/');
                         console.log('user bgst dan udah connect');
                       } else {
                         // SEND JWT
                         // REDIRECT to connect account page
+                        router.push('/account/connect');
                         console.log('user bgst tapi belom connect');
                       }
                     } else {
                       // COPY DATABASE users_final to User (BGST)
-                      // Send JWT
-                      setProgress('kudos-progress-2');
+                      toast
+                        .promise(createUser(cleanNum(input)), {
+                          loading: 'Create user...',
+                          success: 'Sukses jadi user BGST!',
+                          error: 'Servernya error...',
+                        })
+                        .then(() => {
+                          //ON FULFILLED
+                          // Send JWT
+                          setProgress('kudos-progress-2');
+                        });
                     }
                   });
               }}

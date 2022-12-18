@@ -4,8 +4,8 @@ import LogoPrimaryLight from '$public/logo/primary.svg';
 import LogoPrimaryDark from '$public/logo/primaryDark.svg';
 import LogoSecondaryLight from '$public/logo/secondary.svg';
 import LogoSecondaryDark from '$public/logo/secondaryDark.svg';
-import BCA from '$public/logo/bca.png';
-import Gopay from '$public/logo/gojek.png';
+import BCA from '$public/logo/bank/bca.png';
+import Gopay from '$public/logo/bank/gojek.png';
 import DarkModeToggle from '$lib/DarkModeToggle';
 import ThemeContext from '$context/ThemeContext';
 import { useContext, Fragment, useState, useEffect } from 'react';
@@ -455,7 +455,7 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                     <Image
                       src={BCA}
                       height={20}
-                      width={21}
+                      width={20}
                       quality={100}
                       alt="BCA Logo"
                       draggable={false}
@@ -498,7 +498,7 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                     <Image
                       src={Gopay}
                       height={20}
-                      width={20.65}
+                      width={20}
                       quality={100}
                       alt="Gojek Logo"
                       draggable={false}

@@ -20,7 +20,7 @@ export default async function handler(
 
   try {
     const response = await client.verify
-      .services(process.env.TWILIO_SERVICE_SID as string)
+      .services(process.env.VERIFY_SERVICE_SID as string)
       .verifications.create({
         to: whatsapp,
         channel: type,

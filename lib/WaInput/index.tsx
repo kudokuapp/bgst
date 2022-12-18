@@ -6,15 +6,17 @@ import { motion } from 'framer-motion';
 export default function WaInput({
   value,
   onChange,
+  placeholder,
+  id,
 }: {
   value: string | number | readonly string[] | undefined;
   // eslint-disable-next-line no-unused-vars
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  id: string;
 }) {
   const [fixLabelTop, setFixLabelTop] = useState(false);
   const [plus62bg, setPlus62bg] = useState(false);
-
-  const id = 'whatsapp';
 
   return (
     <div
@@ -50,7 +52,7 @@ export default function WaInput({
         transition={{ duration: 1, type: 'spring' }}
         className={`${styles.label} text-onPrimaryContainer dark:text-surfaceVariant`}
       >
-        WhatsApp
+        {placeholder}
       </motion.label>
       <input
         id={id}

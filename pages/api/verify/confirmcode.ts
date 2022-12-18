@@ -1,5 +1,6 @@
 import client from '$utils/twilio';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as jwt from 'jsonwebtoken';
 
 /*
  * @see https://beta.nextjs.org/docs/data-fetching/api-routes
@@ -14,15 +15,24 @@ export default async function handler(
     throw new Error('Method not allowed');
   }
 
+  const APP_SECRET = process.env.APP_SECRET as string;
+
   const { code, receiver } = req.body;
 
   const whatsapp = `+62${receiver}`;
 
   try {
     const response = await client.verify.v2
-      .services(process.env.TWILIO_SERVICE_SID as string)
+      .services(process.env.VERIFY_SERVICE_SID as string)
       .verificationChecks.create({ to: whatsapp, code: code });
-    res.status(200).json(response);
+
+    if (!response.valid) {
+      res.status(500).json({ Error: 'OTP is not valid' });
+      throw new Error('OTP is not valid');
+    }
+
+    const token = jwt.sign({ whatsapp }, APP_SECRET);
+    res.status(200).json(token);
   } catch (err: any) {
     res.status(500).json({ Error: 'Server error, see console' });
     throw new Error(err);

@@ -14,7 +14,7 @@ declare global {
     dateTimestamp: string | Date;
     id: number;
     account_id: string;
-    account_number: string | number;
+    account_number: string;
     account_currency: 'IDR' | 'USD' | 'GBP' | 'SGD';
     institution_id: number;
     merchant_id: number;
@@ -28,7 +28,7 @@ declare global {
     direction: 'out' | 'in';
     reference_id: string;
     category: Category;
-    transaction_type: null | string | number;
+    transaction_type: null | string;
   }
 }
 

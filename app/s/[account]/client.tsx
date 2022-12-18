@@ -12,8 +12,8 @@ import LogoSecondaryLight from '$public/logo/secondary.svg';
 import LogoSecondaryDark from '$public/logo/secondaryDark.svg';
 import DarkModeToggle from '$lib/DarkModeToggle';
 import Image from 'next/image';
-import BCA from '$public/logo/bca.png';
-import Gopay from '$public/logo/gojek.png';
+import BCA from '$public/logo/bank/bca.png';
+import Gopay from '$public/logo/bank/gojek.png';
 
 export function Navbar() {
   const { isDarkTheme } = useContext(ThemeContext);
