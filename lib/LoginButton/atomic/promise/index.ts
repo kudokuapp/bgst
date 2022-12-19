@@ -33,20 +33,20 @@ export async function checkKudos(whatsapp: string) {
 export async function kirimOtp(whatsapp: string) {
   return new Promise((resolve, reject) => {
     (async () => {
-      // try {
-      //   const { data } = await axios.post('/api/verify/getcode', {
-      //     receiver: whatsapp,
-      //     type: 'sms',
-      //   });
-      //   resolve(data);
-      // } catch (e) {
-      //   reject(e);
-      // }
+      try {
+        const { data } = await axios.post('/api/verify/getcode', {
+          receiver: whatsapp,
+          type: 'sms',
+        });
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
 
-      setTimeout(() => {
-        resolve('success');
-        // reject();
-      }, 2000);
+      // setTimeout(() => {
+      //   resolve('success');
+      //   // reject();
+      // }, 2000);
     })();
   });
 }
@@ -54,24 +54,24 @@ export async function kirimOtp(whatsapp: string) {
 export async function verifyOtp(otp: string, whatsapp: string) {
   return new Promise((resolve, reject) => {
     (async () => {
-      // try {
-      //   const { data } = await axios.post('/api/verify/confirmcode', {
-      //     receiver: whatsapp,
-      //     code: otp,
-      //   });
+      try {
+        const { data } = await axios.post('/api/verify/confirmcode', {
+          receiver: whatsapp,
+          code: otp,
+        });
 
-      //   resolve(data);
-      // } catch (e) {
-      //   reject(e);
-      // }
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
 
-      setTimeout(() => {
-        if (otp === '111111') {
-          resolve('success');
-        } else {
-          reject();
-        }
-      }, 2000);
+      // setTimeout(() => {
+      //   if (otp === '111111') {
+      //     resolve('success');
+      //   } else {
+      //     reject();
+      //   }
+      // }, 2000);
     })();
   });
 }

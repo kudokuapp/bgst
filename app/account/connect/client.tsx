@@ -10,9 +10,9 @@ import ThemeContext from '$context/ThemeContext';
 import { useContext } from 'react';
 
 export default function Client({
-  arrrayOfConnectedBank,
+  arrayOfConnectedBank,
 }: {
-  arrrayOfConnectedBank: ['bca' | null, 'gopay' | null];
+  arrayOfConnectedBank: ['bca' | null, 'gopay' | null];
 }) {
   const { isDarkTheme } = useContext(ThemeContext);
   const data = [
@@ -58,7 +58,7 @@ export default function Client({
             <li key={index} className="w-full relative">
               <Link
                 href={`${
-                  arrrayOfConnectedBank[index] === value.link
+                  arrayOfConnectedBank[index] === value.link
                     ? `/s/${value.link}`
                     : `/account/connect/${value.link}`
                 }`}
@@ -66,11 +66,11 @@ export default function Client({
               >
                 <button
                   className={`flex gap-4 border-b-[1px] border-gray-600 dark:border-gray-400 pb-4 w-full text-left items-center ${
-                    arrrayOfConnectedBank[index] === value.link
+                    arrayOfConnectedBank[index] === value.link
                       ? 'cursor-not-allowed opacity-50'
                       : 'cursor-pointer opacity-100'
                   }`}
-                  disabled={arrrayOfConnectedBank[index] === value.link}
+                  disabled={arrayOfConnectedBank[index] === value.link}
                 >
                   <Image
                     src={value.logo}
@@ -82,7 +82,7 @@ export default function Client({
                   />
                   <div
                     className={`flex flex-col gap-0 ${
-                      arrrayOfConnectedBank[index] === value.link
+                      arrayOfConnectedBank[index] === value.link
                         ? 'sm:max-w-fit max-w-[135px] sm:max-h-fit max-h-[45px] overflow-auto'
                         : 'w-fit h-fit'
                     }`}
@@ -96,7 +96,7 @@ export default function Client({
                   </div>
                 </button>
               </Link>
-              {arrrayOfConnectedBank[index] === value.link && (
+              {arrayOfConnectedBank[index] === value.link && (
                 <div className="absolute right-0 top-2 border-2 border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
                   Connected
                 </div>

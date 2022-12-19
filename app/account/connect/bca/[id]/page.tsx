@@ -3,9 +3,15 @@ import KlikBCA from '$public/logo/bank/klikbca.png';
 import MyBCA from '$public/logo/bank/mybca.png';
 import Image, { StaticImageData } from 'next/image';
 import Client from './client';
+import { getCookie } from 'cookies-next';
 
 export default function Page({ params }: any) {
   const { id } = params;
+
+  const token = getCookie('token') as string;
+
+  if (!token) redirect('/');
+
   let srcImage: StaticImageData, name: string, inputSuggest: string;
   switch (id) {
     case '2':
@@ -45,7 +51,7 @@ export default function Page({ params }: any) {
         </h6>
       </div>
       <div className="w-full h-fit flex justify-center items-center my-10">
-        <Client id={id as string} />
+        <Client id={id as string} token={token} />
       </div>
     </>
   );
