@@ -114,6 +114,8 @@ export default async function handler(
     },
   });
 
+  await prisma.user.update({ data: { hasAccount: true }, where: { whatsapp } });
+
   res.status(200).json(response);
 }
 
