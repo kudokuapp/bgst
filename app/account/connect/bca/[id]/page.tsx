@@ -10,7 +10,7 @@ export default function Page({ params }: any) {
 
   const token = getCookie('token') as string;
 
-  if (!token) redirect('/');
+  // if (!token) redirect('/');
 
   let srcImage: StaticImageData, name: string, inputSuggest: string;
   switch (id) {
