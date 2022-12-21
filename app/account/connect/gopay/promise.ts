@@ -45,9 +45,14 @@ export function connectGopayTwo({
   return new Promise((resolve, reject) => {
     (async () => {
       try {
-        const { data } = await axios.post(
-          '/api/brick/gopaymfa/two',
-          {
+        const options = {
+          method: 'POST',
+          url: '/api/brick/gopaymfa/two',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          data: {
             institutionId: 11,
             redirectRefId,
             clientId,
@@ -57,8 +62,9 @@ export function connectGopayTwo({
             otpToken,
             otp,
           },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        };
+
+        const { data } = await axios.request(options);
         resolve(data);
       } catch (e) {
         reject(e);

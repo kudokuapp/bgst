@@ -1,15 +1,19 @@
 'use client';
 import Lottie from 'lottie-react';
 import animation from '$public/lottie/96085-green-check.json';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import moment from 'moment';
+import axios from 'axios';
 
-export default function Client({
+export function ButtonLanjut({
   isBca,
   isGopay,
+  response,
+  token,
 }: {
   isBca: boolean;
   isGopay: boolean;
+  response: any[];
+  token: string;
 }) {
   const renderLink = () => {
     if (isBca) {
@@ -21,38 +25,43 @@ export default function Client({
     }
   };
 
-  const disabled = isBca && isGopay;
-  return (
-    <section className="flex flex-col items-center justify-center">
-      <div className="max-w-[200px] w-fit h-fit">
-        <Lottie animationData={animation} loop={false} />
-      </div>
-      <div className="w-full h-fit flex flex-col gap-4 mt-10">
-        <Link href="/account/connect" className="w-full h-fit">
-          <motion.button
-            className={`text-onPrimary dark:text-onPrimaryDark text-lg rounded-md py-1.5 shadow-lg w-full h-fit font-medium ${
-              disabled
-                ? 'bg-gray-600 dark:bg-gray-300 cursor-not-allowed'
-                : 'bg-primary dark:bg-primaryDark cursor-pointer'
-            }`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            disabled={disabled}
-          >
-            Connect akun lain
-          </motion.button>
-        </Link>
+  function handleClick() {
+    const from = moment()
+      .startOf('M')
+      .subtract(2, 'months')
+      .format('YYYY-MM-DD');
 
-        <Link href={renderLink()} className="w-full h-fit">
-          <motion.button
-            className="text-primary dark:text-primaryDark text-lg py-1.5 w-full h-fit font-medium"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Lanjut
-          </motion.button>
-        </Link>
-      </div>
-    </section>
+    const to = moment().endOf('M').subtract(1, 'months').format('YYYY-MM-DD');
+
+    response.forEach(async (value) => {
+      const options = {
+        method: 'POST',
+        url: '/api/brick/transaction',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        data: { institutionId: value, from, to },
+      };
+
+      await axios.request(options);
+    });
+  }
+  return (
+    <a
+      className="text-primary dark:text-primaryDark text-lg py-1.5 w-full h-fit font-medium text-center"
+      href={renderLink()}
+      onClick={handleClick}
+    >
+      Lanjut
+    </a>
+  );
+}
+
+export function LottieSuccess() {
+  return (
+    <div className="max-w-[200px] w-fit h-fit">
+      <Lottie animationData={animation} loop={false} />
+    </div>
   );
 }

@@ -102,10 +102,8 @@ export default async function handler(
   let accountDetail: IDetailAccountData | undefined;
 
   accountDetailArr.forEach((value, index) => {
-    if (value.type !== null && value.type === 'Wallet') {
+    if (value.type === 'Wallet') {
       accountDetail = accountDetailArr[index];
-    } else {
-      accountDetail = undefined;
     }
   });
 
@@ -114,8 +112,10 @@ export default async function handler(
       institutionId: institutionId,
       accessToken: data.accessToken,
       kudosId: user.id,
-      brick_account_id: accountDetail!.accountId,
-      accountNumber: accountDetail!.accountNumber,
+      brick_account_id:
+        accountDetail?.accountId ?? accountDetailArr[0].accountId,
+      accountNumber:
+        accountDetail?.accountNumber ?? accountDetailArr[0].accountNumber,
     },
   });
 

@@ -528,12 +528,10 @@ export default function LoginModal({
                         // SEND JWT
                         // REDIRECT TO /s/account
                         router.push('/s/');
-                        console.log('user bgst dan udah connect');
                       } else {
                         // SEND JWT
                         // REDIRECT to connect account page
                         router.push('/account/connect');
-                        console.log('user bgst tapi belom connect');
                       }
                     } else {
                       // COPY DATABASE users_final to User (BGST)

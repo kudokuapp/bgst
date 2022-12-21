@@ -11,7 +11,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // Check if HTTP POST and have a bearer token
-  if (req.method !== 'GET' || !req.headers.authorization) {
+  if (req.method !== 'POST' || !req.headers.authorization) {
     res.status(500).json({ Error: 'Method not allowed' });
     throw new Error('Method not allowed');
   }
@@ -36,8 +36,7 @@ export default async function handler(
     institutionId,
     from,
     to,
-  }: { institutionId: number; from: string | Date; to: string | Date } =
-    req.body;
+  }: { institutionId: number; from: string; to: string } = req.body;
 
   const data = await prisma.account.findFirst({
     where: { institutionId, kudosId: user.id },

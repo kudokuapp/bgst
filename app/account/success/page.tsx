@@ -1,9 +1,10 @@
+import { ButtonLanjut, LottieSuccess } from './client';
 import { cookies } from 'next/headers';
-import Client from './client';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
 import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 const prisma = new PrismaClient();
 
@@ -12,7 +13,8 @@ export default async function Page() {
   const token = nextCookies.get('token');
 
   let isBca = false,
-    isGopay = false;
+    isGopay = false,
+    responseArr: any[] = [];
 
   if (!token) redirect('/');
 
@@ -40,7 +42,37 @@ export default async function Page() {
     if (value.institutionId === 11) {
       isGopay = true;
     }
+
+    responseArr.push(value.institutionId);
   });
 
-  return <Client isBca={isBca} isGopay={isGopay} />;
+  const disabled = isBca && isGopay;
+
+  return (
+    <section className="flex flex-col items-center justify-center">
+      <LottieSuccess />
+
+      <div className="w-full h-fit flex flex-col gap-4 mt-10">
+        <Link href="/account/connect" className="w-full h-fit">
+          <button
+            className={`text-onPrimary dark:text-onPrimaryDark text-lg rounded-md py-1.5 shadow-lg w-full h-fit font-medium ${
+              disabled
+                ? 'bg-gray-600 dark:bg-gray-300 cursor-not-allowed'
+                : 'bg-primary dark:bg-primaryDark cursor-pointer'
+            }`}
+            disabled={disabled}
+          >
+            Connect akun lain
+          </button>
+        </Link>
+
+        <ButtonLanjut
+          isBca={isBca}
+          isGopay={isGopay}
+          response={responseArr}
+          token={token.value}
+        />
+      </div>
+    </section>
+  );
 }

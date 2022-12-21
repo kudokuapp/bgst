@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <>
-      <Client token={token!.value} />
+      <Client token={token.value} />
     </>
   );
 }

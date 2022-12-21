@@ -18,9 +18,7 @@ interface IData {
   sessionId: string;
   uniqueId: string;
   otpToken: string;
-  otp: string;
   username: string;
-  token: string;
 }
 
 export default function Client({ token }: { token: string }) {
@@ -126,9 +124,7 @@ export default function Client({ token }: { token: string }) {
           sessionId: data.sessionId,
           uniqueId: data.uniqueId,
           otpToken: data.otpToken,
-          otp,
           username: `+62${cleanNum(input)}`,
-          token,
         });
         setProgress(2);
       });
@@ -136,11 +132,23 @@ export default function Client({ token }: { token: string }) {
 
   const handleClickSecond = async () => {
     toast
-      .promise(connectGopayTwo({ ...data }), {
-        loading: 'Connecting...',
-        success: 'Sukses!',
-        error: 'Error!',
-      })
+      .promise(
+        connectGopayTwo({
+          redirectRefId: data.redirectRefId,
+          clientId: data.clientId,
+          sessionId: data.sessionId,
+          uniqueId: data.uniqueId,
+          otpToken: data.otpToken,
+          username: data.username,
+          token,
+          otp,
+        }),
+        {
+          loading: 'Connecting...',
+          success: 'Sukses!',
+          error: 'Error!',
+        }
+      )
       .then(
         () => {
           //ON FULFILLED
