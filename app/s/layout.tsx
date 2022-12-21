@@ -8,7 +8,6 @@ export default function Layout({
   children: React.ReactNode;
   params: any;
 }) {
-  console.log(params);
   return (
     <div className="bg-background dark:bg-onBackground">
       <Navbar />
