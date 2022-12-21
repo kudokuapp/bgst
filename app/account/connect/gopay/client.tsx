@@ -141,10 +141,17 @@ export default function Client({ token }: { token: string }) {
         success: 'Sukses!',
         error: 'Error!',
       })
-      .then(() => {
-        //ON FULFILLED
-        router.push('/account/success');
-      });
+      .then(
+        () => {
+          //ON FULFILLED
+          router.push('/account/success');
+        },
+        () => {
+          //ON REJECTED
+          setProgress(1);
+          setInput('');
+        }
+      );
   };
   return (
     <motion.div
