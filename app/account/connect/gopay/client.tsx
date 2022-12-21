@@ -123,7 +123,7 @@ export default function Client({ token }: { token: string }) {
         setData({
           redirectRefId: data.redirectRefId,
           clientId: data.clientId,
-          sessionId: data.clientId,
+          sessionId: data.sessionId,
           uniqueId: data.uniqueId,
           otpToken: data.otpToken,
           otp,
