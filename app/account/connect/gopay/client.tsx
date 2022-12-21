@@ -101,7 +101,7 @@ export default function Client({ token }: { token: string }) {
               }}
             />
             <ButtonConnect
-              disabled={!otp || otp.length < 6}
+              disabled={!otp || otp.length < 4}
               onClick={handleClickSecond}
             />
           </motion.div>
