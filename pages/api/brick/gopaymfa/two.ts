@@ -114,8 +114,8 @@ export default async function handler(
       institutionId: institutionId,
       accessToken: data.accessToken,
       kudosId: user.id,
-      brick_account_id: accountDetail?.accountId,
-      accountNumber: accountDetail?.accountNumber,
+      brick_account_id: accountDetail!.accountId,
+      accountNumber: accountDetail!.accountNumber,
     },
   });
 

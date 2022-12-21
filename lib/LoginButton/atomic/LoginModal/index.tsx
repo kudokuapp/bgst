@@ -271,7 +271,6 @@ export default function LoginModal({
       case 'kudos-progress-1':
         return (
           <>
-            <h1>Kudos-Progress-1</h1>
             <motion.ul
               className="flex flex-col gap-4"
               initial={{ opacity: 0 }}
@@ -337,7 +336,6 @@ export default function LoginModal({
       case 'kudos-progress-2':
         return (
           <>
-            <h1>kudos-progress-2</h1>
             <motion.div
               className="flex flex-col gap-8"
               initial={{ opacity: 0 }}
@@ -382,7 +380,6 @@ export default function LoginModal({
       case 'not-kudos-progress-1':
         return (
           <>
-            <h1>not-kudos-progress-1</h1>
             <motion.div
               className="flex flex-col gap-8"
               initial={{ opacity: 0 }}

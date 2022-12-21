@@ -119,7 +119,7 @@ export default function Client({ id, token }: { id: string; token: string }) {
   }
 }
 
-function ButtonConnect({
+export function ButtonConnect({
   disabled,
   onClick,
 }: {
@@ -132,7 +132,7 @@ function ButtonConnect({
       <motion.button
         type="button"
         onClick={onClick}
-        className={`py-1.5 px-4 cursor-pointer rounded-md shadow-xl font-bold flex gap-2 items-center justify-center text-lg select-none ${
+        className={`py-1.5 px-4 cursor-pointer rounded-md shadow-xl font-bold flex gap-2 items-center justify-center text-base select-none ${
           disabled
             ? 'bg-gray-600 dark:bg-gray-300 cursor-not-allowed'
             : 'bg-primary dark:bg-primaryDark cursor-pointer'
