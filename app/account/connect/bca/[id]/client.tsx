@@ -6,25 +6,32 @@ import { useState } from 'react';
 import { connectBca } from './promise';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export default function Client({ id, token }: { id: string; token: string }) {
+  const router = useRouter();
   const [textInput, setTextInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
 
   function handleClick() {
-    toast.promise(
-      connectBca({
-        institutionId: Number(id),
-        username: textInput,
-        password: passwordInput,
-        token,
-      }),
-      {
-        loading: 'Connecting...',
-        success: 'Sukses!',
-        error: 'Error!',
-      }
-    );
+    toast
+      .promise(
+        connectBca({
+          institutionId: Number(id),
+          username: textInput,
+          password: passwordInput,
+          token,
+        }),
+        {
+          loading: 'Connecting...',
+          success: 'Sukses!',
+          error: 'Error!',
+        }
+      )
+      .then(() => {
+        //ON FULFILLED
+        router.push('/account/success');
+      });
   }
   switch (id) {
     case '2':

@@ -10,6 +10,7 @@ import OtpInput from 'react-otp-input';
 import { connectGopayOne, connectGopayTwo } from './promise';
 import { toast } from 'react-hot-toast';
 import cleanNum from '$utils/helper/cleanNum';
+import { useRouter } from 'next/navigation';
 
 interface IData {
   redirectRefId: string;
@@ -23,6 +24,7 @@ interface IData {
 }
 
 export default function Client({ token }: { token: string }) {
+  const router = useRouter();
   const [input, setInput] = useState('');
   const [otp, setOtp] = useState('');
   const [progress, setProgress] = useState(1);
@@ -79,10 +81,10 @@ export default function Client({ token }: { token: string }) {
             animate={{ opacity: 1 }}
           >
             <OtpInput
-              placeholder="123123"
+              placeholder="1234"
               value={otp}
               onChange={setOtp}
-              numInputs={6}
+              numInputs={4}
               isInputNum={true}
               containerStyle={
                 'w-full flex flex-row justify-between gap-1 mt-2 font-medium text-xl'
@@ -141,6 +143,7 @@ export default function Client({ token }: { token: string }) {
       })
       .then(() => {
         //ON FULFILLED
+        router.push('/account/success');
       });
   };
   return (
