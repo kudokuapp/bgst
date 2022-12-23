@@ -3,15 +3,15 @@ import '$styles/globals.css';
 
 export default function Layout({
   children,
-  params,
-}: {
+}: // params,
+{
   children: React.ReactNode;
-  params: any;
+  // params: any;
 }) {
   return (
     <div className="bg-background dark:bg-onBackground">
       <Navbar />
-      <NavCard params={params.account} />
+      {/* <NavCard params={params.account} /> */}
       <main className="w-full h-fit">{children}</main>
       <Footer />
     </div>

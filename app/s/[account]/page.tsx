@@ -12,11 +12,7 @@ import _ from 'lodash';
 
 const prisma = new PrismaClient();
 
-export default async function Page({
-  params,
-}: {
-  params: { account: string };
-}) {
+export default async function Page() {
   const nextCookies = cookies();
   const token = nextCookies.get('token')?.value;
 
@@ -33,7 +29,7 @@ export default async function Page({
 
   if (!user || !user.hasAccount) redirect('/');
 
-  console.log(params.account);
+  // console.log(params.account);
 
   const accounts = await prisma.account.findMany({
     where: { kudosId: user.id },
