@@ -75,10 +75,9 @@ export default async function Layout({
     const element = accounts[i];
 
     if (
-      params.account === 'bca' &&
-      (element.institutionId === 2 ||
-        element.institutionId === 37 ||
-        element.institutionId === 38)
+      element.institutionId === 2 ||
+      element.institutionId === 37 ||
+      element.institutionId === 38
     ) {
       monthOptions2022BCA = await getAvailableMonth(
         element.institutionId,
@@ -91,7 +90,7 @@ export default async function Layout({
         element.id,
         2023
       );
-    } else if (params.account === 'gopay' && element.institutionId === 11) {
+    } else if (element.institutionId === 11) {
       monthOptions2022Gopay = await getAvailableMonth(
         element.institutionId,
         element.id,
