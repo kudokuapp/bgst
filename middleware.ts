@@ -6,14 +6,14 @@ import { jwtVerify } from 'jose';
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
 
-  if (!token) return NextResponse.redirect(new URL('/', request.url));
+  if (!token) return;
 
   const { payload: whatsapp } = await jwtVerify(
-    token.value,
+    token!.value,
     new TextEncoder().encode(process.env.APP_SECRET)
   );
 
-  if (!whatsapp) return NextResponse.redirect(new URL('/t', request.url));
+  if (whatsapp) return NextResponse.redirect(new URL('/t', request.url));
 }
 
 // See "Matching Paths" below to learn more
