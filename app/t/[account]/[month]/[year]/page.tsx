@@ -23,6 +23,7 @@ export default async function Page({
   const nextCookies = cookies();
   const token = nextCookies.get('token')?.value;
   let transactions: Transaction[] | undefined = undefined;
+
   let monthlyTransactions: Dictionary<Transaction[]> | undefined = undefined;
 
   if (!token) redirect('/');
@@ -46,19 +47,20 @@ export default async function Page({
           { institutionId: 37 },
           { institutionId: 38 },
         ],
-        id: user.id,
+        kudosId: user.id,
       },
     });
 
     transactions = await prisma.transaction.findMany({
       where: {
         accountId: account?.id,
+        institution_id: account?.institutionId,
       },
     });
   } else if (params.account === 'gopay') {
     const account = await prisma.account.findFirst({
       where: {
-        id: user.id,
+        kudosId: user.id,
         institutionId: 11,
       },
     });
@@ -66,6 +68,7 @@ export default async function Page({
     transactions = await prisma.transaction.findMany({
       where: {
         accountId: account?.id,
+        institution_id: account?.institutionId,
       },
     });
   } else {
