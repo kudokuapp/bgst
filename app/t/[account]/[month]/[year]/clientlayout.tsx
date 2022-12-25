@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import ThemeContext from '$context/ThemeContext';
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import '$styles/page.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -11,6 +11,8 @@ import {
   faChevronRight,
   faChevronLeft,
   faRightToBracket,
+  faCircleChevronDown,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import LogoPrimaryLight from '$public/logo/primary.svg';
@@ -21,8 +23,9 @@ import DarkModeToggle from '$lib/DarkModeToggle';
 import Image from 'next/image';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Listbox, Transition } from '@headlessui/react';
 import { censorLastFour } from '$utils/helper/censorString';
+import { month, year, availableMonthArray } from '$utils/helper/dateArray';
 
 export function Navbar() {
   const { isDarkTheme } = useContext(ThemeContext);
@@ -167,21 +170,49 @@ type Account = {
   accountNumber: string;
 };
 
+type AvailableArray = {
+  id: number;
+  value: string;
+  available: boolean;
+};
+
 export function NavCard({
   account,
-  date,
-  accountNo,
+  monthParam,
+  availableMonth2022BCA,
+  availableMonth2022Gopay,
+  availableMonth2023BCA,
+  availableMonth2023Gopay,
+  yearParam,
   connectedAccounts,
+  availableYearBCA,
+  availableYearGopay,
 }: {
   account: string;
-  date: string;
-  accountNo: string;
+  monthParam: string;
+  availableMonth2022BCA: string[];
+  availableMonth2022Gopay: string[];
+  availableMonth2023BCA: string[];
+  availableMonth2023Gopay: string[];
+  yearParam: string;
   connectedAccounts: Account[];
+  availableYearBCA: AvailableArray[];
+  availableYearGopay: AvailableArray[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [akun, setAkun] = useState(account);
-  const [periode, setPeriode] = useState('');
+  const [periodeBulan, setPeriodeBulan] = useState(
+    month[Number(monthParam) - 1]
+  );
+  const [periodeTahun, setPeriodeTahun] = useState(year[Number(yearParam) - 1]);
+  const [arrayOfMonthsOptions, setArrayOfMonthsOptions] = useState(
+    [] as AvailableArray[]
+  );
+
+  const [arrayOfYearOptions, setArrayOfYearOptions] = useState(
+    [] as AvailableArray[]
+  );
 
   let isBca = false,
     isGopay = false,
@@ -227,7 +258,54 @@ export function NavCard({
     },
   ];
 
-  const dateWord = date.split(/(\d+)/);
+  const monthOptions2022BCA = availableMonthArray(availableMonth2022BCA);
+  const monthOptions2023BCA = availableMonthArray(availableMonth2023BCA);
+
+  const monthOptions2022Gopay = availableMonthArray(availableMonth2022Gopay);
+  const monthOptions2023Gopay = availableMonthArray(availableMonth2023Gopay);
+
+  useEffect(() => {
+    if (akun === 'bca' || account === 'bca') {
+      setArrayOfYearOptions(availableYearBCA);
+    } else if (akun === 'gopay' || account === 'gopay') {
+      setArrayOfYearOptions(availableYearGopay);
+    }
+
+    if (periodeTahun === '2022') {
+      if (akun === 'bca') {
+        setArrayOfMonthsOptions(monthOptions2022BCA);
+        setPeriodeBulan(
+          monthOptions2022BCA.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'gopay') {
+        setArrayOfMonthsOptions(monthOptions2022Gopay);
+        setPeriodeBulan(
+          monthOptions2022Gopay.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      }
+    } else if (periodeTahun === '2023') {
+      if (akun === 'bca') {
+        setArrayOfMonthsOptions(monthOptions2023BCA);
+        setPeriodeBulan(
+          monthOptions2023BCA.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'gopay') {
+        setArrayOfMonthsOptions(monthOptions2023Gopay);
+        setPeriodeBulan(
+          monthOptions2023Gopay.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [periodeTahun, akun]);
 
   function renderProgress() {
     switch (progress) {
@@ -265,14 +343,19 @@ export function NavCard({
                 className="flex items-center justify-center gap-2"
                 onClick={() => setProgress(2)}
               >
-                Januari, 2022{' '}
+                {periodeBulan}, {periodeTahun}{' '}
                 <FontAwesomeIcon icon={faChevronRight} className="text-sm" />
               </button>
             </div>
             <div className="w-full h-fit flex items-end justify-end">
-              <button className="px-4 py-1 rounded-md shadow-xl bg-primary text-onPrimary text-lg">
+              <Link
+                href={`/t/${akun}/${month.indexOf(periodeBulan) + 1}/${
+                  year.indexOf(periodeTahun) + 1
+                }`}
+                className="px-4 py-1 rounded-md shadow-xl bg-primary text-onPrimary text-lg"
+              >
                 Gaskeun
-              </button>
+              </Link>
             </div>
           </div>
         );
@@ -335,30 +418,116 @@ export function NavCard({
 
       case 2:
         return (
-          <div className="flex flex-col gap-8 mt-4">
-            <div className="flex justify-between text-lg text-onPrimaryContainer">
-              <p className="font-bold">Akun</p>
-              <button
-                className="flex items-center justify-center gap-2"
-                onClick={() => setProgress(1)}
-              >
-                <Image src={BCA} alt="BCA Logo" width={18} height={18} />
-                BCA{' '}
-                <FontAwesomeIcon icon={faChevronRight} className="text-sm" />
-              </button>
+          <div className="flex justify-between gap-2 mt-6">
+            <div className="w-72 h-72">
+              <Listbox value={periodeBulan} onChange={setPeriodeBulan}>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate">{periodeBulan}</span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <FontAwesomeIcon icon={faCircleChevronDown} />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {arrayOfMonthsOptions.map((month) => (
+                        <Listbox.Option
+                          key={month.id}
+                          className={({ active }) =>
+                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                              active
+                                ? 'bg-amber-100 text-amber-900'
+                                : 'text-gray-900'
+                            } ${!month.available ? 'opacity-50' : ''}`
+                          }
+                          value={month.value}
+                          disabled={!month.available}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${
+                                  selected ? 'font-medium' : 'font-normal'
+                                } ${!month.available ? 'opacity-50' : ''}`}
+                              >
+                                {month.value}
+                              </span>
+                              {selected ? (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                  <FontAwesomeIcon icon={faCheck} />
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
             </div>
-            <div className="flex justify-between text-lg text-onPrimaryContainer">
-              <p className="font-bold">Periode</p>
-              <button
-                className="flex items-center justify-center gap-2"
-                onClick={() => setProgress(2)}
+
+            <div className="w-24 h-fit">
+              <Listbox
+                value={periodeTahun}
+                onChange={(tahun) => {
+                  setPeriodeTahun(tahun);
+                }}
               >
-                Januari, 2022{' '}
-                <FontAwesomeIcon icon={faChevronRight} className="text-sm" />
-              </button>
-            </div>
-            <div className="w-full h-fit flex items-end justify-end">
-              <button>Gas</button>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate">{periodeTahun}</span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <FontAwesomeIcon icon={faCircleChevronDown} />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {arrayOfYearOptions.map((year, index) => (
+                        <Listbox.Option
+                          key={index}
+                          className={({ active }) =>
+                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                              active
+                                ? 'bg-amber-100 text-amber-900'
+                                : 'text-gray-900'
+                            } ${!year.available ? 'opacity-50' : ''}`
+                          }
+                          value={year.value}
+                          disabled={!year.available}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${
+                                  selected ? 'font-medium' : 'font-normal'
+                                } `}
+                              >
+                                {year.value}
+                              </span>
+                              {selected ? (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                  <FontAwesomeIcon icon={faCheck} />
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
             </div>
           </div>
         );
@@ -381,7 +550,7 @@ export function NavCard({
 
   return (
     <>
-      <div className="w-full h-fit flex items-center justify-center">
+      <div className="w-full h-fit flex items-center justify-center mt-8">
         <button
           className="bg-onPrimary py-2 px-4 rounded-md shadow-xl flex flex-col gap-2 select-none cursor-pointer"
           type="button"
@@ -389,12 +558,17 @@ export function NavCard({
         >
           <section className="flex gap-4 text-lg font-normal">
             <p>{account.toUpperCase()}</p>
-            <p>{censorLastFour(accountNo)}</p>
+            {isBca && account === 'bca' && (
+              <p>{censorLastFour(bcaAccountNumber as string)}</p>
+            )}
+            {isGopay && account === 'gopay' && (
+              <p>{censorLastFour(gopayAccountNumber as string)}</p>
+            )}
           </section>
           <section className="w-full h-fit flex items-center justify-center">
-            <p className="text-center text-lg font-[600]">{`${dateWord[0][0].toUpperCase()}${dateWord[0].slice(
-              1
-            )} ${dateWord[1]}`}</p>
+            <p className="text-center text-lg font-[600]">
+              {month[Number(monthParam) - 1]}, {year[Number(yearParam) - 1]}
+            </p>
           </section>
         </button>
       </div>
@@ -447,6 +621,8 @@ export function NavCard({
                       onClick={() => {
                         setIsOpen(false);
                         setAkun(account);
+                        setPeriodeBulan(month[Number(monthParam) - 1]);
+                        setPeriodeTahun(year[Number(yearParam) - 1]);
                         setProgress(0);
                       }}
                       className="rounded-full dark:hover:bg-gray-500 hover:bg-gray-200 w-[30px] h-[30px] flex items-center justify-center text-2xl text-primary"

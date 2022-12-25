@@ -66,12 +66,7 @@ export default async function Page() {
           </button>
         </Link>
 
-        <ButtonLanjut
-          isBca={isBca}
-          isGopay={isGopay}
-          response={responseArr}
-          token={token.value}
-        />
+        <ButtonLanjut response={responseArr} token={token.value} />
       </div>
     </section>
   );

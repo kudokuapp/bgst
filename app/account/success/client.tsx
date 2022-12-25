@@ -5,26 +5,12 @@ import moment from 'moment';
 import axios from 'axios';
 
 export function ButtonLanjut({
-  isBca,
-  isGopay,
   response,
   token,
 }: {
-  isBca: boolean;
-  isGopay: boolean;
   response: any[];
   token: string;
 }) {
-  const renderLink = () => {
-    if (isBca) {
-      return '/s/bca';
-    } else if (isGopay) {
-      return '/s/gopay';
-    } else {
-      return '/';
-    }
-  };
-
   function handleClick() {
     const from = moment()
       .startOf('M')
@@ -50,7 +36,7 @@ export function ButtonLanjut({
   return (
     <a
       className="text-primary dark:text-primaryDark text-lg py-1.5 w-full h-fit font-medium text-center"
-      href={renderLink()}
+      href="/t"
       onClick={handleClick}
     >
       Lanjut

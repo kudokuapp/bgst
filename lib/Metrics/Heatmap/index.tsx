@@ -5,25 +5,41 @@ import 'react-calendar-heatmap/dist/styles.css';
 import '$styles/page.css';
 import { motion } from 'framer-motion';
 import ReactTooltip from 'react-tooltip';
+import moment from 'moment';
 
-export default function Heatmap() {
+export type IData = {
+  year: string;
+  month: string;
+  date: string;
+  count: number;
+};
+
+export default function Heatmap({
+  data,
+  month,
+  year,
+}: {
+  data: IData[];
+  month: number;
+  year: string | number;
+}) {
   const [total, setTotal] = useState(0);
-  const endMonth = new Date('2022-11-30');
-  const startMonth = new Date('2022-10-31');
 
-  function shiftDate(date: string | Date, numDays: number) {
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + numDays);
-    return newDate;
-  }
+  const startDateMoment = moment([year, month - 1]).format('YYYY-MM-DD');
 
-  function getRange(count: number) {
-    return Array.from({ length: count }, (_, i) => i);
-  }
+  const endDateMoment = moment(startDateMoment)
+    .endOf('month')
+    .format('YYYY-MM-DD');
 
-  function getRandomInt(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  const startDate = new Date(startDateMoment);
+  const endDate = new Date(endDateMoment);
+
+  const heatMapData = data.map((value) => {
+    return {
+      date: new Date(`${value.year}-${value.month}-${value.date}`),
+      count: value.count,
+    };
+  });
 
   const nameDate = [
     'Minggu',
@@ -50,17 +66,10 @@ export default function Heatmap() {
     'Desember',
   ];
 
-  const randomValues = getRange(30).map((index) => {
-    return {
-      date: shiftDate(endMonth, -index),
-      count: getRandomInt(0, 9),
-    };
-  });
-
   useEffect(() => {
     let totalSum = 0;
 
-    for (const value of randomValues) {
+    for (const value of data) {
       totalSum += value.count;
     }
 
@@ -85,21 +94,26 @@ export default function Heatmap() {
       </div>
       <motion.div className="bg-gradient-to-br from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark w-fit h-fit px-4 py-8 rounded-3xl shadow-md select-none max-w-[545px] flex flex-col gap-8">
         <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
-          Di bulan November 2022, lo abisin {`${total}`}x transaksi
+          Di bulan {nameMonth[month - 1]} {year}, lo abisin {`${total}`}x
+          transaksi
         </h3>
         <div className="flex items-center justify-center w-full h-full bg-yellow-200 pl-[50px] rounded-2xl pb-6">
           <div className="w-full h-full">
             <CalendarHeatmap
-              startDate={startMonth}
-              endDate={endMonth}
-              values={randomValues}
+              startDate={startDate}
+              endDate={endDate}
+              values={heatMapData}
               classForValue={(value) => {
                 if (!value) {
-                  return 'color-empty';
+                  return 'color-kudoku-0';
+                } else if (value > 5) {
+                  return 'color-kudoku-5';
+                } else {
+                  return `color-kudoku-${value.count}`;
                 }
-                return `color-kudoku-${value.count}`;
               }}
               tooltipDataAttrs={(value: any) => {
+                if (!value.date) return;
                 const date = new Date(value.date.toISOString());
                 return {
                   'data-tip': `Jumlah transaksi hari ${

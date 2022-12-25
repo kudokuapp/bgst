@@ -1,7 +1,23 @@
 'use client';
 import { motion } from 'framer-motion';
 
-export default function TotalPengeluaran() {
+export default function TotalPengeluaran({
+  totalExpense,
+}: {
+  totalExpense: number;
+}) {
+  const totalExpenseNum =
+    totalExpense <= 0 || totalExpense === undefined ? 1 : totalExpense;
+
+  const formatter = new Intl.NumberFormat('in-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  }).format(totalExpense);
+
+  const hondaVario150 = 24_650_000;
+  const jeansUniqlo = 599_999;
+  const rokokFilter = 23_200;
+
   return (
     <motion.div
       className="w-fit h-fit flex flex-col items-center gap-8"
@@ -19,7 +35,7 @@ export default function TotalPengeluaran() {
       </div>
       <motion.div className="bg-gradient-to-br from-primary to-secondary dark:from-primaryDark dark:to-secondaryDark w-fit h-fit px-4 py-8 rounded-3xl shadow-md flex flex-col items-center gap-8 select-none max-w-[545px]">
         <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
-          Rp. 12.000.000
+          {formatter}
         </h3>
         <div className="flex flex-col justify-center items-center">
           <p className="px-1.5 py-1 font-bold text-primary bg-onPrimary dark:text-primaryDark dark:bg-onPrimaryDark rounded-2xl text-center w-fit h-fit">
@@ -28,7 +44,10 @@ export default function TotalPengeluaran() {
           <div className="rounded-2xl bg-onPrimary dark:bg-onPrimaryDark grid grid-cols-3 w-fit h-fit mt-[-5px] gap-0 px-4 py-2">
             <div className="flex flex-col justify-center items-center border-r px-4 text-center">
               <p className="text-primary dark:text-primaryDark m-0 text-base">
-                <span className="font-bold">0.5</span>x
+                <span className="font-bold">
+                  {(totalExpenseNum / hondaVario150).toFixed(2)}
+                </span>
+                x
               </p>
               <p className="text-primary dark:text-primaryDark m-0 text-sm">
                 Honda vario 150
@@ -36,7 +55,10 @@ export default function TotalPengeluaran() {
             </div>
             <div className="flex flex-col justify-center items-center border-x px-4 text-center">
               <p className="text-primary dark:text-primaryDark m-0 text-base">
-                <span className="font-bold">12</span>x
+                <span className="font-bold">
+                  {(totalExpenseNum / jeansUniqlo).toFixed(2)}
+                </span>
+                x
               </p>
               <p className="text-primary dark:text-primaryDark m-0 text-sm">
                 Jeans uniqlo
@@ -44,7 +66,10 @@ export default function TotalPengeluaran() {
             </div>
             <div className="flex flex-col justify-center items-center border-l px-4 text-center">
               <p className="text-primary dark:text-primaryDark m-0 text-base">
-                <span className="font-bold">480</span>x
+                <span className="font-bold">
+                  {(totalExpenseNum / rokokFilter).toFixed(2)}
+                </span>
+                x
               </p>
               <p className="text-primary dark:text-primaryDark m-0 text-sm">
                 Rokok filter

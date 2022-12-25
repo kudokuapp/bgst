@@ -526,8 +526,8 @@ export default function LoginModal({
                     if (bgst) {
                       if (bgstConnected) {
                         // SEND JWT
-                        // REDIRECT TO /s/account
-                        router.push('/s/');
+                        // REDIRECT TO /t/account
+                        router.push('/t');
                       } else {
                         // SEND JWT
                         // REDIRECT to connect account page
