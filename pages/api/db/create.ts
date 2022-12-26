@@ -12,10 +12,10 @@ export default async function handler(
     throw new Error('Method not allowed');
   }
 
-  const { whatsapp, id, email } = req.body;
+  const { whatsapp, id, email, firstName } = req.body;
 
   const response = await prisma.user.create({
-    data: { id, whatsapp, email, hasAccount: false },
+    data: { id, whatsapp, email, firstName, hasAccount: false },
   });
 
   if (!response) {

@@ -1,4 +1,4 @@
-import { Navbar, Footer, NavCard } from './clientlayout';
+import { Navbar, Footer, NavCard } from './client';
 import '$styles/globals.css';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';

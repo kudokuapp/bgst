@@ -44,6 +44,7 @@ CREATE TABLE "Account" (
 
 CREATE TABLE "User" (
   "id" INTEGER,
+  "firstName" VARCHAR(255) NOT NULL,
   "email" VARCHAR(255) UNIQUE NOT NULL,
   "whatsapp" VARCHAR(255) UNIQUE NOT NULL,
   "hasAccount" BOOLEAN DEFAULT false NOT NULL,

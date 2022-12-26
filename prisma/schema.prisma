@@ -50,6 +50,7 @@ model Transaction {
 
 model User {
   id         Int       @id
+  firstName  String    @db.VarChar(255)
   email      String    @unique @db.VarChar(255)
   whatsapp   String    @unique @db.VarChar(255)
   hasAccount Boolean   @default(false)

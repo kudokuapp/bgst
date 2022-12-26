@@ -85,6 +85,7 @@ export async function createUser(whatsapp: string) {
         });
 
         const response = await axios.post('/api/db/create', {
+          firstName: data.firstname,
           whatsapp: data.whatsapp,
           id: data.id,
           email: data.email,

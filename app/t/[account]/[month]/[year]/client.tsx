@@ -38,7 +38,7 @@ export function Navbar() {
       >
         <>
           {isDarkTheme ? (
-            <Link href="/s" className="w-fit h-fit">
+            <Link href="/t" className="w-fit h-fit">
               <Image
                 height={30}
                 src={LogoSecondaryDark}
@@ -57,7 +57,7 @@ export function Navbar() {
               />
             </Link>
           ) : (
-            <Link href="/s" className="w-fit h-fit">
+            <Link href="/t" className="w-fit h-fit">
               <Image
                 height={30}
                 src={LogoSecondaryLight}
@@ -79,10 +79,13 @@ export function Navbar() {
         </>
         <div className="flex gap-4">
           <DarkModeToggle />
-          <button className="bg-primary dark:bg-primaryDark text-onPrimary dark:text-onPrimaryDark font-bold px-3.5 py-1.5 rounded-xl shadow-xl inline-flex items-center justify-center gap-2">
+          <Link
+            className="bg-primary dark:bg-primaryDark text-onPrimary dark:text-onPrimaryDark font-bold px-3.5 py-1.5 rounded-xl shadow-xl inline-flex items-center justify-center gap-2"
+            href="/download"
+          >
             <FontAwesomeIcon icon={faDownload} />
             Download
-          </button>
+          </Link>
         </div>
       </motion.section>
     </nav>
