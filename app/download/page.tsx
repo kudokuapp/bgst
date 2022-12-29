@@ -6,7 +6,6 @@ export default function Page() {
       <Navbar />
       <Heading />
       <MainShare />
-      <h1>Download</h1>
     </section>
   );
 }
