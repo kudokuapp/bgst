@@ -1,0 +1,50 @@
+{
+  "name": "Kudoku",
+  "short_name": "Kudoku",
+  "icons": [
+    {
+      "src": "/manifest/icons/128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/manifest/icons/256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/manifest/icons/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/manifest/icons/1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E1E1E1",
+  "theme_color": "#345995",
+  "shortcuts": [
+    {
+      "name": "How's weather today?",
+      "short_name": "Today",
+      "description": "View weather information for today",
+      "url": "/today?source=pwa",
+      "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
+    },
+    {
+      "name": "How's weather tomorrow?",
+      "short_name": "Tomorrow",
+      "description": "View weather information for tomorrow",
+      "url": "/tomorrow?source=pwa",
+      "icons": [{ "src": "/manifest/icons/256x256.png", "sizes": "256x256" }]
+    }
+  ]
+}

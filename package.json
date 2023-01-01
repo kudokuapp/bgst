@@ -29,6 +29,7 @@
 		"@mui/material": "^5.10.16",
 		"@prisma/client": "4.7.1",
 		"@typeform/embed-react": "^2.7.0",
+		"@vercel/og": "^0.0.21",
 		"axios": "^1.2.1",
 		"cookies-next": "^2.1.1",
 		"framer-motion": "^7.6.15",
@@ -45,6 +46,7 @@
 		"react-hot-toast": "^2.4.0",
 		"react-otp-input": "^2.4.0",
 		"react-tooltip": "^4.5.1",
+		"satori": "^0.0.44",
 		"twilio": "^3.83.4"
 	},
 	"devDependencies": {

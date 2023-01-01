@@ -131,7 +131,7 @@ export default async function Layout({
 
   return (
     <div className="bg-background dark:bg-onBackground">
-      <Navbar />
+      <Navbar params={params} />
       <NavCard
         account={params.account}
         connectedAccounts={accounts}

@@ -26,8 +26,15 @@ import Gopay from '$public/logo/bank/gojek.png';
 import { Dialog, Listbox, Transition } from '@headlessui/react';
 import { censorLastFour } from '$utils/helper/censorString';
 import { month, year, availableMonthArray } from '$utils/helper/dateArray';
+import { toast, Toaster } from 'react-hot-toast';
 
-export function Navbar() {
+type IParams = {
+  account: string;
+  year: string;
+  month: string;
+};
+
+export function Navbar({ params }: { params: IParams }) {
   const { isDarkTheme } = useContext(ThemeContext);
   return (
     <nav className="select-none w-full h-fit">
@@ -81,7 +88,7 @@ export function Navbar() {
           <DarkModeToggle />
           <Link
             className="bg-primary dark:bg-primaryDark text-onPrimary dark:text-onPrimaryDark font-bold px-3.5 py-1.5 rounded-xl shadow-xl inline-flex items-center justify-center gap-2"
-            href="/download"
+            href={`/download/${params.account}/${params.month}/${params.year}`}
           >
             <FontAwesomeIcon icon={faDownload} />
             Download
@@ -96,7 +103,11 @@ export function Footer() {
   const { isDarkTheme } = useContext(ThemeContext);
 
   function handleCopy() {
-    console.log('click');
+    toast.promise(navigator.clipboard.writeText('https://bgst.kudoku.id'), {
+      loading: 'Copying...',
+      success: 'Sukses copy link',
+      error: 'Gagal copy link',
+    });
   }
 
   return (
@@ -164,6 +175,7 @@ export function Footer() {
           </motion.button>
         </Link>
       </section>
+      <Toaster position="bottom-center" />
     </footer>
   );
 }
