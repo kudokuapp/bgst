@@ -32,7 +32,7 @@ export default function TypeformRegistration({
           <PopupButton
             id="EnKbwQJL"
             hidden={{
-              index: '2',
+              index: '3',
               wa: whatsapp,
             }}
             onSubmit={onSubmit}
