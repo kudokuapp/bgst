@@ -71,6 +71,8 @@ export default async function handler(
     throw new Error('Error dari brick');
   }
 
+  // res.status(200).json(transactionData);
+
   transactionData.forEach(async (value) => {
     try {
       await prisma.transaction.create({
@@ -106,13 +108,14 @@ export default async function handler(
           accountId,
         },
       });
-      res.status(200).json({
-        status: 200,
-        message: 'Successfully call Brick and push to database',
-      });
     } catch (e: any) {
       res.status(500).json(e);
       throw new Error(e);
     }
+  });
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully call Brick and push to database',
   });
 }
