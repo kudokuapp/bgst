@@ -21,12 +21,14 @@ export default function Client({
       name: 'Bank Central Asia',
       subname: 'PT. Bank Central Asia, Tbk.',
       link: 'bca',
+      disabled: true,
     },
     {
       logo: Gopay,
       name: 'Gopay',
       subname: 'PT. Gojek Indonesia',
       link: 'gopay',
+      disabled: false,
     },
   ];
   return (
@@ -66,11 +68,13 @@ export default function Client({
               >
                 <button
                   className={`flex gap-4 border-b-[1px] border-gray-600 dark:border-gray-400 pb-4 w-full text-left items-center ${
-                    arrayOfConnectedBank[index] === value.link
+                    arrayOfConnectedBank[index] === value.link || value.disabled
                       ? 'cursor-not-allowed opacity-50'
                       : 'cursor-pointer opacity-100'
                   }`}
-                  disabled={arrayOfConnectedBank[index] === value.link}
+                  disabled={
+                    arrayOfConnectedBank[index] === value.link || value.disabled
+                  }
                 >
                   <Image
                     src={value.logo}
@@ -99,6 +103,12 @@ export default function Client({
               {arrayOfConnectedBank[index] === value.link && (
                 <div className="absolute right-0 top-2 border-2 border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
                   Connected
+                </div>
+              )}
+
+              {value.disabled && (
+                <div className="absolute right-0 top-2 border-2 border-red-400 text-red-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                  Lagi gabisa
                 </div>
               )}
             </li>
