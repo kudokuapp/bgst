@@ -34,11 +34,16 @@ export function ButtonLanjut({
         data: { from, to },
       };
 
-      toast.promise(axios.request(options), {
-        loading: `Lagi ambil data kamu...`,
-        success: `Sukses ambil data`,
-        error: `Error ambil data`,
-      });
+      toast
+        .promise(axios.request(options), {
+          loading: `Lagi ambil data kamu...`,
+          success: `Sukses ambil data`,
+          error: `Error ambil data`,
+        })
+        .then(() => {
+          //ON FULFILLED
+          router.push('/t');
+        });
     } else {
       const options = {
         method: 'POST',
@@ -50,14 +55,17 @@ export function ButtonLanjut({
         data: { institutionId: response[0], from, to },
       };
 
-      toast.promise(axios.request(options), {
-        loading: `Lagi ambil data kamu...`,
-        success: `Sukses ambil data`,
-        error: `Error ambil data`,
-      });
+      toast
+        .promise(axios.request(options), {
+          loading: `Lagi ambil data kamu...`,
+          success: `Sukses ambil data`,
+          error: `Error ambil data`,
+        })
+        .then(() => {
+          //ON FULFILLED
+          router.push('/t');
+        });
     }
-
-    router.push('/t');
   }
   return (
     <button
