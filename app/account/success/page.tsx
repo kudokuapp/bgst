@@ -31,7 +31,15 @@ export default async function Page() {
 
   const response = await prisma.account.findMany({ where: { kudosId } });
 
-  response.forEach((value) => {
+  response.forEach(async (value) => {
+    const transaction = await prisma.transaction.findFirst({
+      where: { accountId: value.id },
+    });
+
+    if (!transaction) {
+      responseArr.push(value.institutionId);
+    }
+
     if (
       value.institutionId === 2 ||
       value.institutionId === 37 ||
@@ -39,11 +47,10 @@ export default async function Page() {
     ) {
       isBca = true;
     }
+
     if (value.institutionId === 11) {
       isGopay = true;
     }
-
-    responseArr.push(value.institutionId);
   });
 
   const disabled = isBca && isGopay;
