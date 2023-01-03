@@ -3,6 +3,8 @@ import Lottie from 'lottie-react';
 import animation from '$public/lottie/96085-green-check.json';
 import moment from 'moment';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export function ButtonLanjut({
   response,
@@ -11,6 +13,8 @@ export function ButtonLanjut({
   response: any[];
   token: string;
 }) {
+  const router = useRouter();
+
   function handleClick() {
     const from = moment()
       .startOf('M')
@@ -19,28 +23,24 @@ export function ButtonLanjut({
 
     const to = moment().endOf('M').subtract(1, 'months').format('YYYY-MM-DD');
 
-    response.forEach(async (value) => {
-      const options = {
-        method: 'POST',
-        url: '/api/brick/transaction',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        data: { institutionId: value, from, to },
-      };
-
-      await axios.request(options);
-    });
+    toast
+      .promise(promiseToast(response, token, from, to), {
+        loading: 'Lagi ambil data kamu...',
+        success: 'Sukses ambil data',
+        error: 'Error ambil data',
+      })
+      .then(() => {
+        // ON FULFILLED
+        router.push('/t');
+      });
   }
   return (
-    <a
+    <button
       className="text-primary dark:text-primaryDark text-lg py-1.5 w-full h-fit font-medium text-center"
-      href="/t"
       onClick={handleClick}
     >
       Lanjut
-    </a>
+    </button>
   );
 }
 
@@ -50,4 +50,35 @@ export function LottieSuccess() {
       <Lottie animationData={animation} loop={false} />
     </div>
   );
+}
+
+function promiseToast(
+  responseArr: any[],
+  token: string,
+  from: string,
+  to: string
+) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        responseArr.forEach(async (value) => {
+          const options = {
+            method: 'POST',
+            url: '/api/brick/transaction',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            data: { institutionId: value, from, to },
+          };
+
+          await axios.request(options);
+
+          resolve('Sukses');
+        });
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
 }

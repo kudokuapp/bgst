@@ -15,7 +15,7 @@ CREATE TABLE "Transaction" (
   "location_city_id" INTEGER,
   "location_country_id" INTEGER,
   "date" TIMESTAMP,
-  "amount" INTEGER,
+  "amount" NUMERIC,
   "description" TEXT,
   "status" TEXT,
   "direction" TEXT,
