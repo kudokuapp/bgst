@@ -72,33 +72,37 @@ export default async function handler(
   }
 
   transactionData.forEach(async (value) => {
-    const { category } = value;
     try {
       await prisma.transaction.create({
         data: {
-          dateTimestamp: new Date(value.dateTimestamp),
-          brick_id: value.id,
-          brick_account_id: value.account_id,
-          account_number: value.account_number,
-          account_currency: value.account_currency,
-          institution_id: value.institution_id,
-          merchant_id: value.merchant_id,
-          outlet_outlet_id: value.outlet_outlet_id,
-          location_city_id: value.location_city_id,
-          location_country_id: value.location_country_id,
-          date: new Date(value.date),
-          amount: value.amount,
-          description: value.description,
-          status: value.status,
-          direction: value.direction,
-          reference_id: value.reference_id,
-          transaction_type: value.transaction_type,
-          category_id: category.category_id,
-          category_name: category.category_name,
-          classification_group_id: category.classification_group_id,
-          classification_group: category.classification_group,
-          classification_subgroup_id: category.classification_subgroup_id,
-          classification_subgroup: category.classification_subgroup,
+          dateTimestamp: value.dateTimestamp
+            ? new Date(value.dateTimestamp)
+            : null,
+          brick_id: value.id ?? null,
+          brick_account_id: value.account_id ?? null,
+          account_number: value.account_number ?? null,
+          account_currency: value.account_currency ?? null,
+          institution_id: value.institution_id ?? null,
+          merchant_id: value.merchant_id ?? null,
+          outlet_outlet_id: value.outlet_outlet_id ?? null,
+          location_city_id: value.location_city_id ?? null,
+          location_country_id: value.location_country_id ?? null,
+          date: value.date ? new Date(value.date) : null,
+          amount: value.amount ?? null,
+          description: value.description ?? null,
+          status: value.status ?? null,
+          direction: value.direction ?? null,
+          reference_id: value.reference_id ?? null,
+          transaction_type: value.transaction_type ?? null,
+          category_id: value.category.category_id ?? null,
+          category_name: value.category.category_name ?? null,
+          classification_group_id:
+            value.category.classification_group_id ?? null,
+          classification_group: value.category.classification_group ?? null,
+          classification_subgroup_id:
+            value.category.classification_subgroup_id ?? null,
+          classification_subgroup:
+            value.category.classification_subgroup ?? null,
           accountId,
         },
       });
