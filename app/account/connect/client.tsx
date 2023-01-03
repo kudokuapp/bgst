@@ -104,13 +104,13 @@ export default function Client({
                 (value.disabled && (
                   <div className="flex flex-col gap-2 absolute right-0 top-2">
                     {arrayOfConnectedBank[index] === value.link && (
-                      <div className="border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                      <div className="border-[1px] border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
                         Connected
                       </div>
                     )}
 
                     {value.disabled && (
-                      <div className="border-red-400 text-red-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                      <div className="border-[1px] border-red-400 text-red-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
                         Lagi gabisa
                       </div>
                     )}
