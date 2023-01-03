@@ -45,6 +45,14 @@ export default async function handler(
 
   const url = brickUrl(`/v1/transaction/list`);
 
+  const renderNull = (value: BrickTransactionData['category']) => {
+    if (value === null) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   for (let i = 0; i < data.length; i++) {
     const accountBank = data[i];
 
@@ -72,6 +80,9 @@ export default async function handler(
 
     for (let i = 0; i < transactionData.length; i++) {
       const value = transactionData[i];
+
+      const category = renderNull(value.category);
+
       try {
         await prisma.transaction.create({
           data: {
@@ -94,15 +105,20 @@ export default async function handler(
             direction: value.direction ?? null,
             reference_id: value.reference_id ?? null,
             transaction_type: value.transaction_type ?? null,
-            category_id: value.category.category_id ?? null,
-            category_name: value.category.category_name ?? null,
-            classification_group_id:
-              value.category.classification_group_id ?? null,
-            classification_group: value.category.classification_group ?? null,
-            classification_subgroup_id:
-              value.category.classification_subgroup_id ?? null,
-            classification_subgroup:
-              value.category.classification_subgroup ?? null,
+            category_id: category ? value.category.category_id : null,
+            category_name: category ? value.category.category_name : null,
+            classification_group_id: category
+              ? value.category.classification_group_id
+              : null,
+            classification_group: category
+              ? value.category.classification_group
+              : null,
+            classification_subgroup_id: category
+              ? value.category.classification_subgroup_id
+              : null,
+            classification_subgroup: category
+              ? value.category.classification_subgroup
+              : null,
             accountId: accountBank.id,
           },
         });
