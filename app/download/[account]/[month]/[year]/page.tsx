@@ -8,6 +8,7 @@ import { Navbar, Heading, MainShare } from './client';
 import { PrismaClient, Transaction } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
+import { Decimal } from '@prisma/client/runtime';
 
 const prisma = new PrismaClient();
 
@@ -87,7 +88,9 @@ export default async function Page({
       location_city_id: value.location_city_id,
       location_country_id: value.location_country_id,
       date: value.date,
-      amount: Math.ceil(value.amount!),
+      amount: Math.ceil(
+        value.amount as unknown as number
+      ) as unknown as Decimal,
       description: value.description,
       status: value.status,
       direction: value.direction,
@@ -147,7 +150,7 @@ export default async function Page({
       (result, { amount }) => {
         if (amount === null) return 1;
 
-        return (result += amount);
+        return (result += amount as unknown as number);
       },
       0
     );
@@ -157,7 +160,7 @@ export default async function Page({
       (result, { amount }) => {
         if (amount === null) return 1;
 
-        return (result += amount);
+        return (result += amount as unknown as number);
       },
       0
     );
@@ -174,7 +177,7 @@ export default async function Page({
     );
 
     barangPalingMahal = {
-      amount: barangPalingMahalUnedited!.amount as number,
+      amount: barangPalingMahalUnedited!.amount as unknown as number,
       day: `${barangPalingMahalDate.getDate()}`,
       month: `${shortMonth[barangPalingMahalDate.getMonth()]}`,
       description: barangPalingMahalUnedited!.description as string,
