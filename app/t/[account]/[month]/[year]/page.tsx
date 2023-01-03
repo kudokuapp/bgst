@@ -77,9 +77,39 @@ export default async function Page({
 
   if (!transactions) redirect('/');
 
+  const superTransaction: Transaction[] = transactions.map((value) => {
+    return {
+      id: value.id,
+      dateTimestamp: value.dateTimestamp,
+      brick_id: value.brick_id,
+      brick_account_id: value.brick_account_id,
+      account_number: value.account_number,
+      account_currency: value.account_currency,
+      institution_id: value.institution_id,
+      merchant_id: value.merchant_id,
+      outlet_outlet_id: value.outlet_outlet_id,
+      location_city_id: value.location_city_id,
+      location_country_id: value.location_country_id,
+      date: value.date,
+      amount: Math.ceil(value.amount!),
+      description: value.description,
+      status: value.status,
+      direction: value.direction,
+      reference_id: value.reference_id,
+      transaction_type: value.transaction_type,
+      category_id: value.category_id,
+      category_name: value.category_name,
+      classification_group_id: value.classification_group_id,
+      classification_group: value.classification_group,
+      classification_subgroup_id: value.classification_subgroup_id,
+      classification_subgroup: value.classification_subgroup,
+      accountId: value.accountId,
+    };
+  });
+
   // Ini brarti 2022
   if (params.year === '1') {
-    const year = _.filter(transactions, ({ dateTimestamp }) => {
+    const year = _.filter(superTransaction, ({ dateTimestamp }) => {
       return new Date(dateTimestamp as Date).getFullYear() === 2022;
     });
 
@@ -89,7 +119,7 @@ export default async function Page({
   }
   // Ini brarti 2023
   else if (params.year === '2') {
-    const year = _.filter(transactions, ({ dateTimestamp }) => {
+    const year = _.filter(superTransaction, ({ dateTimestamp }) => {
       return new Date(dateTimestamp as Date).getFullYear() === 2023;
     });
 

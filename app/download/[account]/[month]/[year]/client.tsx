@@ -42,7 +42,11 @@ const font = fetch(
   )
 ).then((res) => res.arrayBuffer());
 
-export function Navbar() {
+export function Navbar({
+  params,
+}: {
+  params: { account: string; month: string; year: string };
+}) {
   const { isDarkTheme } = useContext(ThemeContext);
 
   return (
@@ -97,7 +101,7 @@ export function Navbar() {
           <DarkModeToggle />
           <Link
             className="bg-primary dark:bg-primaryDark text-onPrimary dark:text-onPrimaryDark font-bold px-3.5 py-1.5 rounded-xl shadow-xl inline-flex items-center justify-center gap-2"
-            href="/t"
+            href={`/t/${params.account}/${params.month}/${params.year}`}
           >
             <FontAwesomeIcon icon={faHouse} />
             Ke BGST

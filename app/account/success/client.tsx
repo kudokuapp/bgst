@@ -73,9 +73,9 @@ function promiseToast(
           };
 
           await axios.request(options);
-
-          resolve('Sukses');
         });
+
+        resolve('Sukses');
       } catch (e) {
         reject(e);
       }
