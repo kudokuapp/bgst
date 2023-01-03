@@ -32,7 +32,7 @@ model Transaction {
   location_city_id           Int?
   location_country_id        Int?
   date                       DateTime? @db.Timestamp(6)
-  amount                     Int?
+  amount                     Decimal?  @db.Decimal
   description                String?
   status                     String?
   direction                  String?
