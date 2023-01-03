@@ -4,6 +4,7 @@ import animation from '$public/lottie/96085-green-check.json';
 import moment from 'moment';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 export function ButtonLanjut({
   response,
@@ -33,7 +34,16 @@ export function ButtonLanjut({
         data: { from, to },
       };
 
-      await axios.request(options);
+      toast
+        .promise(axios.request(options), {
+          loading: 'Ambil data kamu...',
+          success: 'Sukses ambil data',
+          error: 'Error ambil data',
+        })
+        .then(() => {
+          // onFulfilled
+          router.push('/t');
+        });
     } else {
       const options = {
         method: 'POST',
@@ -45,10 +55,17 @@ export function ButtonLanjut({
         data: { institutionId: response[0], from, to },
       };
 
-      await axios.request(options);
+      toast
+        .promise(axios.request(options), {
+          loading: 'Ambil data kamu...',
+          success: 'Sukses ambil data',
+          error: 'Error ambil data',
+        })
+        .then(() => {
+          // onFulfilled
+          router.push('/t');
+        });
     }
-
-    router.push('/t');
   }
   return (
     <button
