@@ -12,6 +12,11 @@ import { AuthTokenPayload } from '$utils/auth';
 import { PrismaClient, Transaction } from '@prisma/client';
 import _, { Dictionary } from 'lodash';
 import { shortMonth, year } from '$utils/helper/dateArray';
+import { Decimal } from '@prisma/client/runtime';
+import { NgobrolSamaFounder } from './client';
+import AldiAvatar from '$public/avatar/aldi.png';
+import FurqonAvatar from '$public/avatar/furqon.png';
+import RizqyAvatar from '$public/avatar/rizqy.png';
 
 const prisma = new PrismaClient();
 
@@ -91,7 +96,9 @@ export default async function Page({
       location_city_id: value.location_city_id,
       location_country_id: value.location_country_id,
       date: value.date,
-      amount: Math.ceil(value.amount!),
+      amount: Math.ceil(
+        value.amount as unknown as number
+      ) as unknown as Decimal,
       description: value.description,
       status: value.status,
       direction: value.direction,
@@ -151,7 +158,7 @@ export default async function Page({
       (result, { amount }) => {
         if (amount === null) return 1;
 
-        return (result += amount);
+        return (result += amount as unknown as number);
       },
       0
     );
@@ -161,7 +168,7 @@ export default async function Page({
       (result, { amount }) => {
         if (amount === null) return 1;
 
-        return (result += amount);
+        return (result += amount as unknown as number);
       },
       0
     );
@@ -178,7 +185,7 @@ export default async function Page({
     );
 
     barangPalingMahal = {
-      amount: barangPalingMahalUnedited!.amount as number,
+      amount: barangPalingMahalUnedited!.amount as unknown as number,
       day: `${barangPalingMahalDate.getDate()}`,
       month: `${shortMonth[barangPalingMahalDate.getMonth()]}`,
       description: barangPalingMahalUnedited!.description as string,
@@ -202,6 +209,27 @@ export default async function Page({
     });
   }
 
+  const caldata = [
+    {
+      name: 'Furqon Wilogo',
+      title: 'Co-CEO',
+      avatar: FurqonAvatar,
+      calLink: 'furqon/kudoku',
+    },
+    {
+      name: 'Rizqy Fachri',
+      title: 'Co-CEO',
+      avatar: RizqyAvatar,
+      calLink: 'rizqy-fachri/kudoku',
+    },
+    {
+      name: 'Aldi Megantara',
+      title: 'CTO',
+      avatar: AldiAvatar,
+      calLink: 'aldi-megantara-arifin/30min',
+    },
+  ];
+
   return (
     <main className="w-full h-fit my-20 flex flex-col items-center justify-center gap-28 sm:px-0 px-4">
       <TotalPemasukan totalIncome={totalIncome} />
@@ -220,6 +248,21 @@ export default async function Page({
       <h6 className="font-bold text-4xl text-center text-primary dark:text-primaryDark my-20">
         Other metrics coming soon
       </h6>
+      <div className="flex flex-col gap-4 my-20">
+        <h6 className="font-bold text-4xl text-left text-onPrimaryContainer dark:text-onPrimaryContainerDark">
+          Ada masukan? Saran? Kritik? Request?
+        </h6>
+        <h6 className="font-medium text-2xl text-left text-onPrimaryContainer dark:text-onPrimaryContainerDark">
+          Yuk ngobrol sama yang buat BGST
+        </h6>
+        <div className="flex flex-wrap gap-4">
+          {caldata.map((value, index) => {
+            return (
+              <NgobrolSamaFounder founders={value} user={user} key={index} />
+            );
+          })}
+        </div>
+      </div>
     </main>
   );
 }
