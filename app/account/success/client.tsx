@@ -23,16 +23,26 @@ export function ButtonLanjut({
 
     const to = moment().endOf('M').subtract(1, 'months').format('YYYY-MM-DD');
 
-    toast
-      .promise(promiseToast(response, token, from, to), {
-        loading: 'Lagi ambil data kamu...',
-        success: 'Sukses ambil data',
-        error: 'Error ambil data',
-      })
-      .then(() => {
-        // ON FULFILLED
-        router.push('/t');
+    response.forEach((value) => {
+      let name: string = '';
+      if (
+        value.institutionId === 2 ||
+        value.institutionId === 37 ||
+        value.institutionId === 38
+      ) {
+        name = 'BCA';
+      } else if (value.institutionId === 11) {
+        name = 'Gopay';
+      }
+
+      toast.promise(promiseToast(value, token, from, to), {
+        loading: `Lagi ambil data ${name} kamu...`,
+        success: `Sukses ambil data ${name}`,
+        error: `Error ambil data ${name}`,
       });
+    });
+
+    router.push('/t');
   }
   return (
     <button
@@ -53,7 +63,7 @@ export function LottieSuccess() {
 }
 
 function promiseToast(
-  responseArr: any[],
+  institutionId: number,
   token: string,
   from: string,
   to: string
@@ -61,21 +71,19 @@ function promiseToast(
   return new Promise((resolve, reject) => {
     (async () => {
       try {
-        responseArr.forEach(async (value) => {
-          const options = {
-            method: 'POST',
-            url: '/api/brick/transaction',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            data: { institutionId: value, from, to },
-          };
+        const options = {
+          method: 'POST',
+          url: '/api/brick/transaction',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          data: { institutionId, from, to },
+        };
 
-          await axios.request(options);
-        });
+        const response = await axios.request(options);
 
-        resolve('Sukses');
+        resolve(response);
       } catch (e) {
         reject(e);
       }
