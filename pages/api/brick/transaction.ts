@@ -71,9 +71,9 @@ export default async function handler(
     throw new Error('Error dari brick');
   }
 
-  // res.status(200).json(transactionData);
+  for (let i = 0; i < transactionData.length; i++) {
+    const value = transactionData[i];
 
-  transactionData.forEach(async (value) => {
     try {
       await prisma.transaction.create({
         data: {
@@ -112,7 +112,7 @@ export default async function handler(
       res.status(500).json(e);
       throw new Error(e);
     }
-  });
+  }
 
   res.status(200).json({
     status: 200,

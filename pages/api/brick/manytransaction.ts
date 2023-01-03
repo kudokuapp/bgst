@@ -45,7 +45,9 @@ export default async function handler(
 
   const url = brickUrl(`/v1/transaction/list`);
 
-  data.forEach(async (val, index) => {
+  for (let i = 0; i < data.length; i++) {
+    const accountBank = data[i];
+
     const options = {
       method: 'GET',
       url: url.href,
@@ -53,7 +55,7 @@ export default async function handler(
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${val.accessToken}`,
+        Authorization: `Bearer ${accountBank.accessToken}`,
       },
     };
 
@@ -68,7 +70,8 @@ export default async function handler(
       throw new Error('Error dari brick');
     }
 
-    transactionData.forEach(async (value) => {
+    for (let i = 0; i < transactionData.length; i++) {
+      const value = transactionData[i];
       try {
         await prisma.transaction.create({
           data: {
@@ -100,15 +103,15 @@ export default async function handler(
               value.category.classification_subgroup_id ?? null,
             classification_subgroup:
               value.category.classification_subgroup ?? null,
-            accountId: data[index].id,
+            accountId: accountBank.id,
           },
         });
       } catch (e: any) {
         res.status(500).json(e);
         throw new Error(e);
       }
-    });
-  });
+    }
+  }
 
   res.status(200).json({
     status: 200,
