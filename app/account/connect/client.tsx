@@ -60,8 +60,8 @@ export default function Client({
             <li key={index} className="w-full relative">
               <Link
                 href={`${
-                  arrayOfConnectedBank[index] === value.link
-                    ? `/s/${value.link}`
+                  arrayOfConnectedBank[index] === value.link || value.disabled
+                    ? `#`
                     : `/account/connect/${value.link}`
                 }`}
                 target="_self"
@@ -100,17 +100,22 @@ export default function Client({
                   </div>
                 </button>
               </Link>
-              {arrayOfConnectedBank[index] === value.link && (
-                <div className="absolute right-0 top-2 border-2 border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
-                  Connected
-                </div>
-              )}
+              {arrayOfConnectedBank[index] === value.link ||
+                (value.disabled && (
+                  <div className="flex flex-col gap-2 absolute right-0 top-2">
+                    {arrayOfConnectedBank[index] === value.link && (
+                      <div className="border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                        Connected
+                      </div>
+                    )}
 
-              {value.disabled && (
-                <div className="absolute right-0 top-2 border-2 border-red-400 text-red-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
-                  Lagi gabisa
-                </div>
-              )}
+                    {value.disabled && (
+                      <div className="border-red-400 text-red-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                        Lagi gabisa
+                      </div>
+                    )}
+                  </div>
+                ))}
             </li>
           );
         })}
