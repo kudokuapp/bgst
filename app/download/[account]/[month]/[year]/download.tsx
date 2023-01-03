@@ -104,7 +104,7 @@ export default function Card({
   const renderHeatmapMargin = () => {
     switch (socmed) {
       case 'linkedin':
-        return 20;
+        return 18;
 
       case 'twitter':
         return 10;
@@ -117,7 +117,7 @@ export default function Card({
   const renderHeatmapSmallerWidth = () => {
     switch (socmed) {
       case 'linkedin':
-        return 42;
+        return 38;
 
       case 'twitter':
         return 35;
