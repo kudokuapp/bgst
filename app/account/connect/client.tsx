@@ -61,7 +61,7 @@ export default function Client({
               <Link
                 href={`${
                   arrayOfConnectedBank[index] === value.link || value.disabled
-                    ? `#`
+                    ? `/account/connect#`
                     : `/account/connect/${value.link}`
                 }`}
                 target="_self"
