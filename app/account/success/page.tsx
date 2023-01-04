@@ -14,6 +14,7 @@ export default async function Page() {
 
   let isBca = false,
     isGopay = false,
+    isMandiri = false,
     responseArr: any[] = [];
 
   if (!token) redirect('/');
@@ -53,9 +54,13 @@ export default async function Page() {
     if (value.institutionId === 11) {
       isGopay = true;
     }
+
+    if (value.institutionId === 3 || value.institutionId === 17) {
+      isMandiri = true;
+    }
   }
 
-  const disabled = isBca && isGopay;
+  const disabled = isBca && isGopay && isMandiri;
 
   return (
     <section className="flex flex-col items-center justify-center">

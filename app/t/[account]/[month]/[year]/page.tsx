@@ -76,6 +76,20 @@ export default async function Page({
         institution_id: account?.institutionId,
       },
     });
+  } else if (params.account === 'mandiri') {
+    const account = await prisma.account.findFirst({
+      where: {
+        OR: [{ institutionId: 3 }, { institutionId: 17 }],
+        kudosId: user.id,
+      },
+    });
+
+    transactions = await prisma.transaction.findMany({
+      where: {
+        accountId: account?.id,
+        institution_id: account?.institutionId,
+      },
+    });
   } else {
     redirect('/');
   }

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import '$styles/page.css';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
+import Mandiri from '$public/logo/bank/mandiri.png';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ThemeContext from '$context/ThemeContext';
@@ -12,7 +13,7 @@ import { useContext } from 'react';
 export default function Client({
   arrayOfConnectedBank,
 }: {
-  arrayOfConnectedBank: ['bca' | null, 'gopay' | null];
+  arrayOfConnectedBank: ['bca' | null, 'gopay' | null, 'mandiri' | null];
 }) {
   const { isDarkTheme } = useContext(ThemeContext);
   const data = [
@@ -28,6 +29,13 @@ export default function Client({
       name: 'Gopay',
       subname: 'PT. Gojek Indonesia',
       link: 'gopay',
+      disabled: false,
+    },
+    {
+      logo: Mandiri,
+      name: 'Mandiri',
+      subname: 'PT. Bank Mandiri, Tbk.',
+      link: 'mandiri',
       disabled: false,
     },
   ];

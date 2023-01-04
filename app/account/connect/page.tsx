@@ -10,7 +10,8 @@ const prisma = new PrismaClient();
 export default async function Page() {
   const nextCookies = cookies();
   const token = nextCookies.get('token');
-  let arrrayOfConnectedBank: ['bca' | null, 'gopay' | null] = [null, null];
+  let arrrayOfConnectedBank: ['bca' | null, 'gopay' | null, 'mandiri' | null] =
+    [null, null, null];
 
   if (!token) redirect('/');
 
@@ -37,6 +38,10 @@ export default async function Page() {
     }
     if (value.institutionId === 11) {
       arrrayOfConnectedBank[1] = 'gopay';
+    }
+
+    if (value.institutionId === 3 || value.institutionId === 17) {
+      arrrayOfConnectedBank[2] = 'mandiri';
     }
   });
 

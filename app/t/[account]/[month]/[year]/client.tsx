@@ -24,6 +24,7 @@ import DarkModeToggle from '$lib/DarkModeToggle';
 import Image, { ImageProps } from 'next/image';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
+import Mandiri from '$public/logo/bank/mandiri.png';
 import { Dialog, Listbox, Transition } from '@headlessui/react';
 import { censorLastFour } from '$utils/helper/censorString';
 import { month, year, availableMonthArray } from '$utils/helper/dateArray';
@@ -198,23 +199,29 @@ export function NavCard({
   monthParam,
   availableMonth2022BCA,
   availableMonth2022Gopay,
+  availableMonth2022Mandiri,
   availableMonth2023BCA,
   availableMonth2023Gopay,
+  availableMonth2023Mandiri,
   yearParam,
   connectedAccounts,
   availableYearBCA,
   availableYearGopay,
+  availableYearMandiri,
 }: {
   account: string;
   monthParam: string;
   availableMonth2022BCA: string[];
   availableMonth2022Gopay: string[];
+  availableMonth2022Mandiri: string[];
   availableMonth2023BCA: string[];
   availableMonth2023Gopay: string[];
+  availableMonth2023Mandiri: string[];
   yearParam: string;
   connectedAccounts: Account[];
   availableYearBCA: AvailableArray[];
   availableYearGopay: AvailableArray[];
+  availableYearMandiri: AvailableArray[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -233,8 +240,10 @@ export function NavCard({
 
   let isBca = false,
     isGopay = false,
+    isMandiri = false,
     bcaAccountNumber = undefined,
-    gopayAccountNumber = undefined;
+    gopayAccountNumber = undefined,
+    mandiriAccountNumber = undefined;
 
   for (let index = 0; index < connectedAccounts.length; index++) {
     const element = connectedAccounts[index];
@@ -251,6 +260,11 @@ export function NavCard({
     if (element.institutionId === 11) {
       isGopay = true;
       gopayAccountNumber = element.accountNumber;
+    }
+
+    if (element.institutionId === 3 || element.institutionId === 17) {
+      isMandiri = true;
+      mandiriAccountNumber = element.accountNumber;
     }
   }
 
@@ -273,6 +287,15 @@ export function NavCard({
       connected: isGopay,
       accountNumber: gopayAccountNumber,
     },
+    {
+      _id: 3,
+      name: 'Mandiri',
+      logo: Mandiri,
+      alt: 'Logo Mandiri',
+      param: 'mandiri',
+      connected: isMandiri,
+      accountNumber: mandiriAccountNumber,
+    },
   ];
 
   const monthOptions2022BCA = availableMonthArray(availableMonth2022BCA);
@@ -281,11 +304,20 @@ export function NavCard({
   const monthOptions2022Gopay = availableMonthArray(availableMonth2022Gopay);
   const monthOptions2023Gopay = availableMonthArray(availableMonth2023Gopay);
 
+  const monthOptions2022Mandiri = availableMonthArray(
+    availableMonth2022Mandiri
+  );
+  const monthOptions2023Mandiri = availableMonthArray(
+    availableMonth2023Mandiri
+  );
+
   useEffect(() => {
     if (akun === 'bca' || account === 'bca') {
       setArrayOfYearOptions(availableYearBCA);
     } else if (akun === 'gopay' || account === 'gopay') {
       setArrayOfYearOptions(availableYearGopay);
+    } else if (akun === 'mandiri' || account === 'mandiri') {
+      setArrayOfYearOptions(availableYearMandiri);
     }
 
     if (periodeTahun === '2022') {
@@ -303,6 +335,13 @@ export function NavCard({
             return value.available;
           })[0].value
         );
+      } else if (akun === 'mandiri') {
+        setArrayOfMonthsOptions(monthOptions2022Mandiri);
+        setPeriodeBulan(
+          monthOptions2022Mandiri.filter((value) => {
+            return value.available;
+          })[0].value
+        );
       }
     } else if (periodeTahun === '2023') {
       if (akun === 'bca') {
@@ -316,6 +355,13 @@ export function NavCard({
         setArrayOfMonthsOptions(monthOptions2023Gopay);
         setPeriodeBulan(
           monthOptions2023Gopay.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'mandiri') {
+        setArrayOfMonthsOptions(monthOptions2023Mandiri);
+        setPeriodeBulan(
+          monthOptions2023Mandiri.filter((value) => {
             return value.available;
           })[0].value
         );
@@ -580,6 +626,9 @@ export function NavCard({
             )}
             {isGopay && account === 'gopay' && (
               <p>{censorLastFour(gopayAccountNumber as string)}</p>
+            )}
+            {isMandiri && account === 'mandiri' && (
+              <p>{censorLastFour(mandiriAccountNumber as string)}</p>
             )}
           </section>
           <section className="w-full h-fit flex items-center justify-center">

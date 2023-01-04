@@ -44,8 +44,10 @@ export default async function Layout({
 
   let monthOptions2022BCA: any[] | undefined = undefined,
     monthOptions2022Gopay: any[] | undefined = undefined,
+    monthOptions2022Mandiri: any[] | undefined = undefined,
     monthOptions2023BCA: any[] | undefined = undefined,
     monthOptions2023Gopay: any[] | undefined = undefined,
+    monthOptions2023Mandiri: any[] | undefined = undefined,
     availableYearBCA = [
       {
         id: 1,
@@ -59,6 +61,18 @@ export default async function Layout({
       },
     ],
     availableYearGopay = [
+      {
+        id: 1,
+        value: '2022',
+        available: false,
+      },
+      {
+        id: 2,
+        value: '2023',
+        available: false,
+      },
+    ],
+    availableYearMandiri = [
       {
         id: 1,
         value: '2022',
@@ -102,6 +116,18 @@ export default async function Layout({
         element.id,
         2023
       );
+    } else if (element.institutionId === 3 || element.institutionId === 17) {
+      monthOptions2022Mandiri = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2022
+      );
+
+      monthOptions2023Mandiri = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2023
+      );
     }
   }
 
@@ -129,6 +155,18 @@ export default async function Layout({
     }
   }
 
+  if (monthOptions2022Mandiri !== undefined) {
+    if (monthOptions2022Mandiri.length > 0) {
+      availableYearMandiri[0].available = true;
+    }
+  }
+
+  if (monthOptions2023Mandiri !== undefined) {
+    if (monthOptions2023Mandiri.length > 0) {
+      availableYearMandiri[1].available = true;
+    }
+  }
+
   return (
     <div className="bg-background dark:bg-onBackground">
       <Navbar params={params} />
@@ -141,8 +179,11 @@ export default async function Layout({
         availableMonth2023BCA={monthOptions2023BCA ?? []}
         availableMonth2022Gopay={monthOptions2022Gopay ?? []}
         availableMonth2023Gopay={monthOptions2023Gopay ?? []}
+        availableMonth2022Mandiri={monthOptions2022Mandiri ?? []}
+        availableMonth2023Mandiri={monthOptions2023Mandiri ?? []}
         availableYearBCA={availableYearBCA}
         availableYearGopay={availableYearGopay}
+        availableYearMandiri={availableYearMandiri}
       />
       <main className="w-full h-fit">{children}</main>
       <Footer />
