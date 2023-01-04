@@ -71,6 +71,11 @@ export default async function handler(
     throw new Error('Error dari brick');
   }
 
+  if (transactionData.length === 0) {
+    res.status(500).json({ Error: 'Gaada transaksi' });
+    throw new Error('Gaada transaksi');
+  }
+
   const renderNull = (value: BrickTransactionData['category']) => {
     if (value === null) {
       return false;
