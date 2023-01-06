@@ -11,7 +11,7 @@ import {
   faShieldHalved,
   faX,
   faLock,
-  faRss,
+  // faRss,
 } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
@@ -66,10 +66,10 @@ export function Footer() {
       logo: faLock,
       text: 'Akses read-only. Kami tidak berwenang melakukan transaksi dari akun Kamu.',
     },
-    {
-      logo: faRss,
-      text: 'Menggunakan data aggregator yang bernama Brick.',
-    },
+    // {
+    //   logo: faRss,
+    //   text: 'Menggunakan data aggregator yang bernama Brick.',
+    // },
   ];
   return (
     <motion.ul
