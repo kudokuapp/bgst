@@ -4,8 +4,6 @@ import LogoPrimaryLight from '$public/logo/primary.svg';
 import LogoPrimaryDark from '$public/logo/primaryDark.svg';
 import LogoSecondaryLight from '$public/logo/secondary.svg';
 import LogoSecondaryDark from '$public/logo/secondaryDark.svg';
-import BCA from '$public/logo/bank/bca.png';
-import Gopay from '$public/logo/bank/gojek.png';
 import DarkModeToggle from '$lib/DarkModeToggle';
 import ThemeContext from '$context/ThemeContext';
 import { useContext, Fragment, useState, useEffect } from 'react';
@@ -151,88 +149,76 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           transition={{ delay: 2 }}
         >
           Penasaran kan duit yang lo abisin selama ini gimana? BGST&#8482; bakal
-          ngerangkum pengeluaran dan pemasukan lo di akun{' '}
+          ngerangkum, secara bulanan, pengeluaran dan pemasukan lo di akun{' '}
           <HtmlTooltip
             title={
               <Fragment>
                 <p className="text-onPrimaryContainer text-justify text-xs">
-                  <b>PT Bank Central Asia Tbk</b>, commonly known as Bank
-                  Central Asia (BCA) is an Indonesian bank founded on 21
-                  February 1957. It is considered as the largest privately owned
-                  bank in Indonesia. (Wikipedia)
+                  <ol>
+                    <li>BCA</li>
+                    <li>Mandiri</li>
+                    <li>BNI</li>
+                    <li>BSI</li>
+                  </ol>
                 </p>
               </Fragment>
             }
           >
-            <Link href="https://www.bca.co.id/id/individu" target="_blank">
-              <motion.button
-                initial={false}
-                whileHover={{
-                  backgroundColor: '#FAFA06',
-                  scale: 1.05,
-                }}
-                transition={{
-                  duration: 0.15,
-                }}
-                className="px-1.5 rounded-md text-[#0060AF] inline-flex items-center justify-center"
-              >
-                <Image
-                  src={BCA}
-                  height={20}
-                  width={21}
-                  quality={100}
-                  alt="BCA Logo"
-                  draggable={false}
-                  className="inline mr-1 select-none"
-                />
-                BCA
-              </motion.button>
-            </Link>
+            <motion.button
+              initial={false}
+              whileHover={{
+                backgroundColor: '#FAFA06',
+                scale: 1.05,
+              }}
+              transition={{
+                duration: 0.15,
+              }}
+              className="px-1.5 rounded-md text-[#0060AF] inline-flex items-center justify-center"
+            >
+              Bank
+            </motion.button>
           </HtmlTooltip>{' '}
           atau{' '}
           <HtmlTooltip
             title={
               <Fragment>
                 <p className="text-onPrimaryContainer text-justify text-xs">
-                  <b>PT Gojek Indonesia</b> is an Indonesian on-demand
-                  multi-service platform and digital payment technology group
-                  based in Jakarta. Gojek was first established in Indonesia in
-                  2009 as a call center to connect consumers to courier delivery
-                  and two-wheeled ride-hailing services. Gojek launched its
-                  application in 2015 with only four services: GoRide, GoSend,
-                  GoShop, and GoFood. Valued at US$10 billion today, Gojek has
-                  transformed into a super app, providing more than 20 services.
-                  (Wikipedia)
+                  <ol>
+                    <li>Gopay</li>
+                    <li>OVO</li>
+                    <li>Dana</li>
+                    <li>Shopee Pay</li>
+                  </ol>
                 </p>
               </Fragment>
             }
           >
-            <Link href="https://www.gojek.com/en-id/" target="_blank">
-              <motion.button
-                initial={false}
-                whileHover={{
-                  backgroundColor: '#FAFA06',
-                  scale: 1.05,
-                }}
-                transition={{
-                  duration: 0.15,
-                }}
-                className="px-1.5 rounded-md text-[#1BAC4B] inline-flex items-center justify-center"
-              >
-                <Image
-                  src={Gopay}
-                  height={20}
-                  width={20.65}
-                  quality={100}
-                  alt="Gojek Logo"
-                  draggable={false}
-                  className="inline mr-1 select-none"
-                />
-                Gopay
-              </motion.button>
-            </Link>
+            <motion.button
+              initial={false}
+              whileHover={{
+                backgroundColor: '#FAFA06',
+                scale: 1.05,
+              }}
+              transition={{
+                duration: 0.15,
+              }}
+              className="px-1.5 rounded-md text-[#1BAC4B] inline-flex items-center justify-center"
+            >
+              E-Wallet
+            </motion.button>
           </HtmlTooltip>{' '}
-          lo secara interaktif.
+          lo.
+        </motion.p>
+
+        <motion.p
+          className="sm:text-xl text-lg text-onPrimaryContainer dark:text-surfaceVariant text-left"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          Pas pertama kali lo connect-in Bank/E-wallet lo, kita bakal ambil
+          transaksi lo 2 bulan kebelakang. Dan kita update transaksinya setiap
+          bulan.
         </motion.p>
       </div>
 
@@ -251,10 +237,8 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           </button>
         </div>
         <p className="text-xs text-onPrimaryContainer dark:text-surfaceVariant text-justify">
-          Logo BCA dan Gopay adalah hak merek milik PT. Bank Central Asia Tbk
-          dan PT. Gojek Indonesia. Data kamu disediakan oleh PT. Brick Teknologi
-          Indonesia dan dijamin keharasiaannya oleh PT. Kudoku Finansial
-          Indonesia.
+          Data kamu disediakan oleh PT. Brick Teknologi Indonesia dan dijamin
+          keharasiaannya oleh PT. Kudoku Finansial Indonesia.
         </p>
       </motion.div>
 
@@ -427,88 +411,77 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
               transition={{ delay: 2 }}
             >
               Penasaran kan duit yang lo abisin selama ini gimana? BGST&#8482;
-              bakal ngerangkum pengeluaran dan pemasukan lo di akun{' '}
+              bakal ngerangkum, secara bulanan, pengeluaran dan pemasukan lo di
+              akun{' '}
               <HtmlTooltip
                 title={
                   <Fragment>
                     <p className="text-onPrimaryContainer text-justify text-xs">
-                      <b>PT Bank Central Asia Tbk</b>, commonly known as Bank
-                      Central Asia (BCA) is an Indonesian bank founded on 21
-                      February 1957. It is considered as the largest privately
-                      owned bank in Indonesia. (Wikipedia)
+                      <ol>
+                        <li>BCA</li>
+                        <li>Mandiri</li>
+                        <li>BNI</li>
+                        <li>BSI</li>
+                      </ol>
                     </p>
                   </Fragment>
                 }
               >
-                <Link href="https://www.bca.co.id/id/individu" target="_blank">
-                  <motion.button
-                    initial={false}
-                    whileHover={{
-                      backgroundColor: '#FAFA06',
-                      scale: 1.05,
-                    }}
-                    transition={{
-                      duration: 0.15,
-                    }}
-                    className="px-1.5 rounded-md text-[#0060AF] inline-flex items-center justify-center"
-                  >
-                    <Image
-                      src={BCA}
-                      height={20}
-                      width={20}
-                      quality={100}
-                      alt="BCA Logo"
-                      draggable={false}
-                      className="inline mr-1 select-none"
-                    />
-                    BCA
-                  </motion.button>
-                </Link>
+                <motion.button
+                  initial={false}
+                  whileHover={{
+                    backgroundColor: '#FAFA06',
+                    scale: 1.05,
+                  }}
+                  transition={{
+                    duration: 0.15,
+                  }}
+                  className="px-1.5 rounded-md text-[#0060AF] inline-flex items-center justify-center"
+                >
+                  Bank
+                </motion.button>
               </HtmlTooltip>{' '}
               atau{' '}
               <HtmlTooltip
                 title={
                   <Fragment>
                     <p className="text-onPrimaryContainer text-justify text-xs">
-                      <b>PT Gojek Indonesia</b> is an Indonesian on-demand
-                      multi-service platform and digital payment technology
-                      group based in Jakarta. Gojek was first established in
-                      Indonesia in 2009 as a call center to connect consumers to
-                      courier delivery and two-wheeled ride-hailing services.
-                      Gojek launched its application in 2015 with only four
-                      services: GoRide, GoSend, GoShop, and GoFood. Valued at
-                      US$10 billion today, Gojek has transformed into a super
-                      app, providing more than 20 services. (Wikipedia)
+                      <ol>
+                        <li>Gopay</li>
+                        <li>OVO</li>
+                        <li>Dana</li>
+                        <li>Shopee Pay</li>
+                      </ol>
                     </p>
                   </Fragment>
                 }
               >
-                <Link href="https://www.gojek.com/en-id/" target="_blank">
-                  <motion.button
-                    initial={false}
-                    whileHover={{
-                      backgroundColor: '#FAFA06',
-                      scale: 1.05,
-                    }}
-                    transition={{
-                      duration: 0.15,
-                    }}
-                    className="px-1.5 rounded-md text-[#1BAC4B] inline-flex items-center justify-center"
-                  >
-                    <Image
-                      src={Gopay}
-                      height={20}
-                      width={20}
-                      quality={100}
-                      alt="Gojek Logo"
-                      draggable={false}
-                      className="inline mr-1 select-none"
-                    />
-                    Gopay
-                  </motion.button>
-                </Link>
+                <motion.button
+                  initial={false}
+                  whileHover={{
+                    backgroundColor: '#FAFA06',
+                    scale: 1.05,
+                  }}
+                  transition={{
+                    duration: 0.15,
+                  }}
+                  className="px-1.5 rounded-md text-[#1BAC4B] inline-flex items-center justify-center"
+                >
+                  E-Wallet
+                </motion.button>
               </HtmlTooltip>{' '}
-              lo secara interaktif.
+              lo.
+            </motion.p>
+
+            <motion.p
+              className="sm:text-xl text-lg text-onPrimaryContainer dark:text-surfaceVariant text-left"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2 }}
+            >
+              Pas pertama kali lo connect-in Bank/E-wallet lo, kita bakal ambil
+              transaksi lo 2 bulan kebelakang. Dan kita update transaksinya
+              setiap bulan.
             </motion.p>
           </div>
 
@@ -519,10 +492,8 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           >
             <LoginButton />
             <p className="text-xs text-onPrimaryContainer dark:text-surfaceVariant text-justify">
-              Logo BCA dan Gopay adalah hak merek milik PT. Bank Central Asia
-              Tbk dan PT. Gojek Indonesia. Data kamu disediakan oleh PT. Brick
-              Teknologi Indonesia dan dijamin keharasiaannya oleh PT. Kudoku
-              Finansial Indonesia.
+              Data kamu disediakan oleh PT. Brick Teknologi Indonesia dan
+              dijamin keharasiaannya oleh PT. Kudoku Finansial Indonesia.
             </p>
           </motion.div>
         </section>
