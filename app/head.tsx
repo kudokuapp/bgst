@@ -25,7 +25,7 @@ export default function Head() {
         property="og:description"
         content="BGST: Bayar Gajelas Setiap Tahun"
       />
-      <meta property="og:image" content="https://bgst.kudoku.id/meta.png" />
+      <meta property="og:image" content="https://bgst.kudoku.id/meta.jpg" />
 
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://bgst.kudoku.id/" />
@@ -36,7 +36,7 @@ export default function Head() {
       />
       <meta
         property="twitter:image"
-        content="https://bgst.kudoku.id/meta.png"
+        content="https://bgst.kudoku.id/meta.jpg"
       />
 
       <link rel="shortcut icon" href="/favicon.ico" />
