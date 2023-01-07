@@ -25,7 +25,13 @@ import Card from './download';
 import { downloadSvgAsPng } from './utils';
 import LogoKudoku from '$public/logo/primary.svg';
 import LogoBCA from '$public/logo/bank/bca.png';
+import LogoMandiri from '$public/logo/bank/mandiri.png';
+import LogoBni from '$public/logo/bank/bni.png';
+import LogoBsi from '$public/logo/bank/bsi.png';
 import LogoGopay from '$public/logo/bank/gojek.png';
+import LogoOvo from '$public/logo/bank/ovo.png';
+import LogoDana from '$public/logo/bank/dana.png';
+import LogoShopee from '$public/logo/bank/shopee.png';
 import { shortMonth, year } from '$utils/helper/dateArray';
 import {
   BarangPalingMahal,
@@ -456,6 +462,42 @@ export function MainShare({
               </>
             )}
 
+            {params.account === 'mandiri' && (
+              <>
+                <Image
+                  src={LogoMandiri}
+                  alt="Logo Mandiri"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">Mandiri</p>
+              </>
+            )}
+
+            {params.account === 'bni' && (
+              <>
+                <Image
+                  src={LogoBni}
+                  alt="Logo BNI"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">BNI</p>
+              </>
+            )}
+
+            {params.account === 'bsi' && (
+              <>
+                <Image
+                  src={LogoBsi}
+                  alt="Logo BSI"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">BSI</p>
+              </>
+            )}
+
             {params.account === 'gopay' && (
               <>
                 <Image
@@ -465,6 +507,42 @@ export function MainShare({
                   draggable={false}
                 />
                 <p className="text-onPrimaryContainer">Gopay</p>
+              </>
+            )}
+
+            {params.account === 'ovo' && (
+              <>
+                <Image
+                  src={LogoOvo}
+                  alt="Logo OVO"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">OVO</p>
+              </>
+            )}
+
+            {params.account === 'dana' && (
+              <>
+                <Image
+                  src={LogoDana}
+                  alt="Logo Dana"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">Dana</p>
+              </>
+            )}
+
+            {params.account === 'shopeepay' && (
+              <>
+                <Image
+                  src={LogoShopee}
+                  alt="Logo Shopee Pay"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">Shopee Pay</p>
               </>
             )}
           </div>

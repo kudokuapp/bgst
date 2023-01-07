@@ -12,9 +12,14 @@ export default async function Page() {
   const nextCookies = cookies();
   const token = nextCookies.get('token');
 
-  let isBca = false,
-    isGopay = false,
-    isMandiri = false,
+  let isBca: boolean = false,
+    isMandiri: boolean = false,
+    isBni: boolean = false,
+    isBsi: boolean = false,
+    isGopay: boolean = false,
+    isOvo: boolean = false,
+    isDana: boolean = false,
+    isShopeePay: boolean = false,
     responseArr: any[] = [];
 
   if (!token) redirect('/');
@@ -51,16 +56,44 @@ export default async function Page() {
       isBca = true;
     }
 
+    if (value.institutionId === 3 || value.institutionId === 17) {
+      isMandiri = true;
+    }
+
+    if (value.institutionId === 4) {
+      isBni = true;
+    }
+
+    if (value.institutionId === 26 || value.institutionId === 34) {
+      isBsi = true;
+    }
+
     if (value.institutionId === 11) {
       isGopay = true;
     }
 
-    if (value.institutionId === 3 || value.institutionId === 17) {
-      isMandiri = true;
+    if (value.institutionId === 12) {
+      isOvo = true;
+    }
+
+    if (value.institutionId === 46) {
+      isDana = true;
+    }
+
+    if (value.institutionId === 33) {
+      isShopeePay = true;
     }
   }
 
-  const disabled = isBca && isGopay && isMandiri;
+  const disabled =
+    isBca &&
+    isMandiri &&
+    isBni &&
+    isBsi &&
+    isGopay &&
+    isOvo &&
+    isDana &&
+    isShopeePay;
 
   return (
     <section className="flex flex-col items-center justify-center">

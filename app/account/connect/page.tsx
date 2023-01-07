@@ -10,8 +10,14 @@ const prisma = new PrismaClient();
 export default async function Page() {
   const nextCookies = cookies();
   const token = nextCookies.get('token');
-  let arrrayOfConnectedBank: ['bca' | null, 'gopay' | null, 'mandiri' | null] =
-    [null, null, null];
+  let isBca: boolean = false,
+    isMandiri: boolean = false,
+    isBni: boolean = false,
+    isBsi: boolean = false,
+    isGopay: boolean = false,
+    isOvo: boolean = false,
+    isDana: boolean = false,
+    isShopeePay: boolean = false;
 
   if (!token) redirect('/');
 
@@ -34,20 +40,50 @@ export default async function Page() {
       value.institutionId === 37 ||
       value.institutionId === 38
     ) {
-      arrrayOfConnectedBank[0] = 'bca';
-    }
-    if (value.institutionId === 11) {
-      arrrayOfConnectedBank[1] = 'gopay';
+      isBca = true;
     }
 
     if (value.institutionId === 3 || value.institutionId === 17) {
-      arrrayOfConnectedBank[2] = 'mandiri';
+      isMandiri = true;
+    }
+
+    if (value.institutionId === 4) {
+      isBni = true;
+    }
+
+    if (value.institutionId === 26 || value.institutionId === 34) {
+      isBsi = true;
+    }
+
+    if (value.institutionId === 11) {
+      isGopay = true;
+    }
+
+    if (value.institutionId === 12) {
+      isOvo = true;
+    }
+
+    if (value.institutionId === 46) {
+      isDana = true;
+    }
+
+    if (value.institutionId === 33) {
+      isShopeePay = true;
     }
   });
 
   return (
     <>
-      <Client arrayOfConnectedBank={arrrayOfConnectedBank} />
+      <Client
+        isBca={isBca}
+        isMandiri={isMandiri}
+        isBni={isBni}
+        isBsi={isBsi}
+        isGopay={isGopay}
+        isOvo={isOvo}
+        isDana={isDana}
+        isShopeePay={isShopeePay}
+      />
     </>
   );
 }

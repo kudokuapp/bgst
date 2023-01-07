@@ -62,6 +62,48 @@ export default async function Page({
         institution_id: account?.institutionId,
       },
     });
+  } else if (params.account === 'mandiri') {
+    const account = await prisma.account.findFirst({
+      where: {
+        OR: [{ institutionId: 3 }, { institutionId: 17 }],
+        kudosId: user.id,
+      },
+    });
+
+    transactions = await prisma.transaction.findMany({
+      where: {
+        accountId: account?.id,
+        institution_id: account?.institutionId,
+      },
+    });
+  } else if (params.account === 'bni') {
+    const account = await prisma.account.findFirst({
+      where: {
+        kudosId: user.id,
+        institutionId: 4,
+      },
+    });
+
+    transactions = await prisma.transaction.findMany({
+      where: {
+        accountId: account?.id,
+        institution_id: account?.institutionId,
+      },
+    });
+  } else if (params.account === 'bsi') {
+    const account = await prisma.account.findFirst({
+      where: {
+        OR: [{ institutionId: 26 }, { institutionId: 34 }],
+        kudosId: user.id,
+      },
+    });
+
+    transactions = await prisma.transaction.findMany({
+      where: {
+        accountId: account?.id,
+        institution_id: account?.institutionId,
+      },
+    });
   } else if (params.account === 'gopay') {
     const account = await prisma.account.findFirst({
       where: {
@@ -76,11 +118,39 @@ export default async function Page({
         institution_id: account?.institutionId,
       },
     });
-  } else if (params.account === 'mandiri') {
+  } else if (params.account === 'ovo') {
     const account = await prisma.account.findFirst({
       where: {
-        OR: [{ institutionId: 3 }, { institutionId: 17 }],
         kudosId: user.id,
+        institutionId: 12,
+      },
+    });
+
+    transactions = await prisma.transaction.findMany({
+      where: {
+        accountId: account?.id,
+        institution_id: account?.institutionId,
+      },
+    });
+  } else if (params.account === 'dana') {
+    const account = await prisma.account.findFirst({
+      where: {
+        kudosId: user.id,
+        institutionId: 46,
+      },
+    });
+
+    transactions = await prisma.transaction.findMany({
+      where: {
+        accountId: account?.id,
+        institution_id: account?.institutionId,
+      },
+    });
+  } else if (params.account === 'shopeepay') {
+    const account = await prisma.account.findFirst({
+      where: {
+        kudosId: user.id,
+        institutionId: 33,
       },
     });
 

@@ -43,12 +43,58 @@ export default async function Layout({
   });
 
   let monthOptions2022BCA: any[] | undefined = undefined,
-    monthOptions2022Gopay: any[] | undefined = undefined,
-    monthOptions2022Mandiri: any[] | undefined = undefined,
     monthOptions2023BCA: any[] | undefined = undefined,
-    monthOptions2023Gopay: any[] | undefined = undefined,
+    monthOptions2022Mandiri: any[] | undefined = undefined,
     monthOptions2023Mandiri: any[] | undefined = undefined,
+    monthOptions2022Bni: any[] | undefined = undefined,
+    monthOptions2023Bni: any[] | undefined = undefined,
+    monthOptions2022Bsi: any[] | undefined = undefined,
+    monthOptions2023Bsi: any[] | undefined = undefined,
+    monthOptions2022Gopay: any[] | undefined = undefined,
+    monthOptions2023Gopay: any[] | undefined = undefined,
+    monthOptions2022Ovo: any[] | undefined = undefined,
+    monthOptions2023Ovo: any[] | undefined = undefined,
+    monthOptions2022Dana: any[] | undefined = undefined,
+    monthOptions2023Dana: any[] | undefined = undefined,
+    monthOptions2022Shopeepay: any[] | undefined = undefined,
+    monthOptions2023Shopeepay: any[] | undefined = undefined,
     availableYearBCA = [
+      {
+        id: 1,
+        value: '2022',
+        available: false,
+      },
+      {
+        id: 2,
+        value: '2023',
+        available: false,
+      },
+    ],
+    availableYearMandiri = [
+      {
+        id: 1,
+        value: '2022',
+        available: false,
+      },
+      {
+        id: 2,
+        value: '2023',
+        available: false,
+      },
+    ],
+    availableYearBni = [
+      {
+        id: 1,
+        value: '2022',
+        available: false,
+      },
+      {
+        id: 2,
+        value: '2023',
+        available: false,
+      },
+    ],
+    availableYearBsi = [
       {
         id: 1,
         value: '2022',
@@ -72,7 +118,31 @@ export default async function Layout({
         available: false,
       },
     ],
-    availableYearMandiri = [
+    availableYearOvo = [
+      {
+        id: 1,
+        value: '2022',
+        available: false,
+      },
+      {
+        id: 2,
+        value: '2023',
+        available: false,
+      },
+    ],
+    availableYearDana = [
+      {
+        id: 1,
+        value: '2022',
+        available: false,
+      },
+      {
+        id: 2,
+        value: '2023',
+        available: false,
+      },
+    ],
+    availableYearShopeepay = [
       {
         id: 1,
         value: '2022',
@@ -128,6 +198,66 @@ export default async function Layout({
         element.id,
         2023
       );
+    } else if (element.institutionId === 4) {
+      monthOptions2022Bni = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2022
+      );
+
+      monthOptions2023Bni = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2023
+      );
+    } else if (element.institutionId === 26 || element.institutionId === 34) {
+      monthOptions2022Bsi = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2022
+      );
+
+      monthOptions2023Bsi = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2023
+      );
+    } else if (element.institutionId === 12) {
+      monthOptions2022Ovo = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2022
+      );
+
+      monthOptions2023Ovo = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2023
+      );
+    } else if (element.institutionId === 46) {
+      monthOptions2022Dana = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2022
+      );
+
+      monthOptions2023Dana = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2023
+      );
+    } else if (element.institutionId === 33) {
+      monthOptions2022Shopeepay = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2022
+      );
+
+      monthOptions2023Shopeepay = await getAvailableMonth(
+        element.institutionId,
+        element.id,
+        2023
+      );
     }
   }
 
@@ -167,6 +297,66 @@ export default async function Layout({
     }
   }
 
+  if (monthOptions2022Bni !== undefined) {
+    if (monthOptions2022Bni.length > 0) {
+      availableYearBni[0].available = true;
+    }
+  }
+
+  if (monthOptions2023Bni !== undefined) {
+    if (monthOptions2023Bni.length > 0) {
+      availableYearBni[1].available = true;
+    }
+  }
+
+  if (monthOptions2022Bsi !== undefined) {
+    if (monthOptions2022Bsi.length > 0) {
+      availableYearBsi[0].available = true;
+    }
+  }
+
+  if (monthOptions2023Bsi !== undefined) {
+    if (monthOptions2023Bsi.length > 0) {
+      availableYearBsi[1].available = true;
+    }
+  }
+
+  if (monthOptions2022Ovo !== undefined) {
+    if (monthOptions2022Ovo.length > 0) {
+      availableYearOvo[0].available = true;
+    }
+  }
+
+  if (monthOptions2023Ovo !== undefined) {
+    if (monthOptions2023Ovo.length > 0) {
+      availableYearOvo[1].available = true;
+    }
+  }
+
+  if (monthOptions2022Dana !== undefined) {
+    if (monthOptions2022Dana.length > 0) {
+      availableYearDana[0].available = true;
+    }
+  }
+
+  if (monthOptions2023Dana !== undefined) {
+    if (monthOptions2023Dana.length > 0) {
+      availableYearDana[1].available = true;
+    }
+  }
+
+  if (monthOptions2022Shopeepay !== undefined) {
+    if (monthOptions2022Shopeepay.length > 0) {
+      availableYearShopeepay[0].available = true;
+    }
+  }
+
+  if (monthOptions2023Shopeepay !== undefined) {
+    if (monthOptions2023Shopeepay.length > 0) {
+      availableYearShopeepay[1].available = true;
+    }
+  }
+
   return (
     <div className="bg-background dark:bg-onBackground">
       <Navbar params={params} />
@@ -177,13 +367,28 @@ export default async function Layout({
         yearParam={params.year}
         availableMonth2022BCA={monthOptions2022BCA ?? []}
         availableMonth2023BCA={monthOptions2023BCA ?? []}
-        availableMonth2022Gopay={monthOptions2022Gopay ?? []}
-        availableMonth2023Gopay={monthOptions2023Gopay ?? []}
         availableMonth2022Mandiri={monthOptions2022Mandiri ?? []}
         availableMonth2023Mandiri={monthOptions2023Mandiri ?? []}
+        availableMonth2022Bni={monthOptions2022Bni ?? []}
+        availableMonth2023Bni={monthOptions2023Bni ?? []}
+        availableMonth2022Bsi={monthOptions2022Bsi ?? []}
+        availableMonth2023Bsi={monthOptions2023Bsi ?? []}
+        availableMonth2022Gopay={monthOptions2022Gopay ?? []}
+        availableMonth2023Gopay={monthOptions2023Gopay ?? []}
+        availableMonth2022Ovo={monthOptions2022Ovo ?? []}
+        availableMonth2023Ovo={monthOptions2023Ovo ?? []}
+        availableMonth2022Dana={monthOptions2022Dana ?? []}
+        availableMonth2023Dana={monthOptions2023Dana ?? []}
+        availableMonth2022Shopeepay={monthOptions2022Shopeepay ?? []}
+        availableMonth2023Shopeepay={monthOptions2023Shopeepay ?? []}
         availableYearBCA={availableYearBCA}
-        availableYearGopay={availableYearGopay}
         availableYearMandiri={availableYearMandiri}
+        availableYearBni={availableYearBni}
+        availableYearBsi={availableYearBsi}
+        availableYearGopay={availableYearGopay}
+        availableYearOvo={availableYearOvo}
+        availableYearDana={availableYearDana}
+        availableYearShopeepay={availableYearShopeepay}
       />
       <main className="w-full h-fit">{children}</main>
       <Footer />

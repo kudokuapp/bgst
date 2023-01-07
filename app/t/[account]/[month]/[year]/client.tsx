@@ -24,12 +24,18 @@ import DarkModeToggle from '$lib/DarkModeToggle';
 import Image, { ImageProps } from 'next/image';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
+import OVO from '$public/logo/bank/ovo.png';
+import Dana from '$public/logo/bank/dana.png';
+import Shopeepay from '$public/logo/bank/shopee.png';
 import Mandiri from '$public/logo/bank/mandiri.png';
-import { Dialog, Listbox, Transition } from '@headlessui/react';
+import BNI from '$public/logo/bank/bni.png';
+import BSI from '$public/logo/bank/bsi.png';
+import { Dialog, Listbox, Tab, Transition } from '@headlessui/react';
 import { censorLastFour } from '$utils/helper/censorString';
 import { month, year, availableMonthArray } from '$utils/helper/dateArray';
 import { toast, Toaster } from 'react-hot-toast';
 import Cal from '@calcom/embed-react';
+import { classNames } from 'app/account/connect/client';
 
 type IParams = {
   account: string;
@@ -198,30 +204,81 @@ export function NavCard({
   account,
   monthParam,
   availableMonth2022BCA,
-  availableMonth2022Gopay,
-  availableMonth2022Mandiri,
   availableMonth2023BCA,
-  availableMonth2023Gopay,
+
+  availableMonth2022Mandiri,
   availableMonth2023Mandiri,
+
+  availableMonth2022Bni,
+  availableMonth2023Bni,
+
+  availableMonth2022Bsi,
+  availableMonth2023Bsi,
+
+  availableMonth2022Gopay,
+  availableMonth2023Gopay,
+
+  availableMonth2022Ovo,
+  availableMonth2023Ovo,
+
+  availableMonth2022Dana,
+  availableMonth2023Dana,
+
+  availableMonth2022Shopeepay,
+  availableMonth2023Shopeepay,
+
   yearParam,
   connectedAccounts,
+
   availableYearBCA,
-  availableYearGopay,
   availableYearMandiri,
+  availableYearBni,
+  availableYearBsi,
+
+  availableYearGopay,
+  availableYearOvo,
+  availableYearDana,
+  availableYearShopeepay,
 }: {
   account: string;
   monthParam: string;
+
   availableMonth2022BCA: string[];
-  availableMonth2022Gopay: string[];
-  availableMonth2022Mandiri: string[];
   availableMonth2023BCA: string[];
-  availableMonth2023Gopay: string[];
+
+  availableMonth2022Mandiri: string[];
   availableMonth2023Mandiri: string[];
+
+  availableMonth2022Bni: string[];
+  availableMonth2023Bni: string[];
+
+  availableMonth2022Bsi: string[];
+  availableMonth2023Bsi: string[];
+
+  availableMonth2022Gopay: string[];
+  availableMonth2023Gopay: string[];
+
+  availableMonth2022Ovo: string[];
+  availableMonth2023Ovo: string[];
+
+  availableMonth2022Dana: string[];
+  availableMonth2023Dana: string[];
+
+  availableMonth2022Shopeepay: string[];
+  availableMonth2023Shopeepay: string[];
+
   yearParam: string;
   connectedAccounts: Account[];
+
   availableYearBCA: AvailableArray[];
-  availableYearGopay: AvailableArray[];
   availableYearMandiri: AvailableArray[];
+  availableYearBni: AvailableArray[];
+  availableYearBsi: AvailableArray[];
+
+  availableYearGopay: AvailableArray[];
+  availableYearOvo: AvailableArray[];
+  availableYearDana: AvailableArray[];
+  availableYearShopeepay: AvailableArray[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -239,11 +296,21 @@ export function NavCard({
   );
 
   let isBca = false,
-    isGopay = false,
     isMandiri = false,
+    isBni = false,
+    isBsi = false,
+    isGopay = false,
+    isOvo = false,
+    isDana = false,
+    isShopeepay = false,
     bcaAccountNumber = undefined,
+    mandiriAccountNumber = undefined,
+    bniAccountNumber = undefined,
+    bsiAccountNumber = undefined,
     gopayAccountNumber = undefined,
-    mandiriAccountNumber = undefined;
+    ovoAccountNumber = undefined,
+    danaAccountNumber = undefined,
+    shopeepayAccountNumber = undefined;
 
   for (let index = 0; index < connectedAccounts.length; index++) {
     const element = connectedAccounts[index];
@@ -257,52 +324,191 @@ export function NavCard({
       bcaAccountNumber = element.accountNumber;
     }
 
+    if (element.institutionId === 3 || element.institutionId === 17) {
+      isMandiri = true;
+      mandiriAccountNumber = element.accountNumber;
+    }
+
+    if (element.institutionId === 4) {
+      isBni = true;
+      bniAccountNumber = element.accountNumber;
+    }
+
+    if (element.institutionId === 26 || element.institutionId === 34) {
+      isBsi = true;
+      bsiAccountNumber = element.accountNumber;
+    }
+
     if (element.institutionId === 11) {
       isGopay = true;
       gopayAccountNumber = element.accountNumber;
     }
 
-    if (element.institutionId === 3 || element.institutionId === 17) {
-      isMandiri = true;
-      mandiriAccountNumber = element.accountNumber;
+    if (element.institutionId === 12) {
+      isOvo = true;
+      ovoAccountNumber = element.accountNumber;
+    }
+
+    if (element.institutionId === 46) {
+      isDana = true;
+      danaAccountNumber = element.accountNumber;
+    }
+
+    if (element.institutionId === 33) {
+      isShopeepay = true;
+      shopeepayAccountNumber = element.accountNumber;
     }
   }
 
   const options = [
     {
-      _id: 1,
-      name: 'BCA',
-      logo: BCA,
-      alt: 'Logo Bank BCA',
-      param: 'bca',
-      connected: isBca,
-      accountNumber: bcaAccountNumber,
-    },
-    {
-      _id: 2,
       name: 'Gopay',
       logo: Gopay,
       alt: 'Logo Gojek',
       param: 'gopay',
-      connected: isGopay,
-      accountNumber: gopayAccountNumber,
     },
     {
-      _id: 3,
+      name: 'OVO',
+      logo: OVO,
+      alt: 'Logo OVO',
+      param: 'ovo',
+    },
+    {
+      name: 'Dana',
+      logo: Dana,
+      alt: 'Logo Dana',
+      param: 'dana',
+    },
+    {
+      name: 'Shopee Pay',
+      logo: Shopeepay,
+      alt: 'Logo Shopee Pay',
+      param: 'shopeepay',
+    },
+    {
+      name: 'BCA',
+      logo: BCA,
+      alt: 'Logo Bank BCA',
+      param: 'bca',
+    },
+    {
       name: 'Mandiri',
       logo: Mandiri,
       alt: 'Logo Mandiri',
       param: 'mandiri',
-      connected: isMandiri,
-      accountNumber: mandiriAccountNumber,
+    },
+    {
+      name: 'BNI',
+      logo: BNI,
+      alt: 'Logo Bank BNI',
+      param: 'bni',
+    },
+    {
+      name: 'BSI',
+      logo: BSI,
+      alt: 'Logo Bank BSI',
+      param: 'bsi',
     },
   ];
 
+  const [categories, setCategories] = useState({
+    Bank: [
+      {
+        _id: 1,
+        name: 'BCA',
+        logo: BCA,
+        alt: 'Logo Bank BCA',
+        param: 'bca',
+        connected: isBca,
+        accountNumber: bcaAccountNumber,
+      },
+      {
+        _id: 2,
+        name: 'Mandiri',
+        logo: Mandiri,
+        alt: 'Logo Mandiri',
+        param: 'mandiri',
+        connected: isMandiri,
+        accountNumber: mandiriAccountNumber,
+      },
+      {
+        _id: 3,
+        name: 'BNI',
+        logo: BNI,
+        alt: 'Logo Bank BNI',
+        param: 'bni',
+        connected: isBni,
+        accountNumber: bniAccountNumber,
+      },
+      {
+        _id: 4,
+        name: 'BSI',
+        logo: BSI,
+        alt: 'Logo Bank BSI',
+        param: 'bsi',
+        connected: isBsi,
+        accountNumber: bsiAccountNumber,
+      },
+    ],
+    'E-Wallet': [
+      {
+        _id: 1,
+        name: 'Gopay',
+        logo: Gopay,
+        alt: 'Logo Gojek',
+        param: 'gopay',
+        connected: isGopay,
+        accountNumber: gopayAccountNumber,
+      },
+      {
+        _id: 2,
+        name: 'OVO',
+        logo: OVO,
+        alt: 'Logo OVO',
+        param: 'ovo',
+        connected: isOvo,
+        accountNumber: ovoAccountNumber,
+      },
+      {
+        _id: 3,
+        name: 'Dana',
+        logo: Dana,
+        alt: 'Logo Dana',
+        param: 'dana',
+        connected: isDana,
+        accountNumber: danaAccountNumber,
+      },
+      {
+        _id: 4,
+        name: 'Shopee Pay',
+        logo: Shopeepay,
+        alt: 'Logo Shopee Pay',
+        param: 'shopeepay',
+        connected: isShopeepay,
+        accountNumber: shopeepayAccountNumber,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const banks = categories['Bank'].sort(
+      (a, b) => Number(b.connected) - Number(a.connected)
+    );
+
+    const ewallet = categories['E-Wallet'].sort(
+      (a, b) => Number(b.connected) - Number(a.connected)
+    );
+
+    setCategories({
+      Bank: banks,
+      'E-Wallet': ewallet,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const monthOptions2022BCA = availableMonthArray(availableMonth2022BCA);
   const monthOptions2023BCA = availableMonthArray(availableMonth2023BCA);
-
-  const monthOptions2022Gopay = availableMonthArray(availableMonth2022Gopay);
-  const monthOptions2023Gopay = availableMonthArray(availableMonth2023Gopay);
 
   const monthOptions2022Mandiri = availableMonthArray(
     availableMonth2022Mandiri
@@ -311,13 +517,45 @@ export function NavCard({
     availableMonth2023Mandiri
   );
 
+  const monthOptions2022Bni = availableMonthArray(availableMonth2022Bni);
+  const monthOptions2023Bni = availableMonthArray(availableMonth2023Bni);
+
+  const monthOptions2022Bsi = availableMonthArray(availableMonth2022Bsi);
+  const monthOptions2023Bsi = availableMonthArray(availableMonth2023Bsi);
+
+  const monthOptions2022Gopay = availableMonthArray(availableMonth2022Gopay);
+  const monthOptions2023Gopay = availableMonthArray(availableMonth2023Gopay);
+
+  const monthOptions2022Ovo = availableMonthArray(availableMonth2022Ovo);
+  const monthOptions2023Ovo = availableMonthArray(availableMonth2023Ovo);
+
+  const monthOptions2022Dana = availableMonthArray(availableMonth2022Dana);
+  const monthOptions2023Dana = availableMonthArray(availableMonth2023Dana);
+
+  const monthOptions2022Shopeepay = availableMonthArray(
+    availableMonth2022Shopeepay
+  );
+  const monthOptions2023Shopeepay = availableMonthArray(
+    availableMonth2023Shopeepay
+  );
+
   useEffect(() => {
     if (akun === 'bca' || account === 'bca') {
       setArrayOfYearOptions(availableYearBCA);
-    } else if (akun === 'gopay' || account === 'gopay') {
-      setArrayOfYearOptions(availableYearGopay);
     } else if (akun === 'mandiri' || account === 'mandiri') {
       setArrayOfYearOptions(availableYearMandiri);
+    } else if (akun === 'bni' || account === 'bni') {
+      setArrayOfYearOptions(availableYearBni);
+    } else if (akun === 'bsi' || account === 'bsi') {
+      setArrayOfYearOptions(availableYearBsi);
+    } else if (akun === 'gopay' || account === 'gopay') {
+      setArrayOfYearOptions(availableYearGopay);
+    } else if (akun === 'ovo' || account === 'ovo') {
+      setArrayOfYearOptions(availableYearOvo);
+    } else if (akun === 'dana' || account === 'dana') {
+      setArrayOfYearOptions(availableYearDana);
+    } else if (akun === 'shopeepay' || account === 'shopeepay') {
+      setArrayOfYearOptions(availableYearShopeepay);
     }
 
     if (periodeTahun === '2022') {
@@ -328,6 +566,27 @@ export function NavCard({
             return value.available;
           })[0].value
         );
+      } else if (akun === 'mandiri') {
+        setArrayOfMonthsOptions(monthOptions2022Mandiri);
+        setPeriodeBulan(
+          monthOptions2022Mandiri.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'bni') {
+        setArrayOfMonthsOptions(monthOptions2022Bni);
+        setPeriodeBulan(
+          monthOptions2022Bni.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'bsi') {
+        setArrayOfMonthsOptions(monthOptions2022Bsi);
+        setPeriodeBulan(
+          monthOptions2022Bsi.filter((value) => {
+            return value.available;
+          })[0].value
+        );
       } else if (akun === 'gopay') {
         setArrayOfMonthsOptions(monthOptions2022Gopay);
         setPeriodeBulan(
@@ -335,10 +594,24 @@ export function NavCard({
             return value.available;
           })[0].value
         );
-      } else if (akun === 'mandiri') {
-        setArrayOfMonthsOptions(monthOptions2022Mandiri);
+      } else if (akun === 'ovo') {
+        setArrayOfMonthsOptions(monthOptions2022Ovo);
         setPeriodeBulan(
-          monthOptions2022Mandiri.filter((value) => {
+          monthOptions2022Ovo.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'dana') {
+        setArrayOfMonthsOptions(monthOptions2022Dana);
+        setPeriodeBulan(
+          monthOptions2022Dana.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'shopeepay') {
+        setArrayOfMonthsOptions(monthOptions2022Shopeepay);
+        setPeriodeBulan(
+          monthOptions2022Shopeepay.filter((value) => {
             return value.available;
           })[0].value
         );
@@ -351,6 +624,27 @@ export function NavCard({
             return value.available;
           })[0].value
         );
+      } else if (akun === 'mandiri') {
+        setArrayOfMonthsOptions(monthOptions2023Mandiri);
+        setPeriodeBulan(
+          monthOptions2023Mandiri.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'bni') {
+        setArrayOfMonthsOptions(monthOptions2023Bni);
+        setPeriodeBulan(
+          monthOptions2023Bni.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'bsi') {
+        setArrayOfMonthsOptions(monthOptions2023Bsi);
+        setPeriodeBulan(
+          monthOptions2023Bsi.filter((value) => {
+            return value.available;
+          })[0].value
+        );
       } else if (akun === 'gopay') {
         setArrayOfMonthsOptions(monthOptions2023Gopay);
         setPeriodeBulan(
@@ -358,10 +652,24 @@ export function NavCard({
             return value.available;
           })[0].value
         );
-      } else if (akun === 'mandiri') {
-        setArrayOfMonthsOptions(monthOptions2023Mandiri);
+      } else if (akun === 'ovo') {
+        setArrayOfMonthsOptions(monthOptions2023Ovo);
         setPeriodeBulan(
-          monthOptions2023Mandiri.filter((value) => {
+          monthOptions2023Ovo.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'dana') {
+        setArrayOfMonthsOptions(monthOptions2023Dana);
+        setPeriodeBulan(
+          monthOptions2023Dana.filter((value) => {
+            return value.available;
+          })[0].value
+        );
+      } else if (akun === 'shopeepay') {
+        setArrayOfMonthsOptions(monthOptions2023Shopeepay);
+        setPeriodeBulan(
+          monthOptions2023Shopeepay.filter((value) => {
             return value.available;
           })[0].value
         );
@@ -379,11 +687,11 @@ export function NavCard({
               <p className="font-bold">Akun</p>
               {options
                 .filter((value) => value.param === akun)
-                .map((value) => (
+                .map((value, index) => (
                   <button
                     className="flex items-center justify-center gap-2"
                     onClick={() => setProgress(1)}
-                    key={value._id}
+                    key={index}
                   >
                     <Image
                       src={value.logo}
@@ -426,56 +734,86 @@ export function NavCard({
       case 1:
         return (
           <div className="mt-10">
-            <ul className="flex flex-col gap-8">
-              {options.map((value) => {
-                return (
-                  <li key={value._id}>
-                    <button
-                      className={`flex gap-4 items-center select-none text-left w-full ${
-                        value.connected
-                          ? 'hover:bg-gray-300 cursor-pointer'
-                          : 'hover:bg-onPrimary cursor-not-allowed'
-                      } p-2 rounded-md`}
-                      disabled={!value.connected}
-                      onClick={() => {
-                        setAkun(value.param);
-                        setProgress(0);
-                      }}
-                    >
-                      <Image
-                        src={value.logo}
-                        alt={value.alt}
-                        className="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px]"
-                        width={50}
-                        height={50}
-                        draggable={false}
-                      />
-                      <div className="flex flex-wrap gap-2 justify-between items-center w-full">
-                        <div className="text-onPrimaryContainer">
-                          <p className="font-bold sm:text-lg text-base">
-                            {value.name}
-                          </p>
-                          <p className="sm:text-base text-sm">
-                            {value.connected
-                              ? censorLastFour(value.accountNumber as string)
-                              : 'Belum terhubung'}
-                          </p>
-                        </div>
-                        {!value.connected && (
-                          <Link
-                            href="/account/connect"
-                            className="px-2 py-1 border-2 border-green-500 rounded-md sm:text-sm bg-green-900 text-white flex gap-2 items-center font-bold text-xs"
-                          >
-                            Hubungkan
-                            <FontAwesomeIcon icon={faRightToBracket} />
-                          </Link>
-                        )}
-                      </div>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <Tab.Group>
+              <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
+                {Object.keys(categories).map((category) => (
+                  <Tab
+                    key={category}
+                    className={({ selected }) =>
+                      classNames(
+                        'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700',
+                        'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                        selected
+                          ? 'bg-white shadow'
+                          : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                      )
+                    }
+                  >
+                    {category}
+                  </Tab>
+                ))}
+              </Tab.List>
+              <Tab.Panels className="mt-2">
+                {Object.values(categories).map((account, idx) => (
+                  <Tab.Panel key={idx}>
+                    <ul className="flex flex-col gap-4 my-8">
+                      {account
+                        .sort((value) => {
+                          return value.connected ? 1 : -1;
+                        })
+                        .map((value) => (
+                          <li key={value._id}>
+                            <button
+                              className={`flex gap-4 items-center select-none text-left w-full ${
+                                value.connected
+                                  ? 'hover:bg-gray-300 cursor-pointer'
+                                  : 'hover:bg-onPrimary cursor-not-allowed'
+                              } p-2 rounded-md`}
+                              disabled={!value.connected}
+                              onClick={() => {
+                                setAkun(value.param);
+                                setProgress(0);
+                              }}
+                            >
+                              <Image
+                                src={value.logo}
+                                alt={value.alt}
+                                className="min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px]"
+                                width={50}
+                                height={50}
+                                draggable={false}
+                              />
+                              <div className="flex flex-wrap gap-2 justify-between items-center w-full">
+                                <div className="text-onPrimaryContainer">
+                                  <p className="font-bold sm:text-lg text-base">
+                                    {value.name}
+                                  </p>
+                                  <p className="sm:text-base text-sm">
+                                    {value.connected
+                                      ? censorLastFour(
+                                          value.accountNumber as string
+                                        )
+                                      : 'Belum terhubung'}
+                                  </p>
+                                </div>
+                                {!value.connected && (
+                                  <Link
+                                    href="/account/connect"
+                                    className="px-2 py-1 border-2 border-green-500 rounded-md sm:text-sm bg-green-900 text-white flex gap-2 items-center font-bold text-xs"
+                                  >
+                                    Hubungkan
+                                    <FontAwesomeIcon icon={faRightToBracket} />
+                                  </Link>
+                                )}
+                              </div>
+                            </button>
+                          </li>
+                        ))}
+                    </ul>
+                  </Tab.Panel>
+                ))}
+              </Tab.Panels>
+            </Tab.Group>
           </div>
         );
 
@@ -624,11 +962,33 @@ export function NavCard({
             {isBca && account === 'bca' && (
               <p>{censorLastFour(bcaAccountNumber as string)}</p>
             )}
+
+            {isMandiri && account === 'mandiri' && (
+              <p>{censorLastFour(mandiriAccountNumber as string)}</p>
+            )}
+
+            {isBni && account === 'bni' && (
+              <p>{censorLastFour(bniAccountNumber as string)}</p>
+            )}
+
+            {isBsi && account === 'bsi' && (
+              <p>{censorLastFour(bsiAccountNumber as string)}</p>
+            )}
+
             {isGopay && account === 'gopay' && (
               <p>{censorLastFour(gopayAccountNumber as string)}</p>
             )}
-            {isMandiri && account === 'mandiri' && (
-              <p>{censorLastFour(mandiriAccountNumber as string)}</p>
+
+            {isOvo && account === 'ovo' && (
+              <p>{censorLastFour(ovoAccountNumber as string)}</p>
+            )}
+
+            {isDana && account === 'dana' && (
+              <p>{censorLastFour(danaAccountNumber as string)}</p>
+            )}
+
+            {isShopeepay && account === 'shopeepay' && (
+              <p>{censorLastFour(shopeepayAccountNumber as string)}</p>
             )}
           </section>
           <section className="w-full h-fit flex items-center justify-center">

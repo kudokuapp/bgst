@@ -48,17 +48,39 @@ export default async function Page() {
       accountUrl = 'mandiri';
       break;
 
+    case 4:
+      accountUrl = 'bni';
+      break;
+
     case 11:
       accountUrl = 'gopay';
       break;
+
+    case 12:
+      accountUrl = 'ovo';
+      break;
     case 17:
       accountUrl = 'mandiri';
+      break;
+    case 26:
+      accountUrl = 'bsi';
+      break;
+
+    case 33:
+      accountUrl = 'shopeepay';
+      break;
+    case 34:
+      accountUrl = 'bsi';
       break;
     case 37:
       accountUrl = 'bca';
       break;
     case 38:
       accountUrl = 'bca';
+      break;
+
+    case 46:
+      accountUrl = 'dana';
       break;
 
     default:
