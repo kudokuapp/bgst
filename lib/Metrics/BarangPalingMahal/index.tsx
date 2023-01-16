@@ -47,7 +47,7 @@ export default function BarangPalingMahal({
         <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
           {formatter}
         </h3>
-        <h3 className="text-onPrimary dark:text-onPrimaryDark text-lg font-bold text-center truncate max-w-[300px]">
+        <h3 className="text-onPrimary dark:text-onPrimaryDark text-lg font-bold text-center truncate w-full px-4">
           {item.description}
         </h3>
         <div className="flex flex-col justify-center items-center">

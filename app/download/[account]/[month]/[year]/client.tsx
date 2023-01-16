@@ -3,7 +3,7 @@
 import ThemeContext from '$context/ThemeContext';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Fragment, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Image from 'next/image';
 import LogoPrimaryLight from '$public/logo/primary.svg';
 import LogoPrimaryDark from '$public/logo/primaryDark.svg';
@@ -18,6 +18,7 @@ import {
   faLinkedin,
   faTiktok,
   faTwitter,
+  faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
 import 'react-calendar-heatmap/dist/styles.css';
 import satori from 'satori';
@@ -225,6 +226,10 @@ export function MainShare({
       name: 'tiktok',
       icon: faTiktok,
     },
+    {
+      name: 'whatsapp',
+      icon: faWhatsapp,
+    },
   ];
 
   const handleChecked = (position: number) => {
@@ -273,6 +278,14 @@ export function MainShare({
           height: 1920,
           maxWidth: 400,
           aspectRatio: '0.5625 / 1',
+        };
+
+      case 'whatsapp':
+        return {
+          width: 1080,
+          height: 607,
+          maxWidth: 600,
+          aspectRatio: '1.78082 / 1',
         };
 
       default:
@@ -358,7 +371,9 @@ export function MainShare({
         </div>
         <motion.div
           className={`w-full h-fit ${
-            socmed !== 'twitter' ? 'flex-col justify-between' : 'justify-end'
+            socmed !== 'twitter' && socmed !== 'whatsapp'
+              ? 'flex-col justify-between'
+              : 'justify-end'
           } items-center gap-4 py-2 sm:flex hidden`}
         >
           {metrics.map((item, index) => {
@@ -433,6 +448,8 @@ export function MainShare({
                         item={financialData.barangPalingMahal}
                         totalIncome={financialData.totalIncome}
                         totalExpense={financialData.totalExpense}
+                        twitter={socmed === 'twitter' || socmed === 'whatsapp'}
+                        metricsDua={metrics.filter((v) => v).length > 1}
                       />
                     </motion.div>
                   );
