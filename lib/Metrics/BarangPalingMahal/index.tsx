@@ -30,7 +30,7 @@ export default function BarangPalingMahal({
 
   return (
     <motion.div
-      className="w-fit h-fit flex flex-col items-center gap-8"
+      className="sm:w-fit w-full h-fit flex flex-col items-center gap-8"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
@@ -47,7 +47,7 @@ export default function BarangPalingMahal({
         <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
           {formatter}
         </h3>
-        <h3 className="text-onPrimary dark:text-onPrimaryDark text-lg font-bold text-center truncate w-full px-4">
+        <h3 className="text-onPrimary dark:text-onPrimaryDark text-lg font-bold text-center truncate w-full px-4 sm:max-w-full max-w-[300px]">
           {item.description}
         </h3>
         <div className="flex flex-col justify-center items-center">
