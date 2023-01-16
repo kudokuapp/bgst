@@ -866,6 +866,9 @@ function BarangPalingMahal() {
         <h3 className="text-onPrimary dark:text-onPrimaryDark text-4xl font-bold text-center">
           Rp. 1.230.000
         </h3>
+        <h3 className="text-onPrimary dark:text-onPrimaryDark text-lg font-bold text-center truncate w-full px-4">
+          GoPay Topup #202212192324167000100678737759
+        </h3>
         <div className="flex flex-col justify-center items-center">
           <p className="px-1.5 py-1 font-bold text-primary bg-onPrimary dark:text-primaryDark dark:bg-onPrimaryDark rounded-2xl text-center w-fit h-fit">
             DETAIL

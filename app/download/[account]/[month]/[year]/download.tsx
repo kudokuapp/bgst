@@ -96,6 +96,9 @@ export default function Card({
       case 'twitter':
         return width / 1.2;
 
+      case 'whatsapp':
+        return width / 1.2;
+
       default:
         return width / 1.2;
     }
@@ -107,6 +110,9 @@ export default function Card({
         return 18;
 
       case 'twitter':
+        return 10;
+
+      case 'whatsapp':
         return 10;
 
       default:
@@ -122,6 +128,9 @@ export default function Card({
       case 'twitter':
         return 35;
 
+      case 'whatsapp':
+        return 35;
+
       default:
         return 50;
     }
@@ -133,6 +142,9 @@ export default function Card({
         return width / 9;
 
       case 'twitter':
+        return width / 10;
+
+      case 'whatsapp':
         return width / 10;
 
       default:
@@ -212,7 +224,8 @@ export default function Card({
           width: '100%',
           height: '85%',
           display: 'flex',
-          flexDirection: socmed !== 'twitter' ? 'column' : 'row',
+          flexDirection:
+            socmed !== 'twitter' && socmed !== 'whatsapp' ? 'column' : 'row',
           alignItems: 'center',
           justifyContent: 'center',
           paddingTop: width / 50,
@@ -222,8 +235,13 @@ export default function Card({
         {arrayOfMetrics[0] && (
           <div
             style={{
-              width: socmed !== 'twitter' ? '100%' : '45%',
-              height: socmed === 'twitter' ? '100%' : '45%',
+              width:
+                (socmed === 'twitter' || socmed === 'whatsapp') &&
+                arrayOfMetrics.filter((v) => v).length > 1
+                  ? '45%'
+                  : '100%',
+              height:
+                socmed === 'twitter' || socmed === 'whatsapp' ? '100%' : '45%',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -236,14 +254,19 @@ export default function Card({
               boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
               backgroundImage:
                 'linear-gradient(to bottom right, #2C5EA8, #006974)',
-              marginBottom: socmed !== 'twitter' ? 25 : 0,
-              marginRight: socmed === 'twitter' ? 20 : 0,
+              marginBottom:
+                socmed !== 'twitter' && socmed !== 'whatsapp' ? 25 : 0,
+              marginRight:
+                socmed === 'twitter' || socmed === 'whatsapp' ? 20 : 0,
             }}
           >
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'rgb(0, 26, 64)',
                 textAlign: 'center',
@@ -255,7 +278,10 @@ export default function Card({
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'white',
                 textAlign: 'center',
@@ -284,7 +310,10 @@ export default function Card({
                   color: 'rgb(44, 94, 168)',
                   backgroundColor: 'white',
                   borderRadius: width / 20,
-                  fontSize: socmed === 'twitter' ? width / 55 : width / 45,
+                  fontSize:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? width / 55
+                      : width / 45,
                 }}
               >
                 DIBANDINGIN SAMA
@@ -293,7 +322,10 @@ export default function Card({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: socmed === 'twitter' ? 'column' : 'row',
+                  flexDirection:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? 'column'
+                      : 'row',
                   alignItems: 'center',
                   backgroundColor: 'white',
                   justifyContent: 'space-between',
@@ -301,7 +333,10 @@ export default function Card({
                   padding: 4,
                   color: 'rgb(44, 94, 168)',
                   borderRadius: width / 50,
-                  fontSize: socmed === 'twitter' ? width / 45 : width / 35,
+                  fontSize:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? width / 45
+                      : width / 35,
                   fontWeight: 400,
                 }}
               >
@@ -315,7 +350,8 @@ export default function Card({
                     paddingLeft: '2rem',
                     paddingRight: '2rem',
                     borderRightWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -337,7 +373,8 @@ export default function Card({
                     paddingRight: '2rem',
                     borderRightWidth: 1,
                     borderLeftWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -358,7 +395,8 @@ export default function Card({
                     paddingLeft: '1rem',
                     paddingRight: '1rem',
                     borderLeftWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -377,9 +415,15 @@ export default function Card({
         {arrayOfMetrics[1] && (
           <div
             style={{
-              width: socmed !== 'twitter' ? '100%' : '45%',
-              height: socmed === 'twitter' ? '100%' : '45%',
-              marginRight: socmed === 'twitter' ? 20 : 0,
+              width:
+                (socmed === 'twitter' || socmed === 'whatsapp') &&
+                arrayOfMetrics.filter((v) => v).length > 1
+                  ? '45%'
+                  : '100%',
+              height:
+                socmed === 'twitter' || socmed === 'whatsapp' ? '100%' : '45%',
+              marginRight:
+                socmed === 'twitter' || socmed === 'whatsapp' ? 20 : 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -392,13 +436,17 @@ export default function Card({
               boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
               backgroundImage:
                 'linear-gradient(to bottom right, #2C5EA8, #006974)',
-              marginBottom: socmed !== 'twitter' ? 25 : 0,
+              marginBottom:
+                socmed !== 'twitter' && socmed !== 'whatsapp' ? 25 : 0,
             }}
           >
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'rgb(0, 26, 64)',
                 textAlign: 'center',
@@ -410,7 +458,10 @@ export default function Card({
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'white',
                 textAlign: 'center',
@@ -439,7 +490,10 @@ export default function Card({
                   color: 'rgb(44, 94, 168)',
                   backgroundColor: 'white',
                   borderRadius: width / 20,
-                  fontSize: socmed === 'twitter' ? width / 55 : width / 45,
+                  fontSize:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? width / 55
+                      : width / 45,
                 }}
               >
                 SAMA AJA KAYAK
@@ -448,7 +502,10 @@ export default function Card({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: socmed === 'twitter' ? 'column' : 'row',
+                  flexDirection:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? 'column'
+                      : 'row',
                   alignItems: 'center',
                   backgroundColor: 'white',
                   justifyContent: 'space-between',
@@ -456,7 +513,10 @@ export default function Card({
                   padding: 4,
                   color: 'rgb(44, 94, 168)',
                   borderRadius: width / 50,
-                  fontSize: socmed === 'twitter' ? width / 45 : width / 35,
+                  fontSize:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? width / 45
+                      : width / 35,
                   fontWeight: 400,
                 }}
               >
@@ -470,7 +530,8 @@ export default function Card({
                     paddingLeft: '2rem',
                     paddingRight: '2rem',
                     borderRightWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -492,7 +553,8 @@ export default function Card({
                     paddingRight: '1rem',
                     borderRightWidth: 1,
                     borderLeftWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -513,7 +575,8 @@ export default function Card({
                     paddingLeft: '0.5rem',
                     paddingRight: '0.5rem',
                     borderLeftWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -532,9 +595,15 @@ export default function Card({
         {arrayOfMetrics[2] && (
           <div
             style={{
-              width: socmed !== 'twitter' ? '100%' : '45%',
-              height: socmed === 'twitter' ? '100%' : '45%',
-              marginRight: socmed === 'twitter' ? 20 : 0,
+              width:
+                (socmed === 'twitter' || socmed === 'whatsapp') &&
+                arrayOfMetrics.filter((v) => v).length > 1
+                  ? '45%'
+                  : '100%',
+              height:
+                socmed === 'twitter' || socmed === 'whatsapp' ? '100%' : '45%',
+              marginRight:
+                socmed === 'twitter' || socmed === 'whatsapp' ? 20 : 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -547,13 +616,17 @@ export default function Card({
               boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
               backgroundImage:
                 'linear-gradient(to bottom right, #2C5EA8, #006974)',
-              marginBottom: socmed !== 'twitter' ? 25 : 0,
+              marginBottom:
+                socmed !== 'twitter' && socmed !== 'whatsapp' ? 25 : 0,
             }}
           >
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'rgb(0, 26, 64)',
                 textAlign: 'center',
@@ -659,9 +732,15 @@ export default function Card({
         {arrayOfMetrics[3] && (
           <div
             style={{
-              width: socmed !== 'twitter' ? '100%' : '45%',
-              height: socmed === 'twitter' ? '100%' : '45%',
-              marginRight: socmed === 'twitter' ? 20 : 0,
+              width:
+                (socmed === 'twitter' || socmed === 'whatsapp') &&
+                arrayOfMetrics.filter((v) => v).length > 1
+                  ? '45%'
+                  : '100%',
+              height:
+                socmed === 'twitter' || socmed === 'whatsapp' ? '100%' : '45%',
+              marginRight:
+                socmed === 'twitter' || socmed === 'whatsapp' ? 20 : 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -674,13 +753,17 @@ export default function Card({
               boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
               backgroundImage:
                 'linear-gradient(to bottom right, #2C5EA8, #006974)',
-              marginBottom: socmed !== 'twitter' ? 25 : 0,
+              marginBottom:
+                socmed !== 'twitter' && socmed !== 'whatsapp' ? 25 : 0,
             }}
           >
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'rgb(0, 26, 64)',
                 textAlign: 'center',
@@ -746,9 +829,15 @@ export default function Card({
         {arrayOfMetrics[4] && (
           <div
             style={{
-              width: socmed !== 'twitter' ? '100%' : '45%',
-              height: socmed === 'twitter' ? '100%' : '45%',
-              marginRight: socmed === 'twitter' ? 20 : 0,
+              width:
+                (socmed === 'twitter' || socmed === 'whatsapp') &&
+                arrayOfMetrics.filter((v) => v).length > 1
+                  ? '45%'
+                  : '100%',
+              height:
+                socmed === 'twitter' || socmed === 'whatsapp' ? '100%' : '45%',
+              marginRight:
+                socmed === 'twitter' || socmed === 'whatsapp' ? 20 : 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -761,13 +850,17 @@ export default function Card({
               boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
               backgroundImage:
                 'linear-gradient(to bottom right, #2C5EA8, #006974)',
-              marginBottom: socmed !== 'twitter' ? 25 : 0,
+              marginBottom:
+                socmed !== 'twitter' && socmed !== 'whatsapp' ? 25 : 0,
             }}
           >
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
                 fontWeight: 700,
                 color: 'rgb(0, 26, 64)',
                 textAlign: 'center',
@@ -779,14 +872,43 @@ export default function Card({
             <div
               style={{
                 display: 'flex',
-                fontSize: socmed === 'twitter' ? width / 30 : width / 20,
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 30
+                    : width / 20,
+                fontWeight: 700,
+                color: 'white',
+                textAlign: 'center',
+                marginBottom: 5,
+              }}
+            >
+              {barangPalingMahalFormatter}
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                fontSize:
+                  socmed === 'twitter' || socmed === 'whatsapp'
+                    ? width / 50
+                    : width / 40,
                 fontWeight: 700,
                 color: 'white',
                 textAlign: 'center',
                 marginBottom: 10,
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                maxWidth:
+                  arrayOfMetrics.filter((v) => v).length > 1 &&
+                  (socmed === 'twitter' || socmed === 'whatsapp')
+                    ? 400
+                    : 700,
+
+                lineHeight: '2.5rem',
               }}
             >
-              {barangPalingMahalFormatter}
+              {financialData.barangPalingMahal.description}
             </div>
 
             <div
@@ -808,7 +930,10 @@ export default function Card({
                   color: 'rgb(44, 94, 168)',
                   backgroundColor: 'white',
                   borderRadius: width / 20,
-                  fontSize: socmed === 'twitter' ? width / 55 : width / 45,
+                  fontSize:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? width / 55
+                      : width / 45,
                 }}
               >
                 DETAIL
@@ -817,7 +942,10 @@ export default function Card({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: socmed === 'twitter' ? 'column' : 'row',
+                  flexDirection:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? 'column'
+                      : 'row',
                   alignItems: 'center',
                   backgroundColor: 'white',
                   justifyContent: 'space-between',
@@ -825,7 +953,10 @@ export default function Card({
                   padding: 4,
                   color: 'rgb(44, 94, 168)',
                   borderRadius: width / 50,
-                  fontSize: socmed === 'twitter' ? width / 45 : width / 35,
+                  fontSize:
+                    socmed === 'twitter' || socmed === 'whatsapp'
+                      ? width / 45
+                      : width / 35,
                   fontWeight: 400,
                 }}
               >
@@ -839,7 +970,8 @@ export default function Card({
                     paddingLeft: '2rem',
                     paddingRight: '2rem',
                     borderRightWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex', gap: 4 }}>
@@ -861,7 +993,8 @@ export default function Card({
                     paddingRight: '1rem',
                     borderRightWidth: 1,
                     borderLeftWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -886,7 +1019,8 @@ export default function Card({
                     paddingLeft: '1rem',
                     paddingRight: '1rem',
                     borderLeftWidth: 1,
-                    marginBottom: socmed === 'twitter' ? 10 : 0,
+                    marginBottom:
+                      socmed === 'twitter' || socmed === 'whatsapp' ? 10 : 0,
                   }}
                 >
                   <div style={{ display: 'flex' }}>
@@ -1579,10 +1713,14 @@ export function BarangPalingMahal({
   item,
   totalIncome,
   totalExpense,
+  twitter,
+  metricsDua,
 }: {
   item: TransactionToneDown;
   totalIncome: number;
   totalExpense: number;
+  twitter: boolean;
+  metricsDua: boolean;
 }) {
   const formatter = new Intl.NumberFormat('in-ID', {
     style: 'currency',
@@ -1596,12 +1734,19 @@ export function BarangPalingMahal({
     totalIncome <= 0 || totalIncome === undefined ? 1 : totalExpense;
 
   return (
-    <div className="w-full h-full flex flex-col items-center gap-2 bg-gradient-to-br from-primary to-secondary px-2 py-4 rounded-2xl shadow-md select-none">
+    <div className="w-full h-full flex flex-col items-center gap-1 bg-gradient-to-br from-primary to-secondary px-2 py-4 rounded-2xl shadow-md select-none">
       <h6 className="text-xl font-bold text-onPrimaryContainer text-center">
         Barang paling mahal
       </h6>
       <h3 className="text-onPrimary text-xl font-bold text-center">
         {formatter}
+      </h3>
+      <h3
+        className={`text-onPrimary text-lg font-bold text-center truncate w-full px-4 ${
+          twitter && !metricsDua ? 'max-w-full' : ''
+        } ${twitter && metricsDua ? 'max-w-[200px]' : ''}`}
+      >
+        {item.description}
       </h3>
       <div className="flex flex-col justify-center items-center">
         <p className="px-1.5 py-1 font-bold text-primary bg-onPrimary rounded-2xl text-center w-fit h-fit text-base">
@@ -1612,7 +1757,7 @@ export function BarangPalingMahal({
             <p className="text-primary m-0 text-base">
               <span className="font-bold">{item.day}</span> {item.month}
             </p>
-            <p className="text-primary m-0 text-sm">Tanggal beli</p>
+            <p className="text-primary m-0 text-sm">Tgl. Beli</p>
           </div>
           <div className="flex flex-col justify-center items-center border-x px-1 text-center">
             <p className="text-primary m-0 text-base">
@@ -1621,7 +1766,7 @@ export function BarangPalingMahal({
               </span>
               %
             </p>
-            <p className="text-primary m-0 text-sm">Dari pengeluaran</p>
+            <p className="text-primary m-0 text-sm">Pengeluaran</p>
           </div>
           <div className="flex flex-col justify-center items-center border-l px-1 text-center">
             <p className="text-primary m-0 text-base">
@@ -1630,7 +1775,7 @@ export function BarangPalingMahal({
               </span>
               %
             </p>
-            <p className="text-primary m-0 text-sm">Dari pemasukan</p>
+            <p className="text-primary m-0 text-sm">Pemasukan</p>
           </div>
         </div>
       </div>
