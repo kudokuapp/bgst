@@ -14,23 +14,9 @@ export const brickPublicAccessToken =
     ? process.env.BRICK_PRODUCTION_PUBLIC_ACCESS_TOKEN
     : process.env.BRICK_SANDBOX_PUBLIC_ACCESS_TOKEN;
 
-interface IGetClientIdandRedirectRefId {
-  clientId: number;
-  clientName: string;
-  clientFullName: string;
-  clientEmail: string;
-  clientAlias: string | null;
-  clientImageUrl: string | URL;
-  clientFavicon: string | null | URL;
-  primaryColor: string;
-  redirectRefId: number;
-  language: 'id' | 'en';
-  isWhiteLabel: boolean;
-}
-
 export async function getClientIdandRedirectRefId(
   userId: string
-): Promise<IGetClientIdandRedirectRefId> {
+): Promise<BrickGetClientIdandRedirectRefId> {
   const url = brickUrl('/v1/auth/token');
 
   const redirectUrl = 'https://bgst.kudoku.id';
@@ -54,7 +40,38 @@ export async function getClientIdandRedirectRefId(
     (async () => {
       try {
         const response = await axios.request(options);
-        resolve(response.data.data as IGetClientIdandRedirectRefId);
+        resolve(response.data.data as BrickGetClientIdandRedirectRefId);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
+
+export async function getAccountDetail(
+  accessToken: string
+): Promise<BrickAccountDetail[]> {
+  const url = brickUrl(`/v1/account/list`);
+
+  const options = {
+    method: 'GET',
+    url: url.href,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const {
+          data: { data },
+        }: { data: { data: BrickAccountDetail[] } } = await axios.request(
+          options
+        );
+
+        resolve(data);
       } catch (e) {
         reject(e);
       }

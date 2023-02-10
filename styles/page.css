@@ -7,7 +7,7 @@
     @apply fill-white min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-1 {
-    @apply fill-green-100 min-w-[5px] min-h-[5px];
+    @apply fill-green-300 min-w-[5px] min-h-[5px];
   }
   .react-calendar-heatmap .color-kudoku-2 {
     @apply fill-green-300 min-w-[5px] min-h-[5px];
@@ -20,6 +20,10 @@
   }
   .react-calendar-heatmap .color-kudoku-5 {
     @apply fill-green-900 min-w-[5px] min-h-[5px];
+  }
+
+  .react-calendar-heatmap .color-kudoku-jebot {
+    @apply fill-yellow-200 min-w-[5px] min-h-[5px];
   }
 }
 

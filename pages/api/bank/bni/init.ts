@@ -1,8 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { decodeAuthHeader } from '$utils/auth';
-import { brickUrl } from '$utils/brick';
+import {
+  brickPublicAccessToken,
+  brickUrl,
+  getAccountDetail,
+  getClientIdandRedirectRefId,
+} from '$utils/brick';
 import axios from 'axios';
+import moment from 'moment';
 
 const prisma = new PrismaClient();
 
@@ -24,6 +30,7 @@ export default async function handler(
     throw new Error('Not allowed to do this operation');
   }
 
+  //   Find the user in our database
   const user = await prisma.user.findFirst({ where: { whatsapp } });
 
   if (!user) {
@@ -32,49 +39,121 @@ export default async function handler(
   }
 
   // REQUIRED BODY DATA
-  const {
-    institutionId,
-    from,
-    to,
-  }: { institutionId: number; from: string; to: string } = req.body;
+  const { username, password }: { username: string; password: string } =
+    req.body;
 
-  const data = await prisma.account.findFirst({
-    where: { institutionId, kudosId: user.id },
-  });
-
-  if (!data) {
-    res.status(500).json({ Error: "Cannot find user's accout" });
-    throw new Error("Cannot find user's accout");
+  if (!username || !password) {
+    res.status(500).json({ Error: 'Data is required or invalid' });
+    throw new Error('Data is required or invalid');
   }
 
-  const { accessToken, id: accountId } = data;
+  /**
+   * Get access token
+   */
 
-  const url = brickUrl(`/v1/transaction/list`);
+  // Call the function to get ClientId and RedirectRefId needed for getting the access token
+  const { clientId, redirectRefId } = await getClientIdandRedirectRefId(
+    whatsapp
+  ).catch((e) => {
+    console.error(e);
+    res.status(500).json(e);
+    throw new Error('Error dari brick, see console');
+  });
 
-  const options = {
+  const tokenUrl = brickUrl(`/v1/auth/${clientId}`);
+
+  const tokenOptions = {
+    method: 'POST',
+    url: tokenUrl.href,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${brickPublicAccessToken}`,
+    },
+    data: {
+      institutionId: 4,
+      username,
+      password,
+      redirectRefId,
+    },
+  };
+
+  const {
+    data: { data: tokenData },
+  }: { data: { data: BrickTokenData } } = await axios
+    .request(tokenOptions)
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json(e);
+      throw new Error('Error dari brick, see console');
+    });
+
+  const { accessToken } = tokenData;
+
+  const accountDetail = await getAccountDetail(accessToken).catch((e) => {
+    console.error(e);
+    res.status(500).json(e);
+    throw new Error('Error dari brick, see console');
+  });
+
+  const { accountId, accountNumber } = accountDetail[0];
+
+  /**
+   * Avoid duplication in the account
+   */
+
+  const searchAccount = await prisma.account.findFirst({
+    where: { AND: [{ kudosId: user.id }, { accountNumber }] },
+  });
+
+  if (searchAccount) {
+    res.status(500).json({ Error: 'Account already exist' });
+    throw new Error('Account already exist');
+  }
+
+  const account = await prisma.account.create({
+    data: {
+      createdAt: new Date(),
+      institutionId: 4,
+      accessToken: tokenData.accessToken,
+      accountNumber,
+      brick_account_id: accountId,
+      kudosId: user.id,
+    },
+  });
+
+  /**
+   * Get the initial transaction and push it to our database
+   * For BNI, the maximum is 6 months back,
+   * so we pull 5 months
+   */
+
+  const transactionUrl = brickUrl(`/v1/transaction/list`);
+
+  const from = moment().subtract(5, 'M').startOf('M').format('YYYY-MM-DD');
+
+  const to = moment().subtract(1, 'M').endOf('M').format('YYYY-MM-DD');
+
+  const transactionOptions = {
     method: 'GET',
-    url: url.href,
+    url: transactionUrl.href,
     params: { from, to },
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${account.accessToken}`,
     },
   };
 
   const {
     data: { data: transactionData },
-  }: { data: { data: BrickTransactionData[] } } = await axios.request(options);
-
-  if (!transactionData) {
-    res.status(500).json({ Error: 'Error dari brick' });
-    throw new Error('Error dari brick');
-  }
-
-  if (transactionData.length === 0) {
-    res.status(500).json({ Error: 'Gaada transaksi' });
-    throw new Error('Gaada transaksi');
-  }
+  }: { data: { data: BrickTransactionData[] } } = await axios
+    .request(transactionOptions)
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json(e);
+      throw new Error('Error dari brick, see console');
+    });
 
   const renderNull = (value: BrickTransactionData['category']) => {
     if (value === null) {
@@ -90,7 +169,7 @@ export default async function handler(
     const category = renderNull(value.category);
 
     try {
-      await prisma.transaction.create({
+      await prisma.bNITransaction.create({
         data: {
           dateTimestamp: value.dateTimestamp
             ? new Date(value.dateTimestamp)
@@ -125,13 +204,20 @@ export default async function handler(
           classification_subgroup: category
             ? value.category.classification_subgroup
             : null,
-          accountId,
+          accountId: account.id,
         },
       });
     } catch (e: any) {
       res.status(500).json(e);
       throw new Error(e);
     }
+  }
+
+  if (!user.hasAccount) {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { hasAccount: true },
+    });
   }
 
   res.status(200).json({

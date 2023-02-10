@@ -11,8 +11,8 @@ export function connectGopayOne({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/brick/gopaymfa/one',
-          { institutionId: 11, username },
+          '/api/ewallet/gopay/otp',
+          { username },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         resolve(data);
@@ -47,13 +47,12 @@ export function connectGopayTwo({
       try {
         const options = {
           method: 'POST',
-          url: '/api/brick/gopaymfa/two',
+          url: '/api/ewallet/gopay/init',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           data: {
-            institutionId: 11,
             redirectRefId,
             clientId,
             username,

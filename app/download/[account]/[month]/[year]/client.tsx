@@ -29,9 +29,9 @@ import LogoBCA from '$public/logo/bank/bca.png';
 import LogoMandiri from '$public/logo/bank/mandiri.png';
 import LogoBni from '$public/logo/bank/bni.png';
 import LogoBsi from '$public/logo/bank/bsi.png';
+import LogoBri from '$public/logo/bank/bri.png';
 import LogoGopay from '$public/logo/bank/gojek.png';
 import LogoOvo from '$public/logo/bank/ovo.png';
-import LogoDana from '$public/logo/bank/dana.png';
 import LogoShopee from '$public/logo/bank/shopee.png';
 import { shortMonth, year } from '$utils/helper/dateArray';
 import {
@@ -242,8 +242,6 @@ export function MainShare({
     if (length === 0) return;
 
     setMetrics(updatedCheckedState);
-
-    console.log(length);
   };
 
   const renderDimension = () => {
@@ -515,6 +513,18 @@ export function MainShare({
               </>
             )}
 
+            {params.account === 'bri' && (
+              <>
+                <Image
+                  src={LogoBri}
+                  alt="Logo BRI"
+                  height={20}
+                  draggable={false}
+                />
+                <p className="text-onPrimaryContainer">BRI</p>
+              </>
+            )}
+
             {params.account === 'gopay' && (
               <>
                 <Image
@@ -536,18 +546,6 @@ export function MainShare({
                   draggable={false}
                 />
                 <p className="text-onPrimaryContainer">OVO</p>
-              </>
-            )}
-
-            {params.account === 'dana' && (
-              <>
-                <Image
-                  src={LogoDana}
-                  alt="Logo Dana"
-                  height={20}
-                  draggable={false}
-                />
-                <p className="text-onPrimaryContainer">Dana</p>
               </>
             )}
 
@@ -599,7 +597,6 @@ export function MainShare({
                     style={{ display: 'none' }}
                     onChange={(e) => {
                       setSocmed((e.target as HTMLInputElement).value);
-                      console.log(socmed);
                     }}
                   />
                   <label

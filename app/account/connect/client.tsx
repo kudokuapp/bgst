@@ -5,11 +5,11 @@ import '$styles/page.css';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
 import OVO from '$public/logo/bank/ovo.png';
-import Dana from '$public/logo/bank/dana.png';
 import Shopeepay from '$public/logo/bank/shopee.png';
 import Mandiri from '$public/logo/bank/mandiri.png';
 import BNI from '$public/logo/bank/bni.png';
 import BSI from '$public/logo/bank/bsi.png';
+import BRI from '$public/logo/bank/bri.png';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ThemeContext from '$context/ThemeContext';
@@ -21,18 +21,18 @@ export default function Client({
   isMandiri,
   isBni,
   isBsi,
+  isBri,
   isGopay,
   isOvo,
-  isDana,
   isShopeePay,
 }: {
   isBca: boolean;
   isMandiri: boolean;
   isBni: boolean;
   isBsi: boolean;
+  isBri: boolean;
   isGopay: boolean;
   isOvo: boolean;
-  isDana: boolean;
   isShopeePay: boolean;
 }) {
   const { isDarkTheme } = useContext(ThemeContext);
@@ -54,7 +54,7 @@ export default function Client({
         name: 'Mandiri',
         subname: 'PT. Bank Mandiri, Tbk.',
         link: 'mandiri',
-        disabled: false,
+        disabled: true,
         connected: isMandiri,
       },
       {
@@ -74,6 +74,15 @@ export default function Client({
         link: 'bsi',
         disabled: false,
         connected: isBsi,
+      },
+      {
+        id: 5,
+        logo: BRI,
+        name: 'BRI',
+        subname: 'PT. Bank Rakyat Indonesia, Tbk.',
+        link: 'bri',
+        disabled: false,
+        connected: isBri,
       },
     ],
     'E-Wallet': [
@@ -97,15 +106,6 @@ export default function Client({
       },
       {
         id: 3,
-        logo: Dana,
-        name: 'Dana',
-        subname: 'PT. Espay Debit Indonesia Koe',
-        link: 'dana',
-        disabled: true,
-        connected: isDana,
-      },
-      {
-        id: 4,
         logo: Shopeepay,
         name: 'Shopee Pay',
         subname: 'PT. Airpay International Indonesia',

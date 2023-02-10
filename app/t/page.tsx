@@ -1,7 +1,17 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import * as jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
+import {
+  BCATransaction,
+  BNITransaction,
+  BRITransaction,
+  BSITransaction,
+  GopayTransaction,
+  MandiriTransaction,
+  OVOTransaction,
+  PrismaClient,
+  ShopeePayTransaction,
+} from '@prisma/client';
 import { AuthTokenPayload } from '$utils/auth';
 
 const prisma = new PrismaClient();
@@ -29,63 +39,118 @@ export default async function Page() {
 
   if (!account) return redirect('/');
 
-  const transaction = await prisma.transaction.findFirst({
-    where: { accountId: account.id },
-  });
-
-  if (!transaction) redirect('/');
+  const { institutionId } = account;
 
   let accountUrl: string = '';
   let year: string = '';
+  let transaction:
+    | BCATransaction
+    | BNITransaction
+    | BSITransaction
+    | BRITransaction
+    | MandiriTransaction
+    | GopayTransaction
+    | OVOTransaction
+    | ShopeePayTransaction
+    | null = null;
 
-  const date = new Date(transaction.dateTimestamp as Date);
-
-  switch (transaction.institution_id) {
+  switch (institutionId) {
     case 2:
       accountUrl = 'bca';
+      transaction = await prisma.bCATransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
+
     case 3:
       accountUrl = 'mandiri';
+      transaction = await prisma.mandiriTransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
 
     case 4:
       accountUrl = 'bni';
+      transaction = await prisma.bNITransaction.findFirst({
+        where: { accountId: account.id },
+      });
+      break;
+
+    case 5:
+      accountUrl = 'bri';
+      transaction = await prisma.bRITransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
 
     case 11:
       accountUrl = 'gopay';
+      transaction = await prisma.gopayTransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
 
     case 12:
       accountUrl = 'ovo';
+      transaction = await prisma.oVOTransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
+
+    case 16:
+      accountUrl = 'bri';
+      transaction = await prisma.bRITransaction.findFirst({
+        where: { accountId: account.id },
+      });
+      break;
+
     case 17:
       accountUrl = 'mandiri';
+      transaction = await prisma.mandiriTransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
+
     case 26:
       accountUrl = 'bsi';
+      transaction = await prisma.bSITransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
 
     case 33:
       accountUrl = 'shopeepay';
-      break;
-    case 34:
-      accountUrl = 'bsi';
-      break;
-    case 37:
-      accountUrl = 'bca';
-      break;
-    case 38:
-      accountUrl = 'bca';
+      transaction = await prisma.shopeePayTransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
 
-    case 46:
-      accountUrl = 'dana';
+    case 34:
+      accountUrl = 'bsi';
+      transaction = await prisma.bSITransaction.findFirst({
+        where: { accountId: account.id },
+      });
+      break;
+
+    case 37:
+      accountUrl = 'bca';
+      transaction = await prisma.bCATransaction.findFirst({
+        where: { accountId: account.id },
+      });
+      break;
+
+    case 38:
+      accountUrl = 'bca';
+      transaction = await prisma.bCATransaction.findFirst({
+        where: { accountId: account.id },
+      });
       break;
 
     default:
       break;
   }
+
+  const date = new Date(transaction!.date ?? '2022-01-01');
 
   switch (date.getFullYear()) {
     case 2022:

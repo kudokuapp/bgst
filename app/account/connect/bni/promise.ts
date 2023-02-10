@@ -1,12 +1,10 @@
 import axios from 'axios';
 
 export function connectBni({
-  institutionId,
   username,
   password,
   token,
 }: {
-  institutionId: number;
   username: string;
   password: string;
   token: string;
@@ -15,8 +13,8 @@ export function connectBni({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/brick/token',
-          { institutionId, username, password },
+          '/api/bank/bni/init',
+          { username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         resolve(data);

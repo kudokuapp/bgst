@@ -30,6 +30,50 @@ declare global {
     category: Category;
     transaction_type: null | string;
   }
+
+  interface BrickGetClientIdandRedirectRefId {
+    clientId: number;
+    clientName: string;
+    clientFullName: string;
+    clientEmail: string;
+    clientAlias: string | null;
+    clientImageUrl: string | URL;
+    clientFavicon: string | null | URL;
+    primaryColor: string;
+    redirectRefId: number;
+    language: 'id' | 'en';
+    isWhiteLabel: boolean;
+  }
+
+  interface BrickAccountDetail {
+    accountId: string;
+    accountHolder: string;
+    accountNumber: string;
+    balances: {
+      available: number;
+      current: number;
+      limit: null | number;
+    };
+    currency: string;
+    type?: string;
+  }
+
+  interface BrickTokenData {
+    accessToken: string;
+    ubc_id: number;
+    bankId: string;
+    target: string | URL;
+    userId: string;
+  }
+
+  interface BrickOTPData {
+    username: string;
+    uniqueId: string;
+    sessionId: string;
+    otpToken: string;
+    refId: string;
+    deviceId: string;
+  }
 }
 
 type Category = {

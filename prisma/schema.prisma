@@ -8,15 +8,24 @@ datasource db {
 }
 
 model Account {
-  id               Int           @id @default(autoincrement())
-  createdAt        DateTime      @default(now()) @db.Timestamp(6)
-  institutionId    Int
-  accessToken      String        @unique @db.VarChar(255)
-  accountNumber    String        @unique @db.VarChar(255)
-  brick_account_id String        @unique @db.VarChar(255)
-  kudosId          Int
-  User             User          @relation(fields: [kudosId], references: [id], onDelete: Cascade)
-  Transaction      Transaction[]
+  id                   Int                    @id @default(autoincrement())
+  createdAt            DateTime               @default(now()) @db.Timestamp(6)
+  institutionId        Int
+  accessToken          String                 @unique @db.VarChar(255)
+  accountNumber        String                 @unique @db.VarChar(255)
+  brick_account_id     String                 @unique @db.VarChar(255)
+  kudosId              Int
+  User                 User                   @relation(fields: [kudosId], references: [id], onDelete: Cascade)
+  BCATransaction       BCATransaction[]
+  BNITransaction       BNITransaction[]
+  BRITransaction       BRITransaction[]
+  BSITransaction       BSITransaction[]
+  DANATransaction      DANATransaction[]
+  GopayTransaction     GopayTransaction[]
+  MandiriTransaction   MandiriTransaction[]
+  OVOTransaction       OVOTransaction[]
+  ShopeePayTransaction ShopeePayTransaction[]
+  Transaction          Transaction[]
 }
 
 model Transaction {
@@ -55,4 +64,265 @@ model User {
   whatsapp   String    @unique @db.VarChar(255)
   hasAccount Boolean   @default(false)
   Account    Account[]
+}
+
+model BCATransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model BNITransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model BRITransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model BSITransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model DANATransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model GopayTransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model MandiriTransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model OVOTransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model ShopeePayTransaction {
+  id                         Int       @id @default(autoincrement())
+  dateTimestamp              DateTime? @db.Timestamp(6)
+  brick_id                   Int?
+  brick_account_id           String?
+  account_number             String?
+  account_currency           String?
+  institution_id             Int?
+  merchant_id                Int?
+  outlet_outlet_id           Int?
+  location_city_id           Int?
+  location_country_id        Int?
+  date                       DateTime? @db.Timestamp(6)
+  amount                     Decimal?  @db.Decimal
+  description                String?
+  status                     String?
+  direction                  String?
+  reference_id               String?   @unique
+  transaction_type           String?
+  category_id                Int?
+  category_name              String?
+  classification_group_id    Int?
+  classification_group       String?
+  classification_subgroup_id Int?
+  classification_subgroup    String?
+  accountId                  Int
+  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }

@@ -7,12 +7,6 @@ import {
 import axios from 'axios';
 import { decodeAuthHeader } from '$utils/auth';
 
-interface IData {
-  username: string;
-  refId: string;
-  deviceId: string;
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -42,7 +36,11 @@ export default async function handler(
   // Call the function to get ClientId and RedirectRefId needed for getting the access token
   const { clientId, redirectRefId } = await getClientIdandRedirectRefId(
     whatsapp
-  );
+  ).catch((e) => {
+    console.error(e);
+    res.status(500).json(e);
+    throw new Error('Error dari brick, see console');
+  });
 
   const url = brickUrl(`/v1/auth/${clientId}`);
 
@@ -63,12 +61,13 @@ export default async function handler(
 
   const {
     data: { data },
-  }: { data: { data: IData } } = await axios.request(options);
-
-  if (!data) {
-    res.status(500).json({ Error: 'Error dari brick' });
-    throw new Error('Error dari brick');
-  }
+  }: { data: { data: BrickOTPData } } = await axios
+    .request(options)
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json(e);
+      throw new Error('Error dari brick, see console');
+    });
 
   res.status(200).json({
     username: data.username,

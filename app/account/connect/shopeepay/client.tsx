@@ -17,7 +17,6 @@ interface IData {
   sessionId: string;
   redirectRefId: string;
   clientId: string;
-  institutionId: number;
 }
 
 export default function Client({ token }: { token: string }) {
@@ -139,7 +138,6 @@ export default function Client({ token }: { token: string }) {
           sessionId: data.sessionId,
           redirectRefId: data.redirectRefId,
           clientId: data.clientId,
-          institutionId: data.institutionId,
         });
         setProgress(2);
       });
@@ -149,7 +147,6 @@ export default function Client({ token }: { token: string }) {
     toast
       .promise(
         connectShopeePayTwo({
-          institutionId: data.institutionId,
           username: data.username,
           sessionId: data.sessionId,
           token,

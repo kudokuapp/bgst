@@ -66,10 +66,6 @@ export function Footer() {
       logo: faLock,
       text: 'Akses read-only. Kami tidak berwenang melakukan transaksi dari akun Kamu.',
     },
-    // {
-    //   logo: faRss,
-    //   text: 'Menggunakan data aggregator yang bernama Brick.',
-    // },
   ];
   return (
     <motion.ul

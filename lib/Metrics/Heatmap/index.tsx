@@ -25,7 +25,9 @@ export default function Heatmap({
 }) {
   const [total, setTotal] = useState(0);
 
-  const startDateMoment = moment([year, month - 1]).format('YYYY-MM-DD');
+  const startDateMoment = moment([year, month - 1])
+    .startOf('month')
+    .format('YYYY-MM-DD');
 
   const endDateMoment = moment(startDateMoment)
     .endOf('month')
@@ -127,7 +129,46 @@ export default function Heatmap({
               showMonthLabels={false}
               horizontal={false}
               gutterSize={8}
-              showOutOfRangeDays={false}
+              showOutOfRangeDays={true}
+              transformDayElement={(rect, value, index) => {
+                const daysInMonth = moment(startDate).daysInMonth();
+
+                const day = moment(startDate).day();
+
+                const diff = index - day;
+
+                const diff2 = diff - daysInMonth;
+
+                const { props } = rect;
+
+                return (
+                  <g key={rect.key}>
+                    <rect
+                      width={props.width}
+                      height={props.height}
+                      x={props.x}
+                      y={props.y}
+                      className={
+                        diff < 0 || diff + 1 > daysInMonth
+                          ? 'color-kudoku-jebot'
+                          : props.className
+                      }
+                      data-tip={props['data-tip']}
+                      rx={2}
+                    ></rect>
+                    {diff >= 0 && diff2 < 0 && (
+                      <text
+                        x={props.x + 2}
+                        y={7}
+                        style={{ fontSize: '5px' }}
+                        data-tip={props['data-tip']}
+                      >
+                        {diff + 1}
+                      </text>
+                    )}
+                  </g>
+                );
+              }}
             />
           </div>
           <ReactTooltip />

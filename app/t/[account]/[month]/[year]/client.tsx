@@ -25,17 +25,19 @@ import Image, { ImageProps } from 'next/image';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
 import OVO from '$public/logo/bank/ovo.png';
-import Dana from '$public/logo/bank/dana.png';
 import Shopeepay from '$public/logo/bank/shopee.png';
 import Mandiri from '$public/logo/bank/mandiri.png';
 import BNI from '$public/logo/bank/bni.png';
 import BSI from '$public/logo/bank/bsi.png';
+import BRI from '$public/logo/bank/bri.png';
 import { Dialog, Listbox, Tab, Transition } from '@headlessui/react';
 import { censorLastFour } from '$utils/helper/censorString';
-import { month, year, availableMonthArray } from '$utils/helper/dateArray';
+import { month, year } from '$utils/helper/dateArray';
 import { toast, Toaster } from 'react-hot-toast';
 import Cal from '@calcom/embed-react';
 import { classNames } from 'app/account/connect/client';
+import Lottie from 'lottie-react';
+import animation from '$public/lottie/13659-no-data.json';
 
 type IParams = {
   account: string;
@@ -194,91 +196,18 @@ type Account = {
   accountNumber: string;
 };
 
-type AvailableArray = {
-  id: number;
-  value: string;
-  available: boolean;
-};
-
 export function NavCard({
   account,
   monthParam,
-  availableMonth2022BCA,
-  availableMonth2023BCA,
-
-  availableMonth2022Mandiri,
-  availableMonth2023Mandiri,
-
-  availableMonth2022Bni,
-  availableMonth2023Bni,
-
-  availableMonth2022Bsi,
-  availableMonth2023Bsi,
-
-  availableMonth2022Gopay,
-  availableMonth2023Gopay,
-
-  availableMonth2022Ovo,
-  availableMonth2023Ovo,
-
-  availableMonth2022Dana,
-  availableMonth2023Dana,
-
-  availableMonth2022Shopeepay,
-  availableMonth2023Shopeepay,
 
   yearParam,
   connectedAccounts,
-
-  availableYearBCA,
-  availableYearMandiri,
-  availableYearBni,
-  availableYearBsi,
-
-  availableYearGopay,
-  availableYearOvo,
-  availableYearDana,
-  availableYearShopeepay,
 }: {
   account: string;
   monthParam: string;
 
-  availableMonth2022BCA: string[];
-  availableMonth2023BCA: string[];
-
-  availableMonth2022Mandiri: string[];
-  availableMonth2023Mandiri: string[];
-
-  availableMonth2022Bni: string[];
-  availableMonth2023Bni: string[];
-
-  availableMonth2022Bsi: string[];
-  availableMonth2023Bsi: string[];
-
-  availableMonth2022Gopay: string[];
-  availableMonth2023Gopay: string[];
-
-  availableMonth2022Ovo: string[];
-  availableMonth2023Ovo: string[];
-
-  availableMonth2022Dana: string[];
-  availableMonth2023Dana: string[];
-
-  availableMonth2022Shopeepay: string[];
-  availableMonth2023Shopeepay: string[];
-
   yearParam: string;
   connectedAccounts: Account[];
-
-  availableYearBCA: AvailableArray[];
-  availableYearMandiri: AvailableArray[];
-  availableYearBni: AvailableArray[];
-  availableYearBsi: AvailableArray[];
-
-  availableYearGopay: AvailableArray[];
-  availableYearOvo: AvailableArray[];
-  availableYearDana: AvailableArray[];
-  availableYearShopeepay: AvailableArray[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -287,76 +216,65 @@ export function NavCard({
     month[Number(monthParam) - 1]
   );
   const [periodeTahun, setPeriodeTahun] = useState(year[Number(yearParam) - 1]);
-  const [arrayOfMonthsOptions, setArrayOfMonthsOptions] = useState(
-    [] as AvailableArray[]
-  );
-
-  const [arrayOfYearOptions, setArrayOfYearOptions] = useState(
-    [] as AvailableArray[]
-  );
 
   let isBca = false,
     isMandiri = false,
     isBni = false,
     isBsi = false,
+    isBri = false,
     isGopay = false,
     isOvo = false,
-    isDana = false,
     isShopeepay = false,
     bcaAccountNumber = undefined,
     mandiriAccountNumber = undefined,
     bniAccountNumber = undefined,
     bsiAccountNumber = undefined,
+    briAccountNumber = undefined,
     gopayAccountNumber = undefined,
     ovoAccountNumber = undefined,
-    danaAccountNumber = undefined,
     shopeepayAccountNumber = undefined;
 
   for (let index = 0; index < connectedAccounts.length; index++) {
-    const element = connectedAccounts[index];
+    const { institutionId, accountNumber } = connectedAccounts[index];
 
-    if (
-      element.institutionId === 2 ||
-      element.institutionId === 37 ||
-      element.institutionId === 38
-    ) {
+    if (institutionId === 2 || institutionId === 37 || institutionId === 38) {
       isBca = true;
-      bcaAccountNumber = element.accountNumber;
+      bcaAccountNumber = accountNumber;
     }
 
-    if (element.institutionId === 3 || element.institutionId === 17) {
+    if (institutionId === 3 || institutionId === 17) {
       isMandiri = true;
-      mandiriAccountNumber = element.accountNumber;
+      mandiriAccountNumber = accountNumber;
     }
 
-    if (element.institutionId === 4) {
+    if (institutionId === 4) {
       isBni = true;
-      bniAccountNumber = element.accountNumber;
+      bniAccountNumber = accountNumber;
     }
 
-    if (element.institutionId === 26 || element.institutionId === 34) {
+    if (institutionId === 26 || institutionId === 34) {
       isBsi = true;
-      bsiAccountNumber = element.accountNumber;
+      bsiAccountNumber = accountNumber;
     }
 
-    if (element.institutionId === 11) {
+    if (institutionId === 5 || institutionId === 16) {
+      isBri = true;
+      briAccountNumber = accountNumber;
+    }
+
+    if (institutionId === 11) {
       isGopay = true;
-      gopayAccountNumber = element.accountNumber;
+      gopayAccountNumber = accountNumber;
     }
 
-    if (element.institutionId === 12) {
+    if (institutionId === 12) {
       isOvo = true;
-      ovoAccountNumber = element.accountNumber;
+      ovoAccountNumber = accountNumber;
     }
 
-    if (element.institutionId === 46) {
-      isDana = true;
-      danaAccountNumber = element.accountNumber;
-    }
-
-    if (element.institutionId === 33) {
+    if (institutionId === 33) {
       isShopeepay = true;
-      shopeepayAccountNumber = element.accountNumber;
+      shopeepayAccountNumber = accountNumber;
     }
   }
 
@@ -372,12 +290,6 @@ export function NavCard({
       logo: OVO,
       alt: 'Logo OVO',
       param: 'ovo',
-    },
-    {
-      name: 'Dana',
-      logo: Dana,
-      alt: 'Logo Dana',
-      param: 'dana',
     },
     {
       name: 'Shopee Pay',
@@ -408,6 +320,12 @@ export function NavCard({
       logo: BSI,
       alt: 'Logo Bank BSI',
       param: 'bsi',
+    },
+    {
+      name: 'BRI',
+      logo: BRI,
+      alt: 'Logo Bank BRI',
+      param: 'bri',
     },
   ];
 
@@ -449,6 +367,15 @@ export function NavCard({
         connected: isBsi,
         accountNumber: bsiAccountNumber,
       },
+      {
+        _id: 5,
+        name: 'BRI',
+        logo: BRI,
+        alt: 'Logo Bank BRI',
+        param: 'bri',
+        connected: isBri,
+        accountNumber: briAccountNumber,
+      },
     ],
     'E-Wallet': [
       {
@@ -471,15 +398,6 @@ export function NavCard({
       },
       {
         _id: 3,
-        name: 'Dana',
-        logo: Dana,
-        alt: 'Logo Dana',
-        param: 'dana',
-        connected: isDana,
-        accountNumber: danaAccountNumber,
-      },
-      {
-        _id: 4,
         name: 'Shopee Pay',
         logo: Shopeepay,
         alt: 'Logo Shopee Pay',
@@ -506,177 +424,6 @@ export function NavCard({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const monthOptions2022BCA = availableMonthArray(availableMonth2022BCA);
-  const monthOptions2023BCA = availableMonthArray(availableMonth2023BCA);
-
-  const monthOptions2022Mandiri = availableMonthArray(
-    availableMonth2022Mandiri
-  );
-  const monthOptions2023Mandiri = availableMonthArray(
-    availableMonth2023Mandiri
-  );
-
-  const monthOptions2022Bni = availableMonthArray(availableMonth2022Bni);
-  const monthOptions2023Bni = availableMonthArray(availableMonth2023Bni);
-
-  const monthOptions2022Bsi = availableMonthArray(availableMonth2022Bsi);
-  const monthOptions2023Bsi = availableMonthArray(availableMonth2023Bsi);
-
-  const monthOptions2022Gopay = availableMonthArray(availableMonth2022Gopay);
-  const monthOptions2023Gopay = availableMonthArray(availableMonth2023Gopay);
-
-  const monthOptions2022Ovo = availableMonthArray(availableMonth2022Ovo);
-  const monthOptions2023Ovo = availableMonthArray(availableMonth2023Ovo);
-
-  const monthOptions2022Dana = availableMonthArray(availableMonth2022Dana);
-  const monthOptions2023Dana = availableMonthArray(availableMonth2023Dana);
-
-  const monthOptions2022Shopeepay = availableMonthArray(
-    availableMonth2022Shopeepay
-  );
-  const monthOptions2023Shopeepay = availableMonthArray(
-    availableMonth2023Shopeepay
-  );
-
-  useEffect(() => {
-    if (akun === 'bca' || account === 'bca') {
-      setArrayOfYearOptions(availableYearBCA);
-    } else if (akun === 'mandiri' || account === 'mandiri') {
-      setArrayOfYearOptions(availableYearMandiri);
-    } else if (akun === 'bni' || account === 'bni') {
-      setArrayOfYearOptions(availableYearBni);
-    } else if (akun === 'bsi' || account === 'bsi') {
-      setArrayOfYearOptions(availableYearBsi);
-    } else if (akun === 'gopay' || account === 'gopay') {
-      setArrayOfYearOptions(availableYearGopay);
-    } else if (akun === 'ovo' || account === 'ovo') {
-      setArrayOfYearOptions(availableYearOvo);
-    } else if (akun === 'dana' || account === 'dana') {
-      setArrayOfYearOptions(availableYearDana);
-    } else if (akun === 'shopeepay' || account === 'shopeepay') {
-      setArrayOfYearOptions(availableYearShopeepay);
-    }
-
-    if (periodeTahun === '2022') {
-      if (akun === 'bca') {
-        setArrayOfMonthsOptions(monthOptions2022BCA);
-        setPeriodeBulan(
-          monthOptions2022BCA.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'mandiri') {
-        setArrayOfMonthsOptions(monthOptions2022Mandiri);
-        setPeriodeBulan(
-          monthOptions2022Mandiri.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'bni') {
-        setArrayOfMonthsOptions(monthOptions2022Bni);
-        setPeriodeBulan(
-          monthOptions2022Bni.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'bsi') {
-        setArrayOfMonthsOptions(monthOptions2022Bsi);
-        setPeriodeBulan(
-          monthOptions2022Bsi.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'gopay') {
-        setArrayOfMonthsOptions(monthOptions2022Gopay);
-        setPeriodeBulan(
-          monthOptions2022Gopay.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'ovo') {
-        setArrayOfMonthsOptions(monthOptions2022Ovo);
-        setPeriodeBulan(
-          monthOptions2022Ovo.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'dana') {
-        setArrayOfMonthsOptions(monthOptions2022Dana);
-        setPeriodeBulan(
-          monthOptions2022Dana.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'shopeepay') {
-        setArrayOfMonthsOptions(monthOptions2022Shopeepay);
-        setPeriodeBulan(
-          monthOptions2022Shopeepay.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      }
-    } else if (periodeTahun === '2023') {
-      if (akun === 'bca') {
-        setArrayOfMonthsOptions(monthOptions2023BCA);
-        setPeriodeBulan(
-          monthOptions2023BCA.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'mandiri') {
-        setArrayOfMonthsOptions(monthOptions2023Mandiri);
-        setPeriodeBulan(
-          monthOptions2023Mandiri.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'bni') {
-        setArrayOfMonthsOptions(monthOptions2023Bni);
-        setPeriodeBulan(
-          monthOptions2023Bni.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'bsi') {
-        setArrayOfMonthsOptions(monthOptions2023Bsi);
-        setPeriodeBulan(
-          monthOptions2023Bsi.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'gopay') {
-        setArrayOfMonthsOptions(monthOptions2023Gopay);
-        setPeriodeBulan(
-          monthOptions2023Gopay.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'ovo') {
-        setArrayOfMonthsOptions(monthOptions2023Ovo);
-        setPeriodeBulan(
-          monthOptions2023Ovo.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'dana') {
-        setArrayOfMonthsOptions(monthOptions2023Dana);
-        setPeriodeBulan(
-          monthOptions2023Dana.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      } else if (akun === 'shopeepay') {
-        setArrayOfMonthsOptions(monthOptions2023Shopeepay);
-        setPeriodeBulan(
-          monthOptions2023Shopeepay.filter((value) => {
-            return value.available;
-          })[0].value
-        );
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [periodeTahun, akun]);
 
   function renderProgress() {
     switch (progress) {
@@ -836,27 +583,26 @@ export function NavCard({
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {arrayOfMonthsOptions.map((month) => (
+                      {month.map((month, index) => (
                         <Listbox.Option
-                          key={month.id}
+                          key={index}
                           className={({ active }) =>
                             `relative cursor-default select-none py-2 pl-10 pr-4 ${
                               active
                                 ? 'bg-amber-100 text-amber-900'
                                 : 'text-gray-900'
-                            } ${!month.available ? 'opacity-50' : ''}`
+                            }`
                           }
-                          value={month.value}
-                          disabled={!month.available}
+                          value={month}
                         >
                           {({ selected }) => (
                             <>
                               <span
                                 className={`block truncate ${
                                   selected ? 'font-medium' : 'font-normal'
-                                } ${!month.available ? 'opacity-50' : ''}`}
+                                }`}
                               >
-                                {month.value}
+                                {month}
                               </span>
                               {selected ? (
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
@@ -894,7 +640,7 @@ export function NavCard({
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {arrayOfYearOptions.map((year, index) => (
+                      {year.map((year, index) => (
                         <Listbox.Option
                           key={index}
                           className={({ active }) =>
@@ -902,10 +648,9 @@ export function NavCard({
                               active
                                 ? 'bg-amber-100 text-amber-900'
                                 : 'text-gray-900'
-                            } ${!year.available ? 'opacity-50' : ''}`
+                            }`
                           }
-                          value={year.value}
-                          disabled={!year.available}
+                          value={year}
                         >
                           {({ selected }) => (
                             <>
@@ -914,7 +659,7 @@ export function NavCard({
                                   selected ? 'font-medium' : 'font-normal'
                                 } `}
                               >
-                                {year.value}
+                                {year}
                               </span>
                               {selected ? (
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
@@ -975,16 +720,16 @@ export function NavCard({
               <p>{censorLastFour(bsiAccountNumber as string)}</p>
             )}
 
+            {isBri && account === 'bri' && (
+              <p>{censorLastFour(briAccountNumber as string)}</p>
+            )}
+
             {isGopay && account === 'gopay' && (
               <p>{censorLastFour(gopayAccountNumber as string)}</p>
             )}
 
             {isOvo && account === 'ovo' && (
               <p>{censorLastFour(ovoAccountNumber as string)}</p>
-            )}
-
-            {isDana && account === 'dana' && (
-              <p>{censorLastFour(danaAccountNumber as string)}</p>
             )}
 
             {isShopeepay && account === 'shopeepay' && (
@@ -1228,5 +973,13 @@ export function NgobrolSamaFounder({
         </Dialog>
       </Transition>
     </>
+  );
+}
+
+export function LottieNoData() {
+  return (
+    <div className="max-w-[200px] w-fit h-fit">
+      <Lottie animationData={animation} loop={true} />
+    </div>
   );
 }

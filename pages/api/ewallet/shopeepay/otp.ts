@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {
-  // brickUrl,
-  // brickPublicAccessToken,
+  brickUrl,
+  brickPublicAccessToken,
   getClientIdandRedirectRefId,
 } from '$utils/brick';
 import axios from 'axios';
@@ -34,17 +34,13 @@ export default async function handler(
   // REQUIRED BODY DATA
   const {
     username,
-    institutionId,
-    pin,
     password,
   }: {
     username: string;
-    institutionId: number;
-    pin: string | null;
-    password: string | null;
+    password: string;
   } = req.body;
 
-  if (!username || !institutionId) {
+  if (!username || !password) {
     res.status(500).json({ Error: 'Data invalid' });
     throw new Error('Data invalid');
   }
@@ -52,14 +48,13 @@ export default async function handler(
   // Call the function to get ClientId and RedirectRefId needed for getting the access token
   const { clientId, redirectRefId } = await getClientIdandRedirectRefId(
     whatsapp
-  );
+  ).catch((e) => {
+    console.error(e);
+    res.status(500).json(e);
+    throw new Error('Error dari brick, see console');
+  });
 
-  // const url = brickUrl(`/v1/auth/${clientId}`);
-
-  const url = new URL(`/v1/auth/${clientId}`, 'https://api.onebrick.io');
-
-  const brickPublicAccessToken =
-    process.env.BRICK_PRODUCTION_PUBLIC_ACCESS_TOKEN;
+  const url = brickUrl(`/v1/auth/${clientId}`);
 
   const options = {
     method: 'POST',
@@ -70,30 +65,25 @@ export default async function handler(
       Authorization: `Bearer ${brickPublicAccessToken}`,
     },
     data: {
-      institutionId,
+      institutionId: 33,
       username,
       redirectRefId,
-      pin,
       password,
     },
   };
 
   const {
     data: { data },
-  }: { data: { data: IData } } = await axios.request(options);
-
-  if (!data) {
-    res.status(500).json({ Error: 'Error dari brick' });
-    throw new Error('Error dari brick');
-  }
+  }: { data: { data: IData } } = await axios.request(options).catch((e) => {
+    console.error(e);
+    res.status(500).json(e);
+    throw new Error('Error dari brick, see console');
+  });
 
   res.status(200).json({
     username: data.username,
     sessionId: data.sessionId,
     redirectRefId,
     clientId,
-    institutionId,
   });
-
-  // res.status(200).json(data);
 }

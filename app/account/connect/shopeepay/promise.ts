@@ -13,8 +13,8 @@ export function connectShopeePayOne({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/brick/mfa/one',
-          { institutionId: 33, username, pin: null, password },
+          '/api/ewallet/shopeepay/otp',
+          { username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         resolve(data);
@@ -26,14 +26,12 @@ export function connectShopeePayOne({
 }
 
 export function connectShopeePayTwo({
-  institutionId,
   username,
   sessionId,
   token,
   redirectRefId,
   clientId,
 }: {
-  institutionId: number;
   username: string;
   sessionId: string;
   token: string;
@@ -45,16 +43,14 @@ export function connectShopeePayTwo({
       try {
         const options = {
           method: 'POST',
-          url: '/api/brick/mfa/two',
+          url: '/api/ewallet/shopeepay/init',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           data: {
-            institutionId,
             username,
             sessionId,
-            token: '',
             redirectRefId,
             clientId,
           },

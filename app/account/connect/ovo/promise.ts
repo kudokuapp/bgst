@@ -11,7 +11,7 @@ export function connectOvoOne({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/brick/ovomfa/one',
+          '/api/ewallet/ovo/otp',
           { username },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -47,7 +47,7 @@ export function connectOvoTwo({
       try {
         const options = {
           method: 'POST',
-          url: '/api/brick/ovomfa/two',
+          url: '/api/ewallet/ovo/init',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

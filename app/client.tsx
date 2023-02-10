@@ -159,6 +159,7 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                     <li>Mandiri</li>
                     <li>BNI</li>
                     <li>BSI</li>
+                    <li>BRI</li>
                   </ol>
                 </p>
               </Fragment>
@@ -186,7 +187,6 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                   <ol>
                     <li>Gopay</li>
                     <li>OVO</li>
-                    <li>Dana</li>
                     <li>Shopee Pay</li>
                   </ol>
                 </p>
@@ -217,8 +217,8 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           transition={{ delay: 2 }}
         >
           Pas pertama kali lo connect-in Bank/E-wallet lo, kita bakal ambil
-          transaksi lo 2 bulan kebelakang. Dan kita update transaksinya setiap
-          bulan.
+          transaksi lo beberapa bulan ke belakang (tergantung bank). Dan kita
+          update transaksinya setiap bulan.
         </motion.p>
       </div>
 
@@ -422,6 +422,7 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                         <li>Mandiri</li>
                         <li>BNI</li>
                         <li>BSI</li>
+                        <li>BRI</li>
                       </ol>
                     </p>
                   </Fragment>
@@ -449,7 +450,6 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
                       <ol>
                         <li>Gopay</li>
                         <li>OVO</li>
-                        <li>Dana</li>
                         <li>Shopee Pay</li>
                       </ol>
                     </p>
@@ -480,8 +480,8 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
               transition={{ delay: 2 }}
             >
               Pas pertama kali lo connect-in Bank/E-wallet lo, kita bakal ambil
-              transaksi lo 2 bulan kebelakang. Dan kita update transaksinya
-              setiap bulan.
+              transaksi lo beberapa bulan ke belakang (tergantung bank). Dan
+              kita update transaksinya setiap bulan.
             </motion.p>
           </div>
 

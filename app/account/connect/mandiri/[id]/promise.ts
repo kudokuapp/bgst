@@ -15,7 +15,7 @@ export function connectMandiri({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/brick/token',
+          '/api/bank/mandiri/init',
           { institutionId, username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -14,9 +14,9 @@ export default async function Page() {
     isMandiri: boolean = false,
     isBni: boolean = false,
     isBsi: boolean = false,
+    isBri: boolean = false,
     isGopay: boolean = false,
     isOvo: boolean = false,
-    isDana: boolean = false,
     isShopeePay: boolean = false;
 
   if (!token) redirect('/');
@@ -35,39 +35,37 @@ export default async function Page() {
   const response = await prisma.account.findMany({ where: { kudosId } });
 
   response.forEach((value) => {
-    if (
-      value.institutionId === 2 ||
-      value.institutionId === 37 ||
-      value.institutionId === 38
-    ) {
+    const { institutionId } = value;
+
+    if (institutionId === 2 || institutionId === 37 || institutionId === 38) {
       isBca = true;
     }
 
-    if (value.institutionId === 3 || value.institutionId === 17) {
+    if (institutionId === 3 || institutionId === 17) {
       isMandiri = true;
     }
 
-    if (value.institutionId === 4) {
+    if (institutionId === 4) {
       isBni = true;
     }
 
-    if (value.institutionId === 26 || value.institutionId === 34) {
+    if (institutionId === 26 || institutionId === 34) {
       isBsi = true;
     }
 
-    if (value.institutionId === 11) {
+    if (institutionId === 5 || institutionId === 16) {
+      isBri = true;
+    }
+
+    if (institutionId === 11) {
       isGopay = true;
     }
 
-    if (value.institutionId === 12) {
+    if (institutionId === 12) {
       isOvo = true;
     }
 
-    if (value.institutionId === 46) {
-      isDana = true;
-    }
-
-    if (value.institutionId === 33) {
+    if (institutionId === 33) {
       isShopeePay = true;
     }
   });
@@ -79,9 +77,9 @@ export default async function Page() {
         isMandiri={isMandiri}
         isBni={isBni}
         isBsi={isBsi}
+        isBri={isBri}
         isGopay={isGopay}
         isOvo={isOvo}
-        isDana={isDana}
         isShopeePay={isShopeePay}
       />
     </>

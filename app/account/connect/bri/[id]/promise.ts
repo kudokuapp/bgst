@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function connectBSI({
+export function connectBRI({
   institutionId,
   username,
   password,
@@ -15,7 +15,7 @@ export function connectBSI({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/bsi/init',
+          '/api/bank/bri/init',
           { institutionId, username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );
