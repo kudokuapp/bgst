@@ -25,36 +25,6 @@ model Account {
   MandiriTransaction   MandiriTransaction[]
   OVOTransaction       OVOTransaction[]
   ShopeePayTransaction ShopeePayTransaction[]
-  Transaction          Transaction[]
-}
-
-model Transaction {
-  id                         Int       @id @default(autoincrement())
-  dateTimestamp              DateTime? @db.Timestamp(6)
-  brick_id                   Int?
-  brick_account_id           String?
-  account_number             String?
-  account_currency           String?
-  institution_id             Int?
-  merchant_id                Int?
-  outlet_outlet_id           Int?
-  location_city_id           Int?
-  location_country_id        Int?
-  date                       DateTime? @db.Timestamp(6)
-  amount                     Decimal?  @db.Decimal
-  description                String?
-  status                     String?
-  direction                  String?
-  reference_id               String?   @unique
-  transaction_type           String?
-  category_id                Int?
-  category_name              String?
-  classification_group_id    Int?
-  classification_group       String?
-  classification_subgroup_id Int?
-  classification_subgroup    String?
-  accountId                  Int
-  Account                    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
 model User {
