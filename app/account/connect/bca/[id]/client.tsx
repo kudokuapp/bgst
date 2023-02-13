@@ -28,9 +28,9 @@ export default function Client({ id, token }: { id: string; token: string }) {
           error: 'Error!',
         }
       )
-      .then(() => {
+      .then((data: any) => {
         //ON FULFILLED
-        router.push('/account/success');
+        router.push(`/account/connect/bca/transaction/${data.id}`);
       });
   }
   switch (id) {

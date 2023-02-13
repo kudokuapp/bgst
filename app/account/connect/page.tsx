@@ -1,11 +1,9 @@
 import Client from './client';
-import { PrismaClient } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { AuthTokenPayload } from '$utils/auth';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function Page() {
   const nextCookies = cookies();

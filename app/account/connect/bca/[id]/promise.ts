@@ -15,7 +15,7 @@ export function connectBca({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/bca/init',
+          '/api/bank/bca/token',
           { institutionId, username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );
