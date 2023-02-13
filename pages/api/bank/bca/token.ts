@@ -14,10 +14,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // Check if HTTP POST and have a bearer token
+  const t0 = performance.now();
+
   if (req.method !== 'POST' || !req.headers.authorization) {
     res.status(500).json({ Error: 'Method not allowed' });
     throw new Error('Method not allowed');
   }
+
+  const t1 = performance.now();
+
+  console.log(`Time it took to know the req method is ${t1 - t0}`);
 
   // Decode the bearer token and get the whatsapp
   const { whatsapp } = decodeAuthHeader(req.headers.authorization);
@@ -27,6 +33,9 @@ export default async function handler(
     throw new Error('Not allowed to do this operation');
   }
 
+  const t2 = performance.now();
+  console.log(`Time it took to know the decode the berarer is ${t2 - t0}`);
+
   //   Find the user in our database
   const user = await prisma.user.findFirst({ where: { whatsapp } });
 
@@ -34,6 +43,9 @@ export default async function handler(
     res.status(500).json({ Error: 'Cannot find user' });
     throw new Error('Cannot find user');
   }
+
+  const t3 = performance.now();
+  console.log(`Time it took to find the user is ${t3 - t0}`);
 
   // REQUIRED BODY DATA
   const {
@@ -67,6 +79,9 @@ export default async function handler(
     throw new Error('Error dari brick, see console');
   });
 
+  const t4 = performance.now();
+  console.log(`Time it took to getClientIdandRedirectRefId is ${t4 - t0}`);
+
   const tokenUrl = brickUrl(`/v1/auth/${clientId}`);
 
   const tokenOptions = {
@@ -97,6 +112,9 @@ export default async function handler(
 
   const { accessToken } = tokenData;
 
+  const t5 = performance.now();
+  console.log(`Time it took to get access token is ${t5 - t0}`);
+
   const accountDetail = await getAccountDetail(accessToken).catch((e) => {
     console.error(e);
     res.status(500).json(e);
@@ -104,6 +122,9 @@ export default async function handler(
   });
 
   const { accountId, accountNumber } = accountDetail[0];
+
+  const t6 = performance.now();
+  console.log(`Time it took to get account detail is ${t6 - t0}`);
 
   /**
    * Avoid duplication in the account
@@ -118,6 +139,9 @@ export default async function handler(
     throw new Error('Account already exist');
   }
 
+  const t7 = performance.now();
+  console.log(`Time it took to search account is ${t7 - t0}`);
+
   const account = await prisma.account.create({
     data: {
       createdAt: new Date(),
@@ -129,12 +153,18 @@ export default async function handler(
     },
   });
 
+  const t8 = performance.now();
+  console.log(`Time it took to create account is ${t8 - t0}`);
+
   if (!user.hasAccount) {
     await prisma.user.update({
       where: { id: user.id },
       data: { hasAccount: true },
     });
   }
+
+  const t9 = performance.now();
+  console.log(`Time it took to finish is ${t9 - t0}`);
 
   res.status(200).json(account);
 }
