@@ -21,7 +21,7 @@ export default async function Page({ params }: any) {
   fetchTransaction({
     accountId: account.id,
     accessToken: account.accessToken,
-    token: token as unknown as string,
+    token: token.value as unknown as string,
   })
     .then(() => {
       redirect('/account/success');

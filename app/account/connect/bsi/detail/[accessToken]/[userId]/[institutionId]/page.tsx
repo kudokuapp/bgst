@@ -21,7 +21,7 @@ export default async function Page({
     userId: Number(userId),
     accessToken,
     institutionId: Number(institutionId),
-    token: token as unknown as string,
+    token: token.value as unknown as string,
   })
     .then((data: any) => {
       redirect(`/account/connect/bsi/transaction/${data.id}`);
