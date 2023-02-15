@@ -6,7 +6,12 @@ import ShopeePay from '$public/logo/bank/shopee.png';
 import WaInput from '$lib/WaInput';
 import { useState } from 'react';
 import { ButtonConnect } from '../bca/[id]/client';
-import { connectShopeePayOne, connectShopeePayTwo } from './promise';
+import {
+  connectShopeePayFour,
+  connectShopeePayOne,
+  connectShopeePayThree,
+  connectShopeePayTwo,
+} from './promise';
 import { toast } from 'react-hot-toast';
 import cleanNum from '$utils/helper/cleanNum';
 import { useRouter } from 'next/navigation';
@@ -162,9 +167,50 @@ export default function Client({ token }: { token: string }) {
       .then(
         (data: any) => {
           //ON FULFILLED
-          router.push(
-            `/account/connect/shopeepay/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
-          );
+          toast
+            .promise(
+              connectShopeePayThree({
+                userId: data.userId,
+                institutionId: data.institutionId,
+                accessToken: data.accessToken,
+                token,
+              }),
+              {
+                loading: 'Ambil akun detail...',
+                success: 'Sukses!',
+                error: 'Error!',
+              }
+            )
+            .then(
+              (data: any) => {
+                //ON FULFILLED
+                toast
+                  .promise(
+                    connectShopeePayFour({
+                      accountId: data.id,
+                      accessToken: data.accessToken,
+                      token,
+                    }),
+                    {
+                      loading: 'Ambil transaksi...',
+                      success: 'Sukses!',
+                      error: 'Error!',
+                    }
+                  )
+                  .then(
+                    () => {
+                      //ON FULFILLED
+                      router.push(`/account/success`);
+                    },
+                    () => {
+                      router.push('/account/fail');
+                    }
+                  );
+              },
+              () => {
+                router.push('/account/fail');
+              }
+            );
         },
         () => {
           router.push('/account/fail');

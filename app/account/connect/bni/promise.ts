@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function connectBni({
+export function connectBniOne({
   username,
   password,
   token,
@@ -15,6 +15,58 @@ export function connectBni({
         const { data } = await axios.post(
           '/api/bank/bni/token',
           { username, password },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
+
+export function connectBniTwo({
+  userId,
+  accessToken,
+  institutionId,
+  token,
+}: {
+  userId: number;
+  accessToken: string;
+  institutionId: number;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/detail',
+          { userId, accessToken, institutionId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
+
+export function connectBniThree({
+  accountId,
+  accessToken,
+  token,
+}: {
+  accountId: number;
+  accessToken: string;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/bank/bni/init',
+          { accountId, accessToken },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         resolve(data);

@@ -3,7 +3,11 @@
 import PasswordInput from '$lib/PasswordInput';
 import TextInput from '$lib/TextInput';
 import { useState } from 'react';
-import { connectMandiri } from './promise';
+import {
+  connectMandiriOne,
+  connectMandiriThree,
+  connectMandiriTwo,
+} from './promise';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { ButtonConnect } from '../../bca/[id]/client';
@@ -16,7 +20,7 @@ export default function Client({ id, token }: { id: string; token: string }) {
   function handleClick() {
     toast
       .promise(
-        connectMandiri({
+        connectMandiriOne({
           institutionId: Number(id),
           username: textInput,
           password: passwordInput,
@@ -31,9 +35,50 @@ export default function Client({ id, token }: { id: string; token: string }) {
       .then(
         (data: any) => {
           //ON FULFILLED
-          router.push(
-            `/account/connect/mandiri/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
-          );
+          toast
+            .promise(
+              connectMandiriTwo({
+                userId: data.userId,
+                institutionId: data.institutionId,
+                accessToken: data.accessToken,
+                token,
+              }),
+              {
+                loading: 'Ambil akun detail...',
+                success: 'Sukses!',
+                error: 'Error!',
+              }
+            )
+            .then(
+              (data: any) => {
+                //ON FULFILLED
+                toast
+                  .promise(
+                    connectMandiriThree({
+                      accountId: data.id,
+                      accessToken: data.accessToken,
+                      token,
+                    }),
+                    {
+                      loading: 'Ambil transaksi...',
+                      success: 'Sukses!',
+                      error: 'Error!',
+                    }
+                  )
+                  .then(
+                    () => {
+                      //ON FULFILLED
+                      router.push(`/account/success`);
+                    },
+                    () => {
+                      router.push('/account/fail');
+                    }
+                  );
+              },
+              () => {
+                router.push('/account/fail');
+              }
+            );
         },
         () => {
           router.push('/account/fail');

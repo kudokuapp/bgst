@@ -3,7 +3,7 @@
 import PasswordInput from '$lib/PasswordInput';
 import TextInput from '$lib/TextInput';
 import { useState } from 'react';
-import { connectBni } from './promise';
+import { connectBniOne, connectBniThree, connectBniTwo } from './promise';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { ButtonConnect } from '../bca/[id]/client';
@@ -16,7 +16,7 @@ export default function Client({ token }: { token: string }) {
   function handleClick() {
     toast
       .promise(
-        connectBni({
+        connectBniOne({
           username: textInput,
           password: passwordInput,
           token,
@@ -30,9 +30,50 @@ export default function Client({ token }: { token: string }) {
       .then(
         (data: any) => {
           //ON FULFILLED
-          router.push(
-            `/account/connect/bni/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
-          );
+          toast
+            .promise(
+              connectBniTwo({
+                userId: data.userId,
+                institutionId: data.institutionId,
+                accessToken: data.accessToken,
+                token,
+              }),
+              {
+                loading: 'Ambil akun detail...',
+                success: 'Sukses!',
+                error: 'Error!',
+              }
+            )
+            .then(
+              (data: any) => {
+                //ON FULFILLED
+                toast
+                  .promise(
+                    connectBniThree({
+                      accountId: data.id,
+                      accessToken: data.accessToken,
+                      token,
+                    }),
+                    {
+                      loading: 'Ambil transaksi...',
+                      success: 'Sukses!',
+                      error: 'Error!',
+                    }
+                  )
+                  .then(
+                    () => {
+                      //ON FULFILLED
+                      router.push(`/account/success`);
+                    },
+                    () => {
+                      router.push('/account/fail');
+                    }
+                  );
+              },
+              () => {
+                router.push('/account/fail');
+              }
+            );
         },
         () => {
           router.push('/account/fail');

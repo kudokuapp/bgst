@@ -350,8 +350,9 @@
 -- ALTER TABLE "BCATransaction" ADD FOREIGN KEY("accountId")REFERENCES "Account"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 
--- -- @block
--- UPDATE "User" SET "hasAccount"=false WHERE "id"=11
+-- @block
+DELETE FROM "Account" WHERE "kudosId"=1;
+-- DELETE FROM "GopayTransaction" WHERE "accountId"=52;
 
 
 

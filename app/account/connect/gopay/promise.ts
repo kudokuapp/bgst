@@ -112,7 +112,7 @@ export function connectGopayFour({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/gopay/init',
+          '/api/ewallet/gopay/init',
           { accountId, accessToken },
           { headers: { Authorization: `Bearer ${token}` } }
         );
