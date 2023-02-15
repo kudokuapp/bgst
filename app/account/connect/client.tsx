@@ -45,7 +45,7 @@ export default function Client({
         name: 'Bank Central Asia',
         subname: 'PT. Bank Central Asia, Tbk.',
         link: 'bca',
-        disabled: false,
+        disabled: true,
         connected: isBca,
       },
       {
