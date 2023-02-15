@@ -47,7 +47,7 @@ export function connectGopayTwo({
       try {
         const options = {
           method: 'POST',
-          url: '/api/ewallet/gopay/init',
+          url: '/api/ewallet/gopay/token',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

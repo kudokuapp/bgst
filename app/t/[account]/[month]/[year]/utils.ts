@@ -7,13 +7,11 @@ import {
   GopayTransaction,
   MandiriTransaction,
   OVOTransaction,
-  PrismaClient,
   ShopeePayTransaction,
   User,
 } from '@prisma/client';
 import moment from 'moment';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export async function getTransaction(
   account: Account,

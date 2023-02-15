@@ -13,7 +13,7 @@ export function connectBni({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/bni/init',
+          '/api/bank/bni/token',
           { username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );

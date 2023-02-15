@@ -15,7 +15,7 @@ export function connectBSI({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/bsi/init',
+          '/api/bank/bsi/token',
           { institutionId, username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -43,7 +43,7 @@ export function connectShopeePayTwo({
       try {
         const options = {
           method: 'POST',
-          url: '/api/ewallet/shopeepay/init',
+          url: '/api/ewallet/shopeepay/token',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

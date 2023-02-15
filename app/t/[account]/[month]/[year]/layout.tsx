@@ -2,11 +2,9 @@ import { Navbar, Footer, NavCard } from './client';
 import '$styles/globals.css';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
-import { PrismaClient } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function Layout({
   children,

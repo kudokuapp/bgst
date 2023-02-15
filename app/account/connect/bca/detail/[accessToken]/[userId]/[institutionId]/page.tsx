@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import axios from 'axios';
 import { LottieLoading } from 'app/account/connect/bca/transaction/[accountId]/client';
+import { fetchDetails } from './fetchdetails';
 
 export default async function Page({
   params,
@@ -24,7 +24,7 @@ export default async function Page({
     token: token as unknown as string,
   })
     .then((data: any) => {
-      redirect(`account/connect/bca/transaction/${data.id}`);
+      redirect(`/account/connect/bca/transaction/${data.id}`);
     })
     .catch(() => {
       redirect('/account/fail');
@@ -41,31 +41,4 @@ export default async function Page({
       </p>
     </div>
   );
-}
-
-function fetchDetails({
-  userId,
-  accessToken,
-  institutionId,
-  token,
-}: {
-  userId: number;
-  accessToken: string;
-  institutionId: number;
-  token: string;
-}) {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        const { data } = await axios.post(
-          '/api/detail',
-          { userId, accessToken, institutionId },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        resolve(data);
-      } catch (e) {
-        reject(e);
-      }
-    })();
-  });
 }

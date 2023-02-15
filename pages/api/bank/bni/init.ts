@@ -1,16 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
 import { decodeAuthHeader } from '$utils/auth';
-import {
-  brickPublicAccessToken,
-  brickUrl,
-  getAccountDetail,
-  getClientIdandRedirectRefId,
-} from '$utils/brick';
+import { brickUrl } from '$utils/brick';
 import axios from 'axios';
 import moment from 'moment';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,97 +23,14 @@ export default async function handler(
     throw new Error('Not allowed to do this operation');
   }
 
-  //   Find the user in our database
-  const user = await prisma.user.findFirst({ where: { whatsapp } });
-
-  if (!user) {
-    res.status(500).json({ Error: 'Cannot find user' });
-    throw new Error('Cannot find user');
-  }
-
   // REQUIRED BODY DATA
-  const { username, password }: { username: string; password: string } =
+  const { accessToken, accountId }: { accessToken: string; accountId: number } =
     req.body;
 
-  if (!username || !password) {
+  if (!accessToken || !accountId) {
     res.status(500).json({ Error: 'Data is required or invalid' });
     throw new Error('Data is required or invalid');
   }
-
-  /**
-   * Get access token
-   */
-
-  // Call the function to get ClientId and RedirectRefId needed for getting the access token
-  const { clientId, redirectRefId } = await getClientIdandRedirectRefId(
-    whatsapp
-  ).catch((e) => {
-    console.error(e);
-    res.status(500).json(e);
-    throw new Error('Error dari brick, see console');
-  });
-
-  const tokenUrl = brickUrl(`/v1/auth/${clientId}`);
-
-  const tokenOptions = {
-    method: 'POST',
-    url: tokenUrl.href,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${brickPublicAccessToken}`,
-    },
-    data: {
-      institutionId: 4,
-      username,
-      password,
-      redirectRefId,
-    },
-  };
-
-  const {
-    data: { data: tokenData },
-  }: { data: { data: BrickTokenData } } = await axios
-    .request(tokenOptions)
-    .catch((e) => {
-      console.error(e);
-      res.status(500).json(e);
-      throw new Error('Error dari brick, see console');
-    });
-
-  const { accessToken } = tokenData;
-
-  const accountDetail = await getAccountDetail(accessToken).catch((e) => {
-    console.error(e);
-    res.status(500).json(e);
-    throw new Error('Error dari brick, see console');
-  });
-
-  const { accountId, accountNumber } = accountDetail[0];
-
-  /**
-   * Avoid duplication in the account
-   */
-
-  const searchAccount = await prisma.account.findFirst({
-    where: { AND: [{ kudosId: user.id }, { accountNumber }] },
-  });
-
-  if (searchAccount) {
-    res.status(500).json({ Error: 'Account already exist' });
-    throw new Error('Account already exist');
-  }
-
-  const account = await prisma.account.create({
-    data: {
-      createdAt: new Date(),
-      institutionId: 4,
-      accessToken: tokenData.accessToken,
-      accountNumber,
-      brick_account_id: accountId,
-      kudosId: user.id,
-    },
-  });
 
   /**
    * Get the initial transaction and push it to our database
@@ -141,7 +51,7 @@ export default async function handler(
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${account.accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   };
 
@@ -204,20 +114,13 @@ export default async function handler(
           classification_subgroup: category
             ? value.category.classification_subgroup
             : null,
-          accountId: account.id,
+          accountId,
         },
       });
     } catch (e: any) {
       res.status(500).json(e);
       throw new Error(e);
     }
-  }
-
-  if (!user.hasAccount) {
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { hasAccount: true },
-    });
   }
 
   res.status(200).json({

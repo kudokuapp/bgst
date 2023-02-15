@@ -160,16 +160,14 @@ export default function Client({ token }: { token: string }) {
         }
       )
       .then(
-        () => {
+        (data: any) => {
           //ON FULFILLED
-          router.push('/account/success');
+          router.push(
+            `/account/connect/shopeepay/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
+          );
         },
         () => {
-          //ON REJECTED
-          setProgress(1);
-          setInput('');
-          setPassword('');
-          setCheck(false);
+          router.push('/account/fail');
         }
       );
   };

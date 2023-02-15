@@ -28,10 +28,17 @@ export default function Client({ id, token }: { id: string; token: string }) {
           error: 'Error!',
         }
       )
-      .then(() => {
-        //ON FULFILLED
-        router.push('/account/success');
-      });
+      .then(
+        (data: any) => {
+          //ON FULFILLED
+          router.push(
+            `/account/connect/bri/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
+          );
+        },
+        () => {
+          router.push('/account/fail');
+        }
+      );
   }
 
   return (

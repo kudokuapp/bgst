@@ -15,7 +15,7 @@ export function connectBRI({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/bri/init',
+          '/api/bank/bri/token',
           { institutionId, username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );

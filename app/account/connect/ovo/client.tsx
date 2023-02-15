@@ -266,17 +266,14 @@ export default function Client({ token }: { token: string }) {
         }
       )
       .then(
-        () => {
+        (data: any) => {
           //ON FULFILLED
-          router.push('/account/success');
+          router.push(
+            `/account/connect/ovo/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
+          );
         },
         () => {
-          //ON REJECTED
-          setInput('');
-          setLink('');
-          setOtp('');
-          setPin('');
-          setProgress(1);
+          router.push('/account/fail');
         }
       );
   };

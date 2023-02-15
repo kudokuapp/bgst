@@ -5,15 +5,13 @@ import _ from 'lodash';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Navbar, Heading, MainShare } from './client';
-import { PrismaClient } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
 import {
   getAccountFromParams,
   getTransaction,
 } from 'app/t/[account]/[month]/[year]/utils';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function Page({
   params,

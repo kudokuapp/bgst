@@ -19,8 +19,7 @@ import RizqyAvatar from '$public/avatar/rizqy.png';
 import { getAccountFromParams, getTransaction } from './utils';
 import getLastTransaction from '$utils/helper/getLastTransaction';
 import moment from 'moment';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function Page({
   params,

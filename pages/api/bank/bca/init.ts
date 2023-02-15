@@ -27,7 +27,7 @@ export default async function handler(
   const { accessToken, accountId }: { accessToken: string; accountId: number } =
     req.body;
 
-  if (!accessToken) {
+  if (!accessToken || !accountId) {
     res.status(500).json({ Error: 'Data is required or invalid' });
     throw new Error('Data is required or invalid');
   }

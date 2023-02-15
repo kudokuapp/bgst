@@ -47,7 +47,7 @@ export function connectOvoTwo({
       try {
         const options = {
           method: 'POST',
-          url: '/api/ewallet/ovo/init',
+          url: '/api/ewallet/ovo/token',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ export function connectMandiri({
     (async () => {
       try {
         const { data } = await axios.post(
-          '/api/bank/mandiri/init',
+          '/api/bank/mandiri/token',
           { institutionId, username, password },
           { headers: { Authorization: `Bearer ${token}` } }
         );

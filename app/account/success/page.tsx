@@ -2,11 +2,9 @@ import { ButtonLanjut, LottieSuccess } from './client';
 import { cookies } from 'next/headers';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
-import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function Page() {
   const nextCookies = cookies();

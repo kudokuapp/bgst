@@ -28,12 +28,17 @@ export default function Client({ id, token }: { id: string; token: string }) {
           error: 'Error!',
         }
       )
-      .then((data: any) => {
-        //ON FULFILLED
-        router.push(
-          `/account/connect/bca/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
-        );
-      });
+      .then(
+        (data: any) => {
+          //ON FULFILLED
+          router.push(
+            `/account/connect/bca/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
+          );
+        },
+        () => {
+          router.push('/account/fail');
+        }
+      );
   }
   switch (id) {
     case '2':

@@ -9,12 +9,10 @@ import {
   GopayTransaction,
   MandiriTransaction,
   OVOTransaction,
-  PrismaClient,
   ShopeePayTransaction,
 } from '@prisma/client';
 import { AuthTokenPayload } from '$utils/auth';
-
-const prisma = new PrismaClient();
+import prisma from '$utils/prisma';
 
 export default async function Page() {
   const nextCookies = cookies();
