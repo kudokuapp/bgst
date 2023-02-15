@@ -71,3 +71,55 @@ export function connectGopayTwo({
     })();
   });
 }
+
+export function connectGopayThree({
+  userId,
+  accessToken,
+  institutionId,
+  token,
+}: {
+  userId: number;
+  accessToken: string;
+  institutionId: number;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/ewalletdetail',
+          { userId, accessToken, institutionId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
+
+export function connectGopayFour({
+  accountId,
+  accessToken,
+  token,
+}: {
+  accountId: number;
+  accessToken: string;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/bank/gopay/init',
+          { accountId, accessToken },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
