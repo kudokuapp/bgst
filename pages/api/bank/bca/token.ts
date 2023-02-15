@@ -3,7 +3,6 @@ import { decodeAuthHeader } from '$utils/auth';
 import {
   brickPublicAccessToken,
   brickUrl,
-  getAccountDetail,
   getClientIdandRedirectRefId,
 } from '$utils/brick';
 import axios from 'axios';
@@ -112,59 +111,5 @@ export default async function handler(
 
   const { accessToken } = tokenData;
 
-  const t5 = performance.now();
-  console.log(`Time it took to get access token is ${t5 - t0}`);
-
-  const accountDetail = await getAccountDetail(accessToken).catch((e) => {
-    console.error(e);
-    res.status(500).json(e);
-    throw new Error('Error dari brick, see console');
-  });
-
-  const { accountId, accountNumber } = accountDetail[0];
-
-  const t6 = performance.now();
-  console.log(`Time it took to get account detail is ${t6 - t0}`);
-
-  /**
-   * Avoid duplication in the account
-   */
-
-  const searchAccount = await prisma.account.findFirst({
-    where: { AND: [{ kudosId: user.id }, { accountNumber }] },
-  });
-
-  if (searchAccount) {
-    res.status(500).json({ Error: 'Account already exist' });
-    throw new Error('Account already exist');
-  }
-
-  const t7 = performance.now();
-  console.log(`Time it took to search account is ${t7 - t0}`);
-
-  const account = await prisma.account.create({
-    data: {
-      createdAt: new Date(),
-      institutionId,
-      accessToken: tokenData.accessToken,
-      accountNumber,
-      brick_account_id: accountId,
-      kudosId: user.id,
-    },
-  });
-
-  const t8 = performance.now();
-  console.log(`Time it took to create account is ${t8 - t0}`);
-
-  if (!user.hasAccount) {
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { hasAccount: true },
-    });
-  }
-
-  const t9 = performance.now();
-  console.log(`Time it took to finish is ${t9 - t0}`);
-
-  res.status(200).json(account);
+  res.status(200).json({ accessToken, userId: user.id, institutionId });
 }

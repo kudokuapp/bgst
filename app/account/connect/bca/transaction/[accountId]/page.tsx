@@ -22,7 +22,13 @@ export default async function Page({ params }: any) {
     accountId: account.id,
     accessToken: account.accessToken,
     token: token as unknown as string,
-  });
+  })
+    .then(() => {
+      redirect('/account/success');
+    })
+    .catch(() => {
+      redirect('/account/fail');
+    });
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center sm:px-0 px-2">

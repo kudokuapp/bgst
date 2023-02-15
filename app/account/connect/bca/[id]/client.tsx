@@ -30,7 +30,9 @@ export default function Client({ id, token }: { id: string; token: string }) {
       )
       .then((data: any) => {
         //ON FULFILLED
-        router.push(`/account/connect/bca/transaction/${data.id}`);
+        router.push(
+          `/account/connect/bca/detail/${data.accessToken}/${data.userId}/${data.institutionId}`
+        );
       });
   }
   switch (id) {
