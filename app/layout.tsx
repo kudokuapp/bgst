@@ -1,5 +1,6 @@
 import '$styles/globals.css';
 import { ThemeContextProvider } from '$context/ThemeContext';
+import Script from 'next/script';
 
 export default function RootLayout({
   children,
@@ -14,7 +15,27 @@ export default function RootLayout({
       */}
       <head />
       <ThemeContextProvider>
-        <body>{children}</body>
+        <body>
+          {children}
+          <div>
+            {/* Google tag (gtag.js) */}
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-FQNGDF24C3"
+              strategy="afterInteractive"
+            />
+
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-FQNGDF24C3');
+        
+              `}
+            </Script>
+          </div>
+        </body>
       </ThemeContextProvider>
     </html>
   );
