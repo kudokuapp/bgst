@@ -87,7 +87,7 @@ export default async function Page({ params }: any) {
           id={id as string}
           token={token}
           expired={expired ?? false}
-          accountId={account!.id}
+          accountId={account ? account.id : null}
         />
       </div>
     </>

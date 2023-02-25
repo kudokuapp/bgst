@@ -34,7 +34,7 @@ export default async function Page() {
       <Client
         token={token}
         expired={expired ?? false}
-        accountId={account!.id}
+        accountId={account ? account.id : null}
       />
     </>
   );
