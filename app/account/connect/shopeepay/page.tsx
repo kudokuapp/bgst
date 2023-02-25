@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Client from './client';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
+import prisma from '$utils/prisma';
 
 export default async function Page() {
   const nextCookies = cookies();

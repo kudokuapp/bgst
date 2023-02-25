@@ -5,6 +5,7 @@ import Image from 'next/image';
 import BNI from '$public/logo/bank/bni.png';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
+import prisma from '$utils/prisma';
 
 export default async function Page() {
   const nextCookies = cookies();

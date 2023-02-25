@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
 import { Account } from '@prisma/client';
+import prisma from '$utils/prisma';
 
 export default async function Page({ params }: any) {
   const { id } = params;
