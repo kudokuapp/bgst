@@ -78,3 +78,18 @@ export async function getAccountDetail(
     })();
   });
 }
+
+export function findBrickTransactionIndex(
+  reference_id: string,
+  array: BrickTransactionData[]
+): number {
+  let index: number = 0;
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+
+    if (reference_id === element.reference_id) {
+      index = i;
+    }
+  }
+  return index;
+}

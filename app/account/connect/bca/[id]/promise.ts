@@ -78,3 +78,57 @@ export function connectBcaThree({
     })();
   });
 }
+
+export function refreshBcaOne({
+  accountId,
+  institutionId,
+  username,
+  password,
+  token,
+}: {
+  accountId: number;
+  institutionId: number;
+  username: string;
+  password: string;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/bank/bca/refreshtoken',
+          { institutionId, username, password, accountId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
+
+export function refreshBcaTwo({
+  accountId,
+  accessToken,
+  token,
+}: {
+  accountId: number;
+  accessToken: string;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/bank/bca/refresh',
+          { accountId, accessToken },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}

@@ -351,12 +351,30 @@
 
 
 -- @block
-DELETE FROM "Account" WHERE "kudosId"=1;
--- DELETE FROM "GopayTransaction" WHERE "accountId"=52;
+DELETE FROM "GopayTransaction" 
+WHERE "date" >= '2023-01-01'
+AND "date" <= '2023-01-31'
 
+-- @block
+SELECT * FROM "GopayTransaction" WHERE "accountId"=4
 
 
 -- -- @block
 -- DELETE FROM "Account" WHERE "institutionId"=17;
 -- UPDATE "User" SET "hasAccount"=false WHERE "id"=87;
 
+
+
+-- @block
+ALTER TABLE "Account" ADD expired BOOLEAN;
+
+-- @block
+UPDATE "Account" SET expired=true WHERE "kudosId"=1
+
+
+-- @block
+SELECT * FROM "User" WHERE id=1
+
+
+-- @block
+SELECT * FROM "Account" WHERE expired=false ORDER BY id ASC;

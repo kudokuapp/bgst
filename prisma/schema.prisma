@@ -15,6 +15,7 @@ model Account {
   accountNumber        String                 @unique @db.VarChar(255)
   brick_account_id     String                 @unique @db.VarChar(255)
   kudosId              Int
+  expired              Boolean?
   User                 User                   @relation(fields: [kudosId], references: [id], onDelete: Cascade)
   BCATransaction       BCATransaction[]
   BNITransaction       BNITransaction[]

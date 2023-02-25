@@ -4,14 +4,31 @@ import MyBCA from '$public/logo/bank/mybca.png';
 import Image, { StaticImageData } from 'next/image';
 import Client from './client';
 import { cookies } from 'next/headers';
+import prisma from '$utils/prisma';
+import * as jwt from 'jsonwebtoken';
+import { AuthTokenPayload } from '$utils/auth';
+import { Account } from '@prisma/client';
 
-export default function Page({ params }: any) {
+export default async function Page({ params }: any) {
   const { id } = params;
 
   const nextCookies = cookies();
-  const token = nextCookies.get('token');
+  const token = nextCookies.get('token')?.value;
 
   if (!token) redirect('/');
+
+  const { whatsapp } = jwt.verify(
+    token,
+    process.env.APP_SECRET as string
+  ) as AuthTokenPayload;
+
+  if (!whatsapp) redirect('/');
+
+  const user = await prisma.user.findFirst({ where: { whatsapp } });
+
+  if (!user) redirect('/');
+
+  let account: Account | null;
 
   let srcImage: StaticImageData, name: string, inputSuggest: string;
   switch (id) {
@@ -19,20 +36,34 @@ export default function Page({ params }: any) {
       srcImage = KlikBCA;
       name = 'Klik BCA Internet Banking';
       inputSuggest = 'User ID & PIN';
+      account = await prisma.account.findFirst({
+        where: { kudosId: user.id, institutionId: 2 },
+      });
       break;
     case '37':
       srcImage = MyBCA;
       name = 'MyBCA Internet Banking';
       inputSuggest = 'User ID & Password';
+      account = await prisma.account.findFirst({
+        where: { kudosId: user.id, institutionId: 37 },
+      });
       break;
     case '38':
       srcImage = MyBCA;
       name = 'MyBCA Mobile Banking';
       inputSuggest = 'User ID & Password';
+      account = await prisma.account.findFirst({
+        where: { kudosId: user.id, institutionId: 38 },
+      });
       break;
     default:
       redirect('/');
   }
+
+  if (account?.expired === false) redirect('/t');
+
+  const expired = account && account.expired === true;
+
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-2">
@@ -52,7 +83,12 @@ export default function Page({ params }: any) {
         </h6>
       </div>
       <div className="w-full h-fit flex justify-center items-center my-10">
-        <Client id={id as string} token={token!.value} />
+        <Client
+          id={id as string}
+          token={token}
+          expired={expired ?? false}
+          accountId={account!.id}
+        />
       </div>
     </>
   );

@@ -7,83 +7,148 @@ import {
   connectMandiriOne,
   connectMandiriThree,
   connectMandiriTwo,
+  refreshMandiriOne,
+  refreshMandiriTwo,
 } from './promise';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { ButtonConnect } from '../../bca/[id]/client';
+import { Account } from '@prisma/client';
 
-export default function Client({ id, token }: { id: string; token: string }) {
+export default function Client({
+  id,
+  token,
+  expired,
+  accountId,
+}: {
+  id: string;
+  token: string;
+  expired: boolean;
+  accountId: number | null;
+}) {
   const router = useRouter();
   const [textInput, setTextInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
 
   function handleClick() {
-    toast
-      .promise(
-        connectMandiriOne({
-          institutionId: Number(id),
-          username: textInput,
-          password: passwordInput,
-          token,
-        }),
-        {
-          loading: 'Connecting...',
-          success: 'Sukses!',
-          error: 'Error!',
-        }
-      )
-      .then(
-        (data: any) => {
-          //ON FULFILLED
-          toast
-            .promise(
-              connectMandiriTwo({
-                userId: data.userId,
-                institutionId: data.institutionId,
-                accessToken: data.accessToken,
-                token,
-              }),
-              {
-                loading: 'Ambil akun detail...',
-                success: 'Sukses!',
-                error: 'Error!',
-              }
-            )
-            .then(
-              (data: any) => {
-                //ON FULFILLED
-                toast
-                  .promise(
-                    connectMandiriThree({
-                      accountId: data.id,
-                      accessToken: data.accessToken,
-                      token,
-                    }),
-                    {
-                      loading: 'Ambil transaksi...',
-                      success: 'Sukses!',
-                      error: 'Error!',
-                    }
-                  )
-                  .then(
-                    () => {
-                      //ON FULFILLED
-                      router.push(`/account/success`);
-                    },
-                    () => {
-                      router.push('/account/fail');
-                    }
-                  );
-              },
-              () => {
-                router.push('/account/fail');
-              }
-            );
-        },
-        () => {
-          router.push('/account/fail');
-        }
-      );
+    if (accountId && expired) {
+      toast
+        .promise(
+          refreshMandiriOne({
+            accountId,
+            institutionId: Number(id),
+            username: textInput,
+            password: passwordInput,
+            token,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (DATA: any) => {
+            const data = DATA as Account;
+            // ON FULFILLED
+
+            toast
+              .promise(
+                refreshMandiriTwo({
+                  accountId: data.id,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil transaksi...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                () => {
+                  // ON FULFILLED
+                  router.push(`/account/success`);
+                },
+                () => {
+                  // ON REJECTED
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            // ON REJECTED
+            router.push('/account/fail');
+          }
+        );
+    } else {
+      toast
+        .promise(
+          connectMandiriOne({
+            institutionId: Number(id),
+            username: textInput,
+            password: passwordInput,
+            token,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (data: any) => {
+            //ON FULFILLED
+            toast
+              .promise(
+                connectMandiriTwo({
+                  userId: data.userId,
+                  institutionId: data.institutionId,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil akun detail...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                (data: any) => {
+                  //ON FULFILLED
+                  toast
+                    .promise(
+                      connectMandiriThree({
+                        accountId: data.id,
+                        accessToken: data.accessToken,
+                        token,
+                      }),
+                      {
+                        loading: 'Ambil transaksi...',
+                        success: 'Sukses!',
+                        error: 'Error!',
+                      }
+                    )
+                    .then(
+                      () => {
+                        //ON FULFILLED
+                        router.push(`/account/success`);
+                      },
+                      () => {
+                        router.push('/account/fail');
+                      }
+                    );
+                },
+                () => {
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            router.push('/account/fail');
+          }
+        );
+    }
   }
 
   return (

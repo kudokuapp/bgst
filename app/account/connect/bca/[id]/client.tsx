@@ -3,83 +3,147 @@
 import PasswordInput from '$lib/PasswordInput';
 import TextInput from '$lib/TextInput';
 import { useState } from 'react';
-import { connectBcaOne, connectBcaThree, connectBcaTwo } from './promise';
+import {
+  connectBcaOne,
+  connectBcaThree,
+  connectBcaTwo,
+  refreshBcaOne,
+  refreshBcaTwo,
+} from './promise';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { Account } from '@prisma/client';
 
-export default function Client({ id, token }: { id: string; token: string }) {
+export default function Client({
+  id,
+  token,
+  expired,
+  accountId,
+}: {
+  id: string;
+  token: string;
+  expired: boolean;
+  accountId: number | null;
+}) {
   const router = useRouter();
   const [textInput, setTextInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
 
   function handleClick() {
-    toast
-      .promise(
-        connectBcaOne({
-          institutionId: Number(id),
-          username: textInput,
-          password: passwordInput,
-          token,
-        }),
-        {
-          loading: 'Connecting...',
-          success: 'Sukses!',
-          error: 'Error!',
-        }
-      )
-      .then(
-        (data: any) => {
-          //ON FULFILLED
-          toast
-            .promise(
-              connectBcaTwo({
-                userId: data.userId,
-                institutionId: data.institutionId,
-                accessToken: data.accessToken,
-                token,
-              }),
-              {
-                loading: 'Ambil akun detail...',
-                success: 'Sukses!',
-                error: 'Error!',
-              }
-            )
-            .then(
-              (data: any) => {
-                //ON FULFILLED
-                toast
-                  .promise(
-                    connectBcaThree({
-                      accountId: data.id,
-                      accessToken: data.accessToken,
-                      token,
-                    }),
-                    {
-                      loading: 'Ambil transaksi...',
-                      success: 'Sukses!',
-                      error: 'Error!',
-                    }
-                  )
-                  .then(
-                    () => {
-                      //ON FULFILLED
-                      router.push(`/account/success`);
-                    },
-                    () => {
-                      router.push('/account/fail');
-                    }
-                  );
-              },
-              () => {
-                router.push('/account/fail');
-              }
-            );
-        },
-        () => {
-          router.push('/account/fail');
-        }
-      );
+    if (accountId && expired) {
+      toast
+        .promise(
+          refreshBcaOne({
+            accountId,
+            institutionId: Number(id),
+            username: textInput,
+            password: passwordInput,
+            token,
+          }),
+          { loading: 'Connecting...', success: 'Sukses', error: 'Error!' }
+        )
+        .then(
+          (dat: any) => {
+            const data = dat as Account;
+            // ON FULFILLED
+            toast
+              .promise(
+                refreshBcaTwo({
+                  accountId: data.id,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil transaksi...',
+                  success: 'Sukses',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                () => {
+                  // ON FULFILLED
+                  router.push(`/account/success`);
+                },
+                () => {
+                  // ON REJECTED
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            // ON REJECTED
+            router.push('/account/fail');
+          }
+        );
+    } else {
+      toast
+        .promise(
+          connectBcaOne({
+            institutionId: Number(id),
+            username: textInput,
+            password: passwordInput,
+            token,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (data: any) => {
+            //ON FULFILLED
+            toast
+              .promise(
+                connectBcaTwo({
+                  userId: data.userId,
+                  institutionId: data.institutionId,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil akun detail...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                (data: any) => {
+                  //ON FULFILLED
+                  toast
+                    .promise(
+                      connectBcaThree({
+                        accountId: data.id,
+                        accessToken: data.accessToken,
+                        token,
+                      }),
+                      {
+                        loading: 'Ambil transaksi...',
+                        success: 'Sukses!',
+                        error: 'Error!',
+                      }
+                    )
+                    .then(
+                      () => {
+                        //ON FULFILLED
+                        router.push(`/account/success`);
+                      },
+                      () => {
+                        router.push('/account/fail');
+                      }
+                    );
+                },
+                () => {
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            router.push('/account/fail');
+          }
+        );
+    }
   }
   switch (id) {
     case '2':

@@ -78,3 +78,57 @@ export function connectBSIThree({
     })();
   });
 }
+
+export function refreshBSIOne({
+  institutionId,
+  username,
+  password,
+  accountId,
+  token,
+}: {
+  institutionId: number;
+  username: string;
+  password: string;
+  accountId: number;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/bank/bsi/refreshtoken',
+          { institutionId, username, password, accountId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}
+
+export function refreshBSITwo({
+  accountId,
+  accessToken,
+  token,
+}: {
+  accountId: number;
+  accessToken: string;
+  token: string;
+}) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        const { data } = await axios.post(
+          '/api/bank/bsi/refresh',
+          { accountId, accessToken },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        resolve(data);
+      } catch (e) {
+        reject(e);
+      }
+    })();
+  });
+}

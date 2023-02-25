@@ -12,10 +12,13 @@ import {
   connectOvoOne,
   connectOvoThree,
   connectOvoTwo,
+  refreshOvoOne,
+  refreshOvoTwo,
 } from './promise';
 import { toast } from 'react-hot-toast';
 import cleanNum from '$utils/helper/cleanNum';
 import { useRouter } from 'next/navigation';
+import { Account } from '@prisma/client';
 
 interface IData {
   username: string;
@@ -25,7 +28,15 @@ interface IData {
   clientId: number;
 }
 
-export default function Client({ token }: { token: string }) {
+export default function Client({
+  token,
+  expired,
+  accountId,
+}: {
+  token: string;
+  expired: boolean;
+  accountId: number | null;
+}) {
   const router = useRouter();
   const [input, setInput] = useState('');
   const [otp, setOtp] = useState('');
@@ -252,76 +263,131 @@ export default function Client({ token }: { token: string }) {
   };
 
   const handleClickSecond = async () => {
-    toast
-      .promise(
-        connectOvoTwo({
-          token,
-          username: data.username,
-          refId: data.refId,
-          deviceId: data.deviceId,
-          otpNumber: link.length > 0 ? link : otp,
-          pin,
-          redirectRefId: data.redirectRefId,
-          clientId: data.clientId,
-        }),
-        {
-          loading: 'Connecting...',
-          success: 'Sukses!',
-          error: 'Error!',
-        }
-      )
-      .then(
-        (data: any) => {
-          //ON FULFILLED
-          toast
-            .promise(
-              connectOvoThree({
-                userId: data.userId,
-                institutionId: data.institutionId,
-                accessToken: data.accessToken,
-                token,
-              }),
-              {
-                loading: 'Ambil akun detail...',
-                success: 'Sukses!',
-                error: 'Error!',
-              }
-            )
-            .then(
-              (data: any) => {
-                //ON FULFILLED
-                toast
-                  .promise(
-                    connectOvoFour({
-                      accountId: data.id,
-                      accessToken: data.accessToken,
-                      token,
-                    }),
-                    {
-                      loading: 'Ambil transaksi...',
-                      success: 'Sukses!',
-                      error: 'Error!',
-                    }
-                  )
-                  .then(
-                    () => {
-                      //ON FULFILLED
-                      router.push(`/account/success`);
-                    },
-                    () => {
-                      router.push('/account/fail');
-                    }
-                  );
-              },
-              () => {
-                router.push('/account/fail');
-              }
-            );
-        },
-        () => {
-          router.push('/account/fail');
-        }
-      );
+    if (accountId && expired) {
+      toast
+        .promise(
+          refreshOvoOne({
+            accountId,
+            token,
+            username: data.username,
+            refId: data.refId,
+            deviceId: data.deviceId,
+            otpNumber: link.length > 0 ? link : otp,
+            pin,
+            redirectRefId: data.redirectRefId,
+            clientId: data.clientId,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (DATA: any) => {
+            const data = DATA as Account;
+            //ON FULFILLED
+            toast
+              .promise(
+                refreshOvoTwo({
+                  accountId: data.id,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil transaksi...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                () => {
+                  // ON FULFILLED
+                  router.push(`/account/success`);
+                },
+                () => {
+                  // ON REJECTED
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            // ON REJECTED
+            router.push('/account/fail');
+          }
+        );
+    } else {
+      toast
+        .promise(
+          connectOvoTwo({
+            token,
+            username: data.username,
+            refId: data.refId,
+            deviceId: data.deviceId,
+            otpNumber: link.length > 0 ? link : otp,
+            pin,
+            redirectRefId: data.redirectRefId,
+            clientId: data.clientId,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (data: any) => {
+            //ON FULFILLED
+            toast
+              .promise(
+                connectOvoThree({
+                  userId: data.userId,
+                  institutionId: data.institutionId,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil akun detail...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                (data: any) => {
+                  //ON FULFILLED
+                  toast
+                    .promise(
+                      connectOvoFour({
+                        accountId: data.id,
+                        accessToken: data.accessToken,
+                        token,
+                      }),
+                      {
+                        loading: 'Ambil transaksi...',
+                        success: 'Sukses!',
+                        error: 'Error!',
+                      }
+                    )
+                    .then(
+                      () => {
+                        //ON FULFILLED
+                        router.push(`/account/success`);
+                      },
+                      () => {
+                        router.push('/account/fail');
+                      }
+                    );
+                },
+                () => {
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            router.push('/account/fail');
+          }
+        );
+    }
   };
   return (
     <motion.div

@@ -12,10 +12,13 @@ import {
   connectGopayOne,
   connectGopayThree,
   connectGopayTwo,
+  refreshGopayOne,
+  refreshGopayTwo,
 } from './promise';
 import { toast } from 'react-hot-toast';
 import cleanNum from '$utils/helper/cleanNum';
 import { useRouter } from 'next/navigation';
+import { Account } from '@prisma/client';
 
 interface IData {
   redirectRefId: string;
@@ -26,7 +29,15 @@ interface IData {
   username: string;
 }
 
-export default function Client({ token }: { token: string }) {
+export default function Client({
+  token,
+  expired,
+  accountId,
+}: {
+  token: string;
+  expired: boolean;
+  accountId: number | null;
+}) {
   const router = useRouter();
   const [input, setInput] = useState('');
   const [otp, setOtp] = useState('');
@@ -136,76 +147,131 @@ export default function Client({ token }: { token: string }) {
   };
 
   const handleClickSecond = async () => {
-    toast
-      .promise(
-        connectGopayTwo({
-          redirectRefId: data.redirectRefId,
-          clientId: data.clientId,
-          sessionId: data.sessionId,
-          uniqueId: data.uniqueId,
-          otpToken: data.otpToken,
-          username: data.username,
-          token,
-          otp,
-        }),
-        {
-          loading: 'Connecting...',
-          success: 'Sukses!',
-          error: 'Error!',
-        }
-      )
-      .then(
-        (data: any) => {
-          //ON FULFILLED
-          toast
-            .promise(
-              connectGopayThree({
-                userId: data.userId,
-                institutionId: data.institutionId,
-                accessToken: data.accessToken,
-                token,
-              }),
-              {
-                loading: 'Ambil akun detail...',
-                success: 'Sukses!',
-                error: 'Error!',
-              }
-            )
-            .then(
-              (data: any) => {
-                //ON FULFILLED
-                toast
-                  .promise(
-                    connectGopayFour({
-                      accountId: data.id,
-                      accessToken: data.accessToken,
-                      token,
-                    }),
-                    {
-                      loading: 'Ambil transaksi...',
-                      success: 'Sukses!',
-                      error: 'Error!',
-                    }
-                  )
-                  .then(
-                    () => {
-                      //ON FULFILLED
-                      router.push(`/account/success`);
-                    },
-                    () => {
-                      router.push('/account/fail');
-                    }
-                  );
-              },
-              () => {
-                router.push('/account/fail');
-              }
-            );
-        },
-        () => {
-          router.push('/account/fail');
-        }
-      );
+    if (accountId && expired) {
+      toast
+        .promise(
+          refreshGopayOne({
+            accountId,
+            redirectRefId: data.redirectRefId,
+            clientId: data.clientId,
+            sessionId: data.sessionId,
+            uniqueId: data.uniqueId,
+            otpToken: data.otpToken,
+            username: data.username,
+            token,
+            otp,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (DATA: any) => {
+            const data = DATA as Account;
+            // ON FULFILLED
+            toast
+              .promise(
+                refreshGopayTwo({
+                  accountId: data.id,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil transaksi...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                () => {
+                  // ON FULFILLED
+                  router.push(`/account/success`);
+                },
+                () => {
+                  // ON REJECTED
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            // ON REJECTED
+            router.push('/account/fail');
+          }
+        );
+    } else {
+      toast
+        .promise(
+          connectGopayTwo({
+            redirectRefId: data.redirectRefId,
+            clientId: data.clientId,
+            sessionId: data.sessionId,
+            uniqueId: data.uniqueId,
+            otpToken: data.otpToken,
+            username: data.username,
+            token,
+            otp,
+          }),
+          {
+            loading: 'Connecting...',
+            success: 'Sukses!',
+            error: 'Error!',
+          }
+        )
+        .then(
+          (data: any) => {
+            //ON FULFILLED
+            toast
+              .promise(
+                connectGopayThree({
+                  userId: data.userId,
+                  institutionId: data.institutionId,
+                  accessToken: data.accessToken,
+                  token,
+                }),
+                {
+                  loading: 'Ambil akun detail...',
+                  success: 'Sukses!',
+                  error: 'Error!',
+                }
+              )
+              .then(
+                (data: any) => {
+                  //ON FULFILLED
+                  toast
+                    .promise(
+                      connectGopayFour({
+                        accountId: data.id,
+                        accessToken: data.accessToken,
+                        token,
+                      }),
+                      {
+                        loading: 'Ambil transaksi...',
+                        success: 'Sukses!',
+                        error: 'Error!',
+                      }
+                    )
+                    .then(
+                      () => {
+                        //ON FULFILLED
+                        router.push(`/account/success`);
+                      },
+                      () => {
+                        router.push('/account/fail');
+                      }
+                    );
+                },
+                () => {
+                  router.push('/account/fail');
+                }
+              );
+          },
+          () => {
+            router.push('/account/fail');
+          }
+        );
+    }
   };
   return (
     <motion.div

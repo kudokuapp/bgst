@@ -15,6 +15,8 @@ import { motion } from 'framer-motion';
 import ThemeContext from '$context/ThemeContext';
 import { useContext, useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 export default function Client({
   isBca,
@@ -25,6 +27,14 @@ export default function Client({
   isGopay,
   isOvo,
   isShopeePay,
+  isBcaExpired,
+  isMandiriExpired,
+  isBniExpired,
+  isBsiExpired,
+  isBriExpired,
+  isGopayExpired,
+  isOvoExpired,
+  isShopeePayExpired,
 }: {
   isBca: boolean;
   isMandiri: boolean;
@@ -34,6 +44,14 @@ export default function Client({
   isGopay: boolean;
   isOvo: boolean;
   isShopeePay: boolean;
+  isBcaExpired: boolean;
+  isMandiriExpired: boolean;
+  isBniExpired: boolean;
+  isBsiExpired: boolean;
+  isBriExpired: boolean;
+  isGopayExpired: boolean;
+  isOvoExpired: boolean;
+  isShopeePayExpired: boolean;
 }) {
   const { isDarkTheme } = useContext(ThemeContext);
 
@@ -47,6 +65,7 @@ export default function Client({
         link: 'bca',
         disabled: true,
         connected: isBca,
+        expired: isBcaExpired,
       },
       {
         id: 2,
@@ -56,6 +75,7 @@ export default function Client({
         link: 'mandiri',
         disabled: true,
         connected: isMandiri,
+        expired: isMandiriExpired,
       },
       {
         id: 3,
@@ -65,6 +85,7 @@ export default function Client({
         link: 'bni',
         disabled: false,
         connected: isBni,
+        expired: isBniExpired,
       },
       {
         id: 4,
@@ -74,6 +95,7 @@ export default function Client({
         link: 'bsi',
         disabled: false,
         connected: isBsi,
+        expired: isBsiExpired,
       },
       {
         id: 5,
@@ -83,6 +105,7 @@ export default function Client({
         link: 'bri',
         disabled: false,
         connected: isBri,
+        expired: isBriExpired,
       },
     ],
     'E-Wallet': [
@@ -94,6 +117,7 @@ export default function Client({
         link: 'gopay',
         disabled: false,
         connected: isGopay,
+        expired: isGopayExpired,
       },
       {
         id: 2,
@@ -103,6 +127,7 @@ export default function Client({
         link: 'ovo',
         disabled: false,
         connected: isOvo,
+        expired: isOvoExpired,
       },
       {
         id: 3,
@@ -112,6 +137,7 @@ export default function Client({
         link: 'shopeepay',
         disabled: false,
         connected: isShopeePay,
+        expired: isShopeePayExpired,
       },
     ],
   });
@@ -183,7 +209,7 @@ export default function Client({
                     <li key={value.id} className="w-full relative">
                       <Link
                         href={`${
-                          value.connected || value.disabled
+                          (value.connected && !value.expired) || value.disabled
                             ? `/account/connect#`
                             : `/account/connect/${value.link}`
                         }`}
@@ -191,11 +217,15 @@ export default function Client({
                       >
                         <button
                           className={`flex gap-4 border-b-[1px] border-gray-600 dark:border-gray-400 pb-4 w-full text-left items-center ${
-                            value.connected || value.disabled
+                            (value.connected && !value.expired) ||
+                            value.disabled
                               ? 'cursor-not-allowed opacity-50'
                               : 'cursor-pointer opacity-100'
                           }`}
-                          disabled={value.connected || value.disabled}
+                          disabled={
+                            (value.connected && !value.expired) ||
+                            value.disabled
+                          }
                         >
                           <Image
                             src={value.logo}
@@ -223,15 +253,22 @@ export default function Client({
                       </Link>
                       {(value.connected || value.disabled) && (
                         <div className="flex flex-col gap-2 absolute right-0 top-2">
-                          {value.connected && (
-                            <div className="border-[1px] border-green-400 text-green-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                          {value.connected && !value.expired && (
+                            <div className="border-[1px] border-green-400 text-green-500 px-3 py-0.5 rounded-md select-none cursor-not-allowed text-xs">
                               Connected
                             </div>
                           )}
 
                           {value.disabled && (
-                            <div className="border-[1px] border-red-400 text-red-500 px-3 py-0.5 rounded-sm select-none cursor-not-allowed text-xs">
+                            <div className="border-[1px] border-red-400 text-red-500 px-3 py-0.5 rounded-md select-none cursor-not-allowed text-xs">
                               Lagi gabisa
+                            </div>
+                          )}
+
+                          {value.expired && (
+                            <div className="border-[1px] flex gap-2 items-center justify-center border-red-900 bg-red-500 text-white px-3 py-0.5 rounded-md select-none text-xs">
+                              Login kembali
+                              <FontAwesomeIcon icon={faCircleExclamation} />
                             </div>
                           )}
                         </div>

@@ -76,6 +76,7 @@ export default async function handler(
       kudosId: userId,
       brick_account_id: accountId,
       accountNumber,
+      expired: false,
     },
   });
 

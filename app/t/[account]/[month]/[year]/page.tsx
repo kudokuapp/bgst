@@ -9,7 +9,6 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import * as jwt from 'jsonwebtoken';
 import { AuthTokenPayload } from '$utils/auth';
-import { PrismaClient } from '@prisma/client';
 import _ from 'lodash';
 import { month, shortMonth, year } from '$utils/helper/dateArray';
 import { LottieNoData, NgobrolSamaFounder } from './client';

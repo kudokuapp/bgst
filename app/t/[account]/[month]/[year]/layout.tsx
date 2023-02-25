@@ -36,6 +36,7 @@ export default async function Layout({
       id: value.id,
       institutionId: value.institutionId,
       accountNumber: value.accountNumber,
+      expired: value.expired ?? false,
     };
   });
 

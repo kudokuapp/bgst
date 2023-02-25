@@ -15,7 +15,15 @@ export default async function Page() {
     isBri: boolean = false,
     isGopay: boolean = false,
     isOvo: boolean = false,
-    isShopeePay: boolean = false;
+    isShopeePay: boolean = false,
+    isBcaExpired: boolean = false,
+    isMandiriExpired: boolean = false,
+    isBniExpired: boolean = false,
+    isBsiExpired: boolean = false,
+    isBriExpired: boolean = false,
+    isGopayExpired: boolean = false,
+    isOvoExpired: boolean = false,
+    isShopeePayExpired: boolean = false;
 
   if (!token) redirect('/');
 
@@ -33,38 +41,46 @@ export default async function Page() {
   const response = await prisma.account.findMany({ where: { kudosId } });
 
   response.forEach((value) => {
-    const { institutionId } = value;
+    const { institutionId, expired } = value;
 
     if (institutionId === 2 || institutionId === 37 || institutionId === 38) {
       isBca = true;
+      isBcaExpired = expired ?? false;
     }
 
     if (institutionId === 3 || institutionId === 17) {
       isMandiri = true;
+      isMandiriExpired = expired ?? false;
     }
 
     if (institutionId === 4) {
       isBni = true;
+      isBniExpired = expired ?? false;
     }
 
     if (institutionId === 26 || institutionId === 34) {
       isBsi = true;
+      isBsiExpired = expired ?? false;
     }
 
     if (institutionId === 5 || institutionId === 16) {
       isBri = true;
+      isBriExpired = expired ?? false;
     }
 
     if (institutionId === 11) {
       isGopay = true;
+      isGopayExpired = expired ?? false;
     }
 
     if (institutionId === 12) {
       isOvo = true;
+      isOvoExpired = expired ?? false;
     }
 
     if (institutionId === 33) {
       isShopeePay = true;
+      isShopeePay = expired ?? false;
     }
   });
 
@@ -79,6 +95,14 @@ export default async function Page() {
         isGopay={isGopay}
         isOvo={isOvo}
         isShopeePay={isShopeePay}
+        isBcaExpired={isBcaExpired}
+        isMandiriExpired={isMandiriExpired}
+        isBniExpired={isBniExpired}
+        isBriExpired={isBriExpired}
+        isBsiExpired={isBsiExpired}
+        isGopayExpired={isGopayExpired}
+        isOvoExpired={isOvoExpired}
+        isShopeePayExpired={isShopeePayExpired}
       />
     </>
   );

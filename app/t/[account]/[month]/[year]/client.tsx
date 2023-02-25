@@ -14,6 +14,7 @@ import {
   faCircleChevronDown,
   faCheck,
   faXmark,
+  faCircleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import LogoPrimaryLight from '$public/logo/primary.svg';
@@ -194,6 +195,7 @@ export function Footer() {
 type Account = {
   institutionId: number;
   accountNumber: string;
+  expired: boolean;
 };
 
 export function NavCard({
@@ -225,6 +227,14 @@ export function NavCard({
     isGopay = false,
     isOvo = false,
     isShopeepay = false,
+    isBcaExpired = false,
+    isMandiriExpired = false,
+    isBniExpired = false,
+    isBsiExpired = false,
+    isBriExpired = false,
+    isGopayExpired = false,
+    isOvoExpired = false,
+    isShopeepayExpired = false,
     bcaAccountNumber = undefined,
     mandiriAccountNumber = undefined,
     bniAccountNumber = undefined,
@@ -235,46 +245,54 @@ export function NavCard({
     shopeepayAccountNumber = undefined;
 
   for (let index = 0; index < connectedAccounts.length; index++) {
-    const { institutionId, accountNumber } = connectedAccounts[index];
+    const { institutionId, accountNumber, expired } = connectedAccounts[index];
 
     if (institutionId === 2 || institutionId === 37 || institutionId === 38) {
       isBca = true;
       bcaAccountNumber = accountNumber;
+      isBcaExpired = expired;
     }
 
     if (institutionId === 3 || institutionId === 17) {
       isMandiri = true;
       mandiriAccountNumber = accountNumber;
+      isMandiriExpired = expired;
     }
 
     if (institutionId === 4) {
       isBni = true;
       bniAccountNumber = accountNumber;
+      isBniExpired = expired;
     }
 
     if (institutionId === 26 || institutionId === 34) {
       isBsi = true;
       bsiAccountNumber = accountNumber;
+      isBsiExpired = expired;
     }
 
     if (institutionId === 5 || institutionId === 16) {
       isBri = true;
       briAccountNumber = accountNumber;
+      isBriExpired = expired;
     }
 
     if (institutionId === 11) {
       isGopay = true;
       gopayAccountNumber = accountNumber;
+      isGopayExpired = expired;
     }
 
     if (institutionId === 12) {
       isOvo = true;
       ovoAccountNumber = accountNumber;
+      isOvoExpired = expired;
     }
 
     if (institutionId === 33) {
       isShopeepay = true;
       shopeepayAccountNumber = accountNumber;
+      isShopeepayExpired = expired;
     }
   }
 
@@ -339,6 +357,7 @@ export function NavCard({
         param: 'bca',
         connected: isBca,
         accountNumber: bcaAccountNumber,
+        expired: isBcaExpired,
       },
       {
         _id: 2,
@@ -348,6 +367,7 @@ export function NavCard({
         param: 'mandiri',
         connected: isMandiri,
         accountNumber: mandiriAccountNumber,
+        expired: isMandiriExpired,
       },
       {
         _id: 3,
@@ -357,6 +377,7 @@ export function NavCard({
         param: 'bni',
         connected: isBni,
         accountNumber: bniAccountNumber,
+        expired: isBniExpired,
       },
       {
         _id: 4,
@@ -366,6 +387,7 @@ export function NavCard({
         param: 'bsi',
         connected: isBsi,
         accountNumber: bsiAccountNumber,
+        expired: isBsiExpired,
       },
       {
         _id: 5,
@@ -375,6 +397,7 @@ export function NavCard({
         param: 'bri',
         connected: isBri,
         accountNumber: briAccountNumber,
+        expired: isBriExpired,
       },
     ],
     'E-Wallet': [
@@ -386,6 +409,7 @@ export function NavCard({
         param: 'gopay',
         connected: isGopay,
         accountNumber: gopayAccountNumber,
+        expired: isGopayExpired,
       },
       {
         _id: 2,
@@ -395,6 +419,7 @@ export function NavCard({
         param: 'ovo',
         connected: isOvo,
         accountNumber: ovoAccountNumber,
+        expired: isOvoExpired,
       },
       {
         _id: 3,
@@ -404,6 +429,7 @@ export function NavCard({
         param: 'shopeepay',
         connected: isShopeepay,
         accountNumber: shopeepayAccountNumber,
+        expired: isShopeepayExpired,
       },
     ],
   });
@@ -550,6 +576,17 @@ export function NavCard({
                                   >
                                     Hubungkan
                                     <FontAwesomeIcon icon={faRightToBracket} />
+                                  </Link>
+                                )}
+                                {value.connected && value.expired && (
+                                  <Link
+                                    href="/account/connect"
+                                    className="px-2 py-1 border-2 border-red-500 rounded-md sm:text-sm bg-red-900 text-white flex gap-2 items-center font-bold text-xs"
+                                  >
+                                    Login Kembali
+                                    <FontAwesomeIcon
+                                      icon={faCircleExclamation}
+                                    />
                                   </Link>
                                 )}
                               </div>
