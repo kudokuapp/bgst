@@ -8,12 +8,12 @@ export async function middleware(request: NextRequest) {
 
   if (!token) return;
 
-  const { payload: whatsapp } = await jwtVerify(
+  const { payload: email } = await jwtVerify(
     token!.value,
     new TextEncoder().encode(process.env.APP_SECRET)
   );
 
-  if (whatsapp) return NextResponse.redirect(new URL('/t', request.url));
+  if (email) return NextResponse.redirect(new URL('/t', request.url));
 }
 
 // See "Matching Paths" below to learn more

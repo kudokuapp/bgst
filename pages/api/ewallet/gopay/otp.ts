@@ -35,7 +35,7 @@ export default async function handler(
 
   // Call the function to get ClientId and RedirectRefId needed for getting the access token
   const { clientId, redirectRefId } = await getClientIdandRedirectRefId(
-    whatsapp
+    email
   ).catch((e) => {
     console.error(e);
     res.status(500).json(e);
