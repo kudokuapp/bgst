@@ -29,7 +29,7 @@ export default async function handler(
       throw new Error('OTP is not valid');
     }
 
-    const token = jwt.sign({ receiver }, APP_SECRET);
+    const token = jwt.sign({ email: receiver }, APP_SECRET);
     res.status(200).json(token);
   } catch (err: any) {
     res.status(500).json({ Error: 'Server error, see console' });
