@@ -7,6 +7,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method !== 'POST') {
+    res.status(500).json({ Error: 'Method not allowed' });
+    throw new Error('method not allowed');
+  }
+
+  const { secret } = req.body;
+
+  const isValid = secret === process.env.UPDATE_SECRET;
+
+  if (!secret || !isValid) {
+    res.status(500).json({ Error: 'Invalid token' });
+    throw new Error('Invalid token');
+  }
+
   console.log('Starting checking if accesstoken is expired or not operation');
 
   const allAccount = await prisma.account.findMany({

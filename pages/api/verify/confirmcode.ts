@@ -19,19 +19,17 @@ export default async function handler(
 
   const { code, receiver } = req.body;
 
-  const whatsapp = `+62${receiver}`;
-
   try {
     const response = await client.verify.v2
       .services(process.env.VERIFY_SERVICE_SID as string)
-      .verificationChecks.create({ to: whatsapp, code: code });
+      .verificationChecks.create({ to: receiver, code: code });
 
     if (!response.valid) {
       res.status(500).json({ Error: 'OTP is not valid' });
       throw new Error('OTP is not valid');
     }
 
-    const token = jwt.sign({ whatsapp }, APP_SECRET);
+    const token = jwt.sign({ receiver }, APP_SECRET);
     res.status(200).json(token);
   } catch (err: any) {
     res.status(500).json({ Error: 'Server error, see console' });

@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export async function checkUserBgst(whatsapp: string) {
+export async function checkUserBgst(email: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
         const response = await axios.get('/api/db/bgstuser', {
-          params: { whatsapp },
+          params: { email },
         });
         resolve(response);
       } catch (e) {
@@ -15,12 +15,12 @@ export async function checkUserBgst(whatsapp: string) {
   });
 }
 
-export async function checkKudos(whatsapp: string) {
+export async function checkKudos(email: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
         const response = await axios.get('/api/db/kudos', {
-          params: { whatsapp },
+          params: { email },
         });
         resolve(response);
       } catch (e) {
@@ -30,13 +30,13 @@ export async function checkKudos(whatsapp: string) {
   });
 }
 
-export async function kirimOtp(whatsapp: string) {
+export async function kirimOtp(email: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
         const { data } = await axios.post('/api/verify/getcode', {
-          receiver: whatsapp,
-          type: 'sms',
+          receiver: email,
+          type: 'email',
         });
         resolve(data);
       } catch (e) {
@@ -51,12 +51,12 @@ export async function kirimOtp(whatsapp: string) {
   });
 }
 
-export async function verifyOtp(otp: string, whatsapp: string) {
+export async function verifyOtp(otp: string, email: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
         const { data } = await axios.post('/api/verify/confirmcode', {
-          receiver: whatsapp,
+          receiver: email,
           code: otp,
         });
 
@@ -76,12 +76,12 @@ export async function verifyOtp(otp: string, whatsapp: string) {
   });
 }
 
-export async function createUser(whatsapp: string) {
+export async function createUser(email: string) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
         const { data } = await axios.get('/api/db/kudos', {
-          params: { whatsapp },
+          params: { email },
         });
 
         const response = await axios.post('/api/db/create', {

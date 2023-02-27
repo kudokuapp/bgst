@@ -10,10 +10,9 @@ export default async function handler(
     throw new Error('Method not allowed');
   }
 
-  const { whatsapp: param } = req.query;
-  const whatsapp = `+62${param}`;
+  const { email } = req.query;
 
-  const user = await dbQuery(whatsapp);
+  const user = await dbQuery(email as string);
 
   if (!user) {
     res.status(500).json({ Error: 'User not found' });
@@ -23,9 +22,9 @@ export default async function handler(
   res.status(200).json(user);
 }
 
-function dbQuery(whatsapp: string) {
-  const queryString = `SELECT * FROM users_final WHERE whatsapp=$1`;
-  const arr = [whatsapp];
+function dbQuery(email: string) {
+  const queryString = `SELECT * FROM users_final WHERE email=$1`;
+  const arr = [email];
   return new Promise((resolve, reject) => {
     pool.query(queryString, arr, (err, res) => {
       if (err) {

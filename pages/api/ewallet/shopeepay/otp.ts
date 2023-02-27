@@ -24,9 +24,9 @@ export default async function handler(
   }
 
   // Decode the bearer token and get the whatsapp
-  const { whatsapp } = decodeAuthHeader(req.headers.authorization);
+  const { email } = decodeAuthHeader(req.headers.authorization);
 
-  if (!whatsapp) {
+  if (!email) {
     res.status(500).json({ Error: 'Not allowed to do this operation' });
     throw new Error('Not allowed to do this operation');
   }

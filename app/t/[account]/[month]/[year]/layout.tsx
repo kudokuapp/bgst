@@ -18,12 +18,12 @@ export default async function Layout({
 
   if (!token) redirect('/');
 
-  const { whatsapp } = jwt.verify(
+  const { email } = jwt.verify(
     token,
     process.env.APP_SECRET as string
   ) as AuthTokenPayload;
 
-  const user = await prisma.user.findFirst({ where: { whatsapp } });
+  const user = await prisma.user.findFirst({ where: { email } });
 
   if (!user || !user.hasAccount) redirect('/');
 

@@ -4,7 +4,6 @@ import { Fragment, useState, useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import ProgressButton from '$lib/ProgressButton';
-import WaInput from '$lib/WaInput';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
 import {
@@ -14,7 +13,6 @@ import {
   verifyOtp,
   createUser,
 } from '../promise';
-import cleanNum from '$utils/helper/cleanNum';
 import OtpInput from 'react-otp-input';
 import type { Percentage } from '$lib/ProgressButton';
 import ThemeContext from '$context/ThemeContext';
@@ -23,6 +21,7 @@ import { motion } from 'framer-motion';
 import TypeformRegistration from '$lib/TypeformRegistration';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
+import TextInput from '$lib/TextInput';
 
 export default function LoginModal({
   isOpen,
@@ -150,17 +149,19 @@ export default function LoginModal({
         return (
           <>
             <div className="flex flex-col gap-3">
-              <WaInput
+              <TextInput
+                placeholder="Email"
+                id="email"
+                value={input}
                 onChange={(e) => {
                   setInput(e.target.value);
                 }}
-                id="whatsapp"
-                placeholder="WhatsApp"
-                value={input}
+                required={true}
               />
+
               <p className="text-justify text-xs text-onPrimaryContainer dark:text-surfaceVariant">
-                Dengan mengisi nomor WhatsApp dan meng-klik tombol lanjut, kamu
-                menyadari bahwa kamu telah membaca, mengerti, dan setuju dengan{' '}
+                Dengan mengisi email dan meng-klik tombol lanjut, kamu menyadari
+                bahwa kamu telah membaca, mengerti, dan setuju dengan{' '}
                 <Link
                   href="https://kudoku.id/terms"
                   target="_blank"
@@ -183,11 +184,13 @@ export default function LoginModal({
             <ProgressButton
               text="Lanjut"
               disabled={
-                !input || !(input.length > 8) || !/^08\d|^8\d/g.test(input)
+                !input ||
+                !(input.length > 3) ||
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input)
               }
               onClick={() => {
                 toast
-                  .promise(checkUserBgst(cleanNum(input)), {
+                  .promise(checkUserBgst(input), {
                     loading: 'Loading...',
                     success: 'Kamu sudah jadi user BGST',
                     error: 'Kamu belum jadi user BGST',
@@ -203,7 +206,7 @@ export default function LoginModal({
                         setBgstConnected(true);
 
                         toast
-                          .promise(kirimOtp(cleanNum(input)), {
+                          .promise(kirimOtp(input), {
                             loading: 'Kirim OTP...',
                             success: 'Sukses kirim OTP',
                             error: 'Kirim OTP Gagal',
@@ -222,7 +225,7 @@ export default function LoginModal({
                         setBgstConnected(false);
 
                         toast
-                          .promise(kirimOtp(cleanNum(input)), {
+                          .promise(kirimOtp(input), {
                             loading: 'Kirim OTP...',
                             success: 'Sukses kirim OTP',
                             error: 'Kirim OTP Gagal',
@@ -242,7 +245,7 @@ export default function LoginModal({
                     () => {
                       // On rejected
                       toast
-                        .promise(checkKudos(cleanNum(input)), {
+                        .promise(checkKudos(input), {
                           loading: 'Loading...',
                           success: 'Kamu sudah jadi Kudos',
                           error: 'Kamu belum jadi Kudos!',
@@ -311,7 +314,7 @@ export default function LoginModal({
               }
               onClick={() => {
                 toast
-                  .promise(kirimOtp(cleanNum(input)), {
+                  .promise(kirimOtp(input), {
                     loading: 'Kirim OTP...',
                     success: 'Kirim OTP sukses!',
                     error: 'Servernya error!',
@@ -452,7 +455,7 @@ export default function LoginModal({
               </div>
             </motion.div>
             <TypeformRegistration
-              whatsapp={`62${cleanNum(input)}`}
+              email={input}
               onSubmit={() => {
                 setProgress('kudos-progress-1');
               }}
@@ -471,9 +474,9 @@ export default function LoginModal({
               animate={{ opacity: 1 }}
             >
               <h4 className="text-2xl font-medium text-onPrimaryContainer dark:text-surfaceVariant">
-                Kudoku udah kirim sms ke{' '}
+                Kudoku udah kirim OTP ke{' '}
                 <span className="text-primary dark:text-primaryDark">
-                  +62{cleanNum(input)}
+                  {input}
                 </span>
                 .
               </h4>
@@ -507,7 +510,7 @@ export default function LoginModal({
               disabled={!otpWa || !(otpWa.length > 5)}
               onClick={() => {
                 toast
-                  .promise(verifyOtp(otpWa, cleanNum(input)), {
+                  .promise(verifyOtp(otpWa, input), {
                     loading: 'Cek OTP kamu...',
                     success: 'OTP benar!',
                     error: 'OTP salah!',
@@ -536,7 +539,7 @@ export default function LoginModal({
                     } else {
                       // COPY DATABASE users_final to User (BGST)
                       toast
-                        .promise(createUser(cleanNum(input)), {
+                        .promise(createUser(input), {
                           loading: 'Create user...',
                           success: 'Sukses jadi user BGST!',
                           error: 'Servernya error...',

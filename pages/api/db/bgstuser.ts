@@ -10,10 +10,11 @@ export default async function handler(
     throw new Error('Method not allowed');
   }
 
-  const { whatsapp: param } = req.query;
-  const whatsapp = `+62${param}`;
+  const { email } = req.query;
 
-  const user = await prisma.user.findFirst({ where: { whatsapp } });
+  const user = await prisma.user.findFirst({
+    where: { email: email as string },
+  });
 
   if (!user) {
     res.status(500).json({ Error: 'User not found' });

@@ -6,12 +6,12 @@ import { PopupButton } from '@typeform/embed-react';
 import type { Percentage } from '$lib/ProgressButton';
 
 export default function TypeformRegistration({
-  whatsapp,
+  email,
   onSubmit = () => {},
   from = '10%',
   to = '100%',
 }: {
-  whatsapp: string;
+  email: string;
   // eslint-disable-next-line no-unused-vars
   onSubmit?: (e: any) => void;
   from?: Percentage;
@@ -30,10 +30,10 @@ export default function TypeformRegistration({
           transition={{ duration: 0.5 }}
         >
           <PopupButton
-            id="EnKbwQJL"
+            id="e6haAlGW"
             hidden={{
               index: '3',
-              wa: whatsapp,
+              email,
             }}
             onSubmit={onSubmit}
             className="py-2 px-4 cursor-pointer rounded-md shadow-xl font-bold flex gap-2 items-center justify-center text-base select-none bg-primary dark:bg-primaryDark text-onPrimary dark:text-onPrimaryDark"

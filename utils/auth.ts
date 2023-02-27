@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 export const APP_SECRET = process.env.APP_SECRET as string;
 
 export interface AuthTokenPayload {
-  whatsapp: string;
+  email: string;
 }
 
 export function decodeAuthHeader(authHeader: string): AuthTokenPayload {

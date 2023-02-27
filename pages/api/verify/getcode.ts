@@ -16,13 +16,11 @@ export default async function handler(
 
   const { type, receiver } = req.body;
 
-  const whatsapp = `+62${receiver}`;
-
   try {
     const response = await client.verify
       .services(process.env.VERIFY_SERVICE_SID as string)
       .verifications.create({
-        to: whatsapp,
+        to: receiver,
         channel: type,
         locale: 'id',
       });

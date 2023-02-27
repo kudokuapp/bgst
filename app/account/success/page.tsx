@@ -21,12 +21,12 @@ export default async function Page() {
 
   if (!token) redirect('/');
 
-  const { whatsapp } = jwt.verify(
+  const { email } = jwt.verify(
     token.value,
     process.env.APP_SECRET as string
   ) as AuthTokenPayload;
 
-  const user = await prisma.user.findFirst({ where: { whatsapp } });
+  const user = await prisma.user.findFirst({ where: { email } });
 
   if (!user) redirect('/');
 
