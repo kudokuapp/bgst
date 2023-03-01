@@ -51,7 +51,7 @@ export default async function handler(
   const accounts = await prisma.account.findMany({
     where: {
       expired: false,
-      createdAt: { lt: moment().startOf('M').format('YYYY-MM-DD') },
+      createdAt: { lt: new Date(moment().startOf('M').format('YYYY-MM-DD')) },
     },
     orderBy: { id: 'asc' },
   });
