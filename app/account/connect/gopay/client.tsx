@@ -48,9 +48,14 @@ export default function Client({
     switch (progress) {
       case 1:
         return (
+          <>
           <h6 className="text-onPrimaryContainer dark:text-onPrimaryContainerDark text-base">
             Isi nomor hp gopay kamu
           </h6>
+          <p className="text-onPrimaryContainer dark:text-onPrimaryContainerDark text-xs">
+            Akun Gojek bakal ke logout pas lo connect di BGST.<br/>Nanti lo tinggal login lagi aja gausah panik!
+          </p>
+          </>
         );
 
       case 2:
