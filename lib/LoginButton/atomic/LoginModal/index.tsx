@@ -524,6 +524,7 @@ export default function LoginModal({
                       secure: process.env.NODE_ENV === 'production',
                       // httpOnly: true, // Cannot use since this is client-side
                       maxAge: 60 * 60 * 24 * 30,
+                      domain: 'bgst.kudoku.id',
                     });
 
                     if (bgst) {
