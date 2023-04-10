@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { decodeAuthHeader } from '$utils/auth';
 import prisma from '$utils/prisma';
-import { BCATransaction } from '@prisma/client';
-import _ from 'lodash';
-import { findBrickTransactionIndex } from '$utils/brick';
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,33 +21,16 @@ export default async function handler(
   }
 
   // REQUIRED BODY DATA
-  const {
-    transactions,
-    latestTransaction,
-  }: {
-    transactions: ExtendedBrickTransactionData[];
-    latestTransaction: BCATransaction;
-  } = req.body;
+  const { transactions }: { transactions: ExtendedBrickTransactionData[] } =
+    req.body;
 
-  if (!transactions || !latestTransaction) {
+  if (!transactions) {
     res.status(500).json({ Error: 'Data is required or invalid' });
     throw new Error('Data is required or invalid');
   }
 
-  const transactionData = _.sortBy(transactions, ['date', 'reference_id']);
-
-  const index = findBrickTransactionIndex(
-    latestTransaction.reference_id ?? '',
-    transactionData
-  );
-
-  const newTransaction = transactionData.splice(
-    index + 1,
-    transactionData.length
-  );
-
-  for (let i = 0; i < newTransaction.length; i++) {
-    const transaction = newTransaction[i];
+  for (let i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i];
 
     const { category } = transaction;
 

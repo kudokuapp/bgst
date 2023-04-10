@@ -1,15 +1,16 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import Image from 'next/image';
 import '$styles/page.css';
 import BCA from '$public/logo/bank/bca.png';
 import Gopay from '$public/logo/bank/gojek.png';
-import OVO from '$public/logo/bank/ovo.png';
-import Shopeepay from '$public/logo/bank/shopee.png';
-import Mandiri from '$public/logo/bank/mandiri.png';
-import BNI from '$public/logo/bank/bni.png';
-import BSI from '$public/logo/bank/bsi.png';
-import BRI from '$public/logo/bank/bri.png';
+// import OVO from '$public/logo/bank/ovo.png';
+// import Shopeepay from '$public/logo/bank/shopee.png';
+// import Mandiri from '$public/logo/bank/mandiri.png';
+// import BNI from '$public/logo/bank/bni.png';
+// import BSI from '$public/logo/bank/bsi.png';
+// import BRI from '$public/logo/bank/bri.png';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ThemeContext from '$context/ThemeContext';
@@ -63,50 +64,50 @@ export default function Client({
         name: 'Bank Central Asia',
         subname: 'PT. Bank Central Asia, Tbk.',
         link: 'bca',
-        disabled: true,
+        disabled: false,
         connected: isBca,
         expired: isBcaExpired,
       },
-      {
-        id: 2,
-        logo: Mandiri,
-        name: 'Mandiri',
-        subname: 'PT. Bank Mandiri, Tbk.',
-        link: 'mandiri',
-        disabled: true,
-        connected: isMandiri,
-        expired: isMandiriExpired,
-      },
-      {
-        id: 3,
-        logo: BNI,
-        name: 'BNI',
-        subname: 'PT. Bank Negara Indonesia (Persero), Tbk.',
-        link: 'bni',
-        disabled: false,
-        connected: isBni,
-        expired: isBniExpired,
-      },
-      {
-        id: 4,
-        logo: BSI,
-        name: 'BSI',
-        subname: 'PT. Bank Syariah Indonesia, Tbk.',
-        link: 'bsi',
-        disabled: false,
-        connected: isBsi,
-        expired: isBsiExpired,
-      },
-      {
-        id: 5,
-        logo: BRI,
-        name: 'BRI',
-        subname: 'PT. Bank Rakyat Indonesia, Tbk.',
-        link: 'bri',
-        disabled: false,
-        connected: isBri,
-        expired: isBriExpired,
-      },
+      // {
+      //   id: 2,
+      //   logo: Mandiri,
+      //   name: 'Mandiri',
+      //   subname: 'PT. Bank Mandiri, Tbk.',
+      //   link: 'mandiri',
+      //   disabled: true,
+      //   connected: isMandiri,
+      //   expired: isMandiriExpired,
+      // },
+      // {
+      //   id: 3,
+      //   logo: BNI,
+      //   name: 'BNI',
+      //   subname: 'PT. Bank Negara Indonesia (Persero), Tbk.',
+      //   link: 'bni',
+      //   disabled: false,
+      //   connected: isBni,
+      //   expired: isBniExpired,
+      // },
+      // {
+      //   id: 4,
+      //   logo: BSI,
+      //   name: 'BSI',
+      //   subname: 'PT. Bank Syariah Indonesia, Tbk.',
+      //   link: 'bsi',
+      //   disabled: false,
+      //   connected: isBsi,
+      //   expired: isBsiExpired,
+      // },
+      // {
+      //   id: 5,
+      //   logo: BRI,
+      //   name: 'BRI',
+      //   subname: 'PT. Bank Rakyat Indonesia, Tbk.',
+      //   link: 'bri',
+      //   disabled: false,
+      //   connected: isBri,
+      //   expired: isBriExpired,
+      // },
     ],
     'E-Wallet': [
       {
@@ -119,26 +120,26 @@ export default function Client({
         connected: isGopay,
         expired: isGopayExpired,
       },
-      {
-        id: 2,
-        logo: OVO,
-        name: 'OVO',
-        subname: 'PT. Visionet Internasional',
-        link: 'ovo',
-        disabled: false,
-        connected: isOvo,
-        expired: isOvoExpired,
-      },
-      {
-        id: 3,
-        logo: Shopeepay,
-        name: 'Shopee Pay',
-        subname: 'PT. Airpay International Indonesia',
-        link: 'shopeepay',
-        disabled: false,
-        connected: isShopeePay,
-        expired: isShopeePayExpired,
-      },
+      // {
+      //   id: 2,
+      //   logo: OVO,
+      //   name: 'OVO',
+      //   subname: 'PT. Visionet Internasional',
+      //   link: 'ovo',
+      //   disabled: false,
+      //   connected: isOvo,
+      //   expired: isOvoExpired,
+      // },
+      // {
+      //   id: 3,
+      //   logo: Shopeepay,
+      //   name: 'Shopee Pay',
+      //   subname: 'PT. Airpay International Indonesia',
+      //   link: 'shopeepay',
+      //   disabled: false,
+      //   connected: isShopeePay,
+      //   expired: isShopeePayExpired,
+      // },
     ],
   });
 
