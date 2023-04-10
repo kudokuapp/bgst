@@ -78,18 +78,14 @@ export default async function Page({ params }: any) {
         <h4 className="text-xl w-fit h-fit select-none font-bold text-onPrimaryContainer dark:text-onPrimaryContainerDark">
           {name}
         </h4>
-        <h6 className="text-onPrimaryContainer dark:text-onPrimaryContainerDark text-base">
-          Masukkan {inputSuggest} kamu
-        </h6>
       </div>
-      <div className="w-full h-fit flex justify-center items-center my-10">
-        <Client
-          id={id as string}
-          token={token}
-          expired={expired ?? false}
-          accountId={account ? account.id : null}
-        />
-      </div>
+      <Client
+        id={id as string}
+        token={token}
+        expired={expired ?? false}
+        accountId={account ? account.id : null}
+        inputSuggest={inputSuggest}
+      />
     </>
   );
 }

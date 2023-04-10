@@ -20,45 +20,35 @@ export default async function handler(
     throw new Error('Not allowed to do this operation');
   }
 
-  const user = await prisma.user.findFirstOrThrow({ where: { email } });
-
   // REQUIRED BODY DATA
-  const {
-    institutionId,
-    accessToken,
-    accountNumber,
-    brick_account_id,
-  }: {
-    institutionId: number;
-    accessToken: string;
-    accountNumber: string;
-    brick_account_id: string;
-  } = req.body;
+  const { accountId, accessToken }: { accountId: number; accessToken: string } =
+    req.body;
 
-  if (!institutionId || !accessToken || !accountNumber || !brick_account_id) {
+  if (!accountId) {
     res.status(500).json({ Error: 'Data is required or invalid' });
     throw new Error('Data is required or invalid');
   }
 
-  const account = await prisma.account.create({
-    data: {
-      createdAt: new Date(),
-      institutionId,
-      accessToken,
-      accountNumber,
-      brick_account_id,
-      kudosId: user.id,
-    },
+  await prisma.user.findFirstOrThrow({ where: { email } });
+
+  const account = await prisma.account.update({
+    where: { id: accountId },
+    data: { expired: false, accessToken },
   });
 
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { hasAccount: true },
+  const transaction = await prisma.gopayTransaction.findMany({
+    where: { accountId },
+    orderBy: {
+      dateTimestamp: 'desc',
+      reference_id: 'desc',
+    },
+    take: 1,
   });
 
   res.status(200).json({
     status: 200,
     accountId: account.id,
     accessToken: account.accessToken,
+    latestTransaction: transaction[0],
   });
 }

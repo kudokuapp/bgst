@@ -1,273 +1,173 @@
 'use client';
 
-import PasswordInput from '$lib/PasswordInput';
-import TextInput from '$lib/TextInput';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Form from './Form';
+import Connecting from '$lib/Connecting';
 import {
+  connectBcaFive,
+  connectBcaFour,
   connectBcaOne,
   connectBcaThree,
   connectBcaTwo,
-  refreshBcaOne,
-  refreshBcaTwo,
+  expiredBcaFour,
+  expiredBcaOne,
+  expiredBcaThree,
+  expiredBcaTwo,
 } from './promise';
-import { toast } from 'react-hot-toast';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { Account } from '@prisma/client';
 
 export default function Client({
   id,
   token,
   expired,
   accountId,
+  inputSuggest,
 }: {
   id: string;
   token: string;
   expired: boolean;
   accountId: number | null;
+  inputSuggest: string;
 }) {
   const router = useRouter();
-  const [textInput, setTextInput] = useState('');
-  const [passwordInput, setPasswordInput] = useState('');
+  const [connecting, setConnecting] = useState(false);
+  const [text, setText] = useState('');
+  const [password, setPassword] = useState('');
 
-  function handleClick() {
-    if (accountId && expired) {
-      toast
-        .promise(
-          refreshBcaOne({
-            accountId,
-            institutionId: Number(id),
-            username: textInput,
-            password: passwordInput,
-            token,
-          }),
-          { loading: 'Connecting...', success: 'Sukses', error: 'Error!' }
-        )
-        .then(
-          (dat: any) => {
-            const data = dat as Account;
-            // ON FULFILLED
-            toast
-              .promise(
-                refreshBcaTwo({
-                  accountId: data.id,
-                  accessToken: data.accessToken,
-                  token,
-                }),
-                {
-                  loading: 'Ambil transaksi...',
-                  success: 'Sukses',
-                  error: 'Error!',
-                }
-              )
-              .then(
-                () => {
-                  // ON FULFILLED
-                  router.push(`/account/success`);
-                },
-                () => {
-                  // ON REJECTED
-                  router.push('/account/fail');
-                }
-              );
-          },
-          () => {
-            // ON REJECTED
-            router.push('/account/fail');
-          }
-        );
-    } else {
-      toast
-        .promise(
-          connectBcaOne({
-            institutionId: Number(id),
-            username: textInput,
-            password: passwordInput,
-            token,
-          }),
-          {
-            loading: 'Connecting...',
-            success: 'Sukses!',
-            error: 'Error!',
-          }
-        )
-        .then(
-          (data: any) => {
-            //ON FULFILLED
-            toast
-              .promise(
-                connectBcaTwo({
-                  userId: data.userId,
-                  institutionId: data.institutionId,
-                  accessToken: data.accessToken,
-                  token,
-                }),
-                {
-                  loading: 'Ambil akun detail...',
-                  success: 'Sukses!',
-                  error: 'Error!',
-                }
-              )
-              .then(
-                (data: any) => {
-                  //ON FULFILLED
-                  toast
-                    .promise(
-                      connectBcaThree({
-                        accountId: data.id,
-                        accessToken: data.accessToken,
-                        token,
-                      }),
-                      {
-                        loading: 'Ambil transaksi...',
-                        success: 'Sukses!',
-                        error: 'Error!',
-                      }
-                    )
-                    .then(
-                      () => {
-                        //ON FULFILLED
-                        router.push(`/account/success`);
-                      },
-                      () => {
-                        router.push('/account/fail');
-                      }
-                    );
-                },
-                () => {
-                  router.push('/account/fail');
-                }
-              );
-          },
-          () => {
-            router.push('/account/fail');
-          }
-        );
-    }
+  const connect = [
+    {
+      promiseFn: connectBcaOne({
+        institutionId: Number(id),
+        username: text,
+        password,
+        token,
+      }),
+      isLoadingText: 'Membangun koneksi BCA...',
+      isErrorText: 'Error membangun koneksi BCA',
+      isSuccessText: 'Sukses membangun koneksi BCA',
+      defaultText: 'Menyambungkan dengan BCA',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return connectBcaTwo(param);
+      },
+      isLoadingText: 'Sedang mengambil detail akun BCA-mu...',
+      isErrorText: 'Error mengambil detail akun BCA-mu',
+      isSuccessText: 'Sukses mengambil detail akun BCA-mu',
+      defaultText: 'Mengambil detail akun BCA-mu',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return connectBcaThree(param);
+      },
+      isLoadingText: 'Sedang membangun koneksi database Kudoku...',
+      isErrorText: 'Error membangun koneksi database Kudoku',
+      isSuccessText: 'Sukses membangun koneksi database Kudoku',
+      defaultText: 'Membangun koneksi database Kudoku',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return connectBcaFour(param);
+      },
+      isLoadingText: 'Sedang membaca data transaksi BCA...',
+      isErrorText: 'Error membaca data transaksi BCA',
+      isSuccessText: 'Sukses membaca data transaksi BCA',
+      defaultText: 'Membaca data transaksi BCA',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return connectBcaFive(param);
+      },
+      isLoadingText: 'Sedang membuat database transaksi Kudoku...',
+      isErrorText: 'Error membuat database transaksi Kudoku',
+      isSuccessText: 'Sukses membuat database transaksi Kudoku',
+      defaultText: 'Membuat database transaksi Kudoku',
+    },
+  ];
+
+  const refresh = [
+    {
+      promiseFn: expiredBcaOne({
+        accountId: accountId ?? 0,
+        institutionId: Number(id),
+        username: text,
+        password,
+        token,
+      }),
+      isLoadingText: 'Membangun koneksi BCA...',
+      isErrorText: 'Error membangun koneksi BCA',
+      isSuccessText: 'Sukses membangun koneksi BCA',
+      defaultText: 'Menyambungkan dengan BCA',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return expiredBcaTwo(param);
+      },
+      isLoadingText: 'Sedang membangun koneksi database Kudoku...',
+      isErrorText: 'Error membangun koneksi database Kudoku',
+      isSuccessText: 'Sukses membangun koneksi database Kudoku',
+      defaultText: 'Membangun koneksi database Kudoku',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return expiredBcaThree(param);
+      },
+      isLoadingText: 'Sedang membaca data transaksi BCA...',
+      isErrorText: 'Error membaca data transaksi BCA',
+      isSuccessText: 'Sukses membaca data transaksi BCA',
+      defaultText: 'Membaca data transaksi BCA',
+    },
+    {
+      promiseFn: (data: any) => {
+        const param = { ...data };
+        return expiredBcaFour(param);
+      },
+      isLoadingText: 'Sedang membuat database transaksi Kudoku...',
+      isErrorText: 'Error membuat database transaksi Kudoku',
+      isSuccessText: 'Sukses membuat database transaksi Kudoku',
+      defaultText: 'Membuat database transaksi Kudoku',
+    },
+  ];
+
+  if (connecting) {
+    return (
+      <>
+        <Connecting
+          promises={expired ? refresh : connect}
+          onFulfilled={() => {
+            setTimeout(() => {
+              router.push('/account/success');
+            }, 5000);
+          }}
+          onRejected={() => {
+            setTimeout(() => {
+              router.push('/account/fail');
+            }, 5000);
+          }}
+        />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Form
+          id={id}
+          inputSuggest={inputSuggest}
+          handleClick={() => {
+            setConnecting(true);
+          }}
+          textInput={text}
+          setTextInput={setText}
+          password={password}
+          setPassword={setPassword}
+        />
+      </>
+    );
   }
-  switch (id) {
-    case '2':
-      return (
-        <div className="max-w-[400px] flex flex-col gap-4">
-          <TextInput
-            placeholder="User ID"
-            id="user-id"
-            value={textInput}
-            onChange={(e) => {
-              setTextInput(e.target.value);
-            }}
-            minLength={5}
-          />
-          <PasswordInput
-            placeholder="PIN"
-            id="pin"
-            value={passwordInput}
-            onChange={(e) => {
-              setPasswordInput(e.target.value);
-            }}
-            minLength={5}
-          />
-
-          <ButtonConnect
-            disabled={!textInput || !passwordInput}
-            onClick={handleClick}
-          />
-        </div>
-      );
-
-    case '37':
-      return (
-        <div className="max-w-[400px] flex flex-col gap-4">
-          <TextInput
-            placeholder="User ID"
-            id="user-id"
-            value={textInput}
-            onChange={(e) => {
-              setTextInput(e.target.value);
-            }}
-            minLength={5}
-          />
-          <PasswordInput
-            placeholder="Password"
-            id="password"
-            value={passwordInput}
-            onChange={(e) => {
-              setPasswordInput(e.target.value);
-            }}
-            minLength={5}
-          />
-
-          <ButtonConnect
-            disabled={!textInput || !passwordInput}
-            onClick={handleClick}
-          />
-        </div>
-      );
-
-    case '38':
-      return (
-        <div className="max-w-[400px] flex flex-col gap-4">
-          <TextInput
-            placeholder="User ID"
-            id="user-id"
-            value={textInput}
-            onChange={(e) => {
-              setTextInput(e.target.value);
-            }}
-            minLength={5}
-          />
-          <PasswordInput
-            placeholder="Password"
-            id="password"
-            value={passwordInput}
-            onChange={(e) => {
-              setPasswordInput(e.target.value);
-            }}
-            minLength={5}
-          />
-
-          <ButtonConnect
-            disabled={!textInput || !passwordInput}
-            onClick={handleClick}
-          />
-        </div>
-      );
-
-    default:
-      return <p>Error</p>;
-  }
-}
-
-export function ButtonConnect({
-  disabled,
-  onClick,
-}: {
-  disabled: boolean;
-  // eslint-disable-next-line no-unused-vars
-  onClick: (e: any) => void;
-}) {
-  return (
-    <div className="w-full h-fit flex justify-end mt-6">
-      <motion.button
-        type="button"
-        onClick={onClick}
-        className={`py-1.5 px-4 cursor-pointer rounded-md shadow-xl font-bold flex gap-2 items-center justify-center text-base select-none ${
-          disabled
-            ? 'bg-gray-600 dark:bg-gray-300 cursor-not-allowed'
-            : 'bg-primary dark:bg-primaryDark cursor-pointer'
-        } text-onPrimary dark:text-onPrimaryDark`}
-        disabled={disabled}
-        animate={{
-          opacity: 1,
-        }}
-        initial={false}
-        whileHover={{
-          scale: disabled ? 1 : [null, 1.3, 1.1],
-        }}
-        transition={{ duration: 0.5 }}
-      >
-        Connect
-      </motion.button>
-    </div>
-  );
 }

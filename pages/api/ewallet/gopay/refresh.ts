@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { decodeAuthHeader } from '$utils/auth';
-import { brickUrl, findBrickTransactionIndex } from '$utils/brick';
-import axios from 'axios';
-import moment from 'moment';
 import prisma from '$utils/prisma';
+import { GopayTransaction } from '@prisma/client';
 import _ from 'lodash';
+import { findBrickTransactionIndex } from '$utils/brick';
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,120 +24,71 @@ export default async function handler(
   }
 
   // REQUIRED BODY DATA
-  const { accessToken, accountId }: { accessToken: string; accountId: number } =
-    req.body;
+  const {
+    transactions,
+    latestTransaction,
+  }: {
+    transactions: ExtendedBrickTransactionData[];
+    latestTransaction: GopayTransaction;
+  } = req.body;
 
-  if (!accessToken || !accountId) {
+  if (!transactions || !latestTransaction) {
     res.status(500).json({ Error: 'Data is required or invalid' });
     throw new Error('Data is required or invalid');
   }
 
-  const account = await prisma.account.findFirst({ where: { id: accountId } });
+  const transactionData = _.sortBy(transactions, ['date', 'reference_id']);
 
-  if (!account) {
-    res.status(500).json({ Error: 'Cannot find the account' });
-    throw new Error('Cannot find the account');
-  }
-
-  //Ganti disini
-  const debitTransaction = await prisma.gopayTransaction.findMany({
-    where: { accountId: account.id },
-    orderBy: [{ date: 'desc' }, { reference_id: 'desc' }],
-  });
-
-  const { date, reference_id } = debitTransaction[0];
-
-  if (!date || !reference_id) throw new Error('date or reference id is null');
-
-  const latestTransaction = moment(date);
-
-  const from = latestTransaction.add(1, 'M').startOf('M').format('YYYY-MM-DD');
-
-  const to = moment().subtract(1, 'M').endOf('M').format('YYYY-MM-DD');
-
-  const transactionUrl = brickUrl(`/v1/transaction/list`);
-
-  const transactionOptions = {
-    method: 'GET',
-    url: transactionUrl.href,
-    params: { from, to },
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const {
-    data: { data },
-  }: { data: { data: BrickTransactionData[] } } = await axios
-    .request(transactionOptions)
-    .catch((e) => {
-      console.error(e);
-      res.status(500).json(e);
-      throw new Error('Error dari brick, see console');
-    });
-
-  const transactionData = _.sortBy(data, ['date', 'reference_id']);
-
-  const index = findBrickTransactionIndex(reference_id, transactionData);
+  const index = findBrickTransactionIndex(
+    latestTransaction.reference_id ?? '',
+    transactionData
+  );
 
   const newTransaction = transactionData.splice(
     index + 1,
     transactionData.length
   );
 
-  const renderNull = (value: BrickTransactionData['category']) => {
-    if (value === null) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   for (let i = 0; i < newTransaction.length; i++) {
-    const value = newTransaction[i];
+    const transaction = newTransaction[i];
 
-    const category = renderNull(value.category);
+    const { category } = transaction;
 
     try {
-      //Ganti disini
       await prisma.gopayTransaction.create({
         data: {
-          dateTimestamp: value.dateTimestamp
-            ? new Date(value.dateTimestamp)
+          dateTimestamp: transaction.dateTimestamp
+            ? new Date(transaction.dateTimestamp)
             : null,
-          brick_id: value.id ?? null,
-          brick_account_id: value.account_id ?? null,
-          account_number: value.account_number ?? null,
-          account_currency: value.account_currency ?? null,
-          institution_id: value.institution_id ?? null,
-          merchant_id: value.merchant_id ?? null,
-          outlet_outlet_id: value.outlet_outlet_id ?? null,
-          location_city_id: value.location_city_id ?? null,
-          location_country_id: value.location_country_id ?? null,
-          date: value.date ? new Date(value.date) : null,
-          amount: value.amount ?? null,
-          description: value.description ?? null,
-          status: value.status ?? null,
-          direction: value.direction ?? null,
-          reference_id: value.reference_id ?? null,
-          transaction_type: value.transaction_type ?? null,
-          category_id: category ? value.category.category_id : null,
-          category_name: category ? value.category.category_name : null,
+          brick_id: transaction.id ?? null,
+          brick_account_id: transaction.account_id ?? null,
+          account_number: transaction.account_number ?? null,
+          account_currency: transaction.account_currency ?? null,
+          institution_id: transaction.institution_id ?? null,
+          merchant_id: transaction.merchant_id ?? null,
+          outlet_outlet_id: transaction.outlet_outlet_id ?? null,
+          location_city_id: transaction.location_city_id ?? null,
+          location_country_id: transaction.location_country_id ?? null,
+          date: transaction.date ? new Date(transaction.date) : null,
+          amount: transaction.amount ?? null,
+          description: transaction.description ?? null,
+          status: transaction.status ?? null,
+          direction: transaction.direction ?? null,
+          reference_id: transaction.reference_id ?? null,
+          transaction_type: transaction.transaction_type ?? null,
+          category_id: category ? category.category_id : null,
+          category_name: category ? category.category_name : null,
           classification_group_id: category
-            ? value.category.classification_group_id
+            ? category.classification_group_id
             : null,
-          classification_group: category
-            ? value.category.classification_group
-            : null,
+          classification_group: category ? category.classification_group : null,
           classification_subgroup_id: category
-            ? value.category.classification_subgroup_id
+            ? category.classification_subgroup_id
             : null,
           classification_subgroup: category
-            ? value.category.classification_subgroup
+            ? category.classification_subgroup
             : null,
-          accountId,
+          accountId: transaction.accountId,
         },
       });
     } catch (e: any) {
