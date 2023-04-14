@@ -369,7 +369,7 @@ SELECT * FROM "GopayTransaction" WHERE "accountId"=4
 ALTER TABLE "Account" ADD expired BOOLEAN;
 
 -- @block
-UPDATE "Account" SET expired=true WHERE "kudosId"=1
+UPDATE "Account" SET expired=true WHERE "id"=54
 
 
 -- @block

@@ -38,10 +38,7 @@ export default async function handler(
 
   const transaction = await prisma.gopayTransaction.findMany({
     where: { accountId },
-    orderBy: {
-      dateTimestamp: 'desc',
-      reference_id: 'desc',
-    },
+    orderBy: [{ dateTimestamp: 'desc' }, { reference_id: 'desc' }],
     take: 1,
   });
 
