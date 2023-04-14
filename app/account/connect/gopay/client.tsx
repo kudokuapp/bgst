@@ -15,6 +15,9 @@ import {
   expiredGopayThree,
   expiredGopayTwo,
 } from './promise';
+import { motion } from 'framer-motion';
+import Gojek from '$public/logo/bank/gojek.png';
+import Image from 'next/image';
 
 export default function Client({
   token,
@@ -134,19 +137,38 @@ export default function Client({
   if (connecting) {
     return (
       <>
-        <Connecting
-          promises={expired ? refresh : connect}
-          onFulfilled={() => {
-            setTimeout(() => {
-              router.push('/account/success');
-            }, 5000);
-          }}
-          onRejected={() => {
-            setTimeout(() => {
-              router.push('/account/fail');
-            }, 5000);
-          }}
-        />
+        <motion.div
+          className="flex flex-col w-full items-center text-center gap-6 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <div className="flex flex-col items-center justify-center gap-2">
+            <Image
+              src={Gojek}
+              width={50}
+              height={50}
+              quality={100}
+              alt="Gojek Logo"
+              draggable={false}
+            />
+            <h4 className="text-xl w-fit h-fit select-none font-bold text-onPrimaryContainer dark:text-onPrimaryContainerDark">
+              Gopay
+            </h4>
+          </div>
+          <Connecting
+            promises={expired ? refresh : connect}
+            onFulfilled={() => {
+              setTimeout(() => {
+                router.push('/account/success');
+              }, 5000);
+            }}
+            onRejected={() => {
+              setTimeout(() => {
+                router.push('/account/fail');
+              }, 5000);
+            }}
+          />
+        </motion.div>
       </>
     );
   } else {
