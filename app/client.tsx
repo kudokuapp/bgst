@@ -216,9 +216,9 @@ function Mobile({ isDarkTheme }: { isDarkTheme: boolean }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
         >
-          Pas pertama kali lo connect-in Bank/E-wallet lo, kita bakal ambil
-          transaksi lo beberapa bulan ke belakang (tergantung bank). Dan kita
-          update transaksinya setiap bulan.
+          Pas pertama kali lo connect-in Bank/E-wallet lo, kami bakal ambil
+          transaksi lo beberapa bulan ke belakang (tergantung bank). Dan kami
+          akan update transaksinya setiap bulan.
         </motion.p>
       </div>
 
@@ -479,9 +479,9 @@ function NotMobile({ isDarkTheme }: { isDarkTheme: boolean }) {
               animate={{ opacity: 1 }}
               transition={{ delay: 2 }}
             >
-              Pas pertama kali lo connect-in Bank/E-wallet lo, kita bakal ambil
+              Pas pertama kali lo connect-in Bank/E-wallet lo, kami bakal ambil
               transaksi lo beberapa bulan ke belakang (tergantung bank). Dan
-              kita update transaksinya setiap bulan.
+              kami akan update transaksinya setiap bulan.
             </motion.p>
           </div>
 
